@@ -33,7 +33,7 @@ fun NavScaffold(
         },
         bottomBar = {
             BottomAppBar {
-                // Navigation items here
+                
             }
         }
     ) { innerPadding ->
