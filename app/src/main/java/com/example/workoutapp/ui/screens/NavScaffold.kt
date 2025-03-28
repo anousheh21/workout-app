@@ -11,8 +11,13 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-
+import com.example.workoutapp.ui.components.bottomNavItems
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 
 // Enum to hold navigation routes
 enum class AppScreen(val route: String) {
@@ -32,8 +37,24 @@ fun NavScaffold(
             TopAppBar(title = { Text("Workout App") })
         },
         bottomBar = {
-            BottomAppBar {
-                
+            NavigationBar {
+                val items = bottomNavItems()
+                var selectedItemIndex by rememberSaveable {
+                    mutableIntStateOf(0)
+                }
+                items.forEachIndexed { index, item ->
+                    NavigationBarItem(selected = selectedItemIndex == index,
+                        onClick = {
+                            selectedItemIndex = index
+                            navController.navigate(item.route)
+                        },
+                        icon = {
+                            Icon(
+                                painter = item.icon,
+                                contentDescription = item.name
+                            )
+                        })
+                }
             }
         }
     ) { innerPadding ->

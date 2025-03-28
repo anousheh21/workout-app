@@ -7,17 +7,17 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import com.example.workoutapp.R
 
-data class BottomBarNavItem(
+data class BottomNavigationItem(
     val route: String,
     val name: String,
     val icon: Painter
 )
 
 @Composable
-fun bottomNavBarItems(): List<BottomBarNavItem> {
+fun bottomNavItems(): List<BottomNavigationItem> {
     return listOf(
-        BottomBarNavItem(AppScreen.Workouts.route, "Workouts", painterResource(R.drawable.dumbbell)),
-        BottomBarNavItem(AppScreen.PBs.route, "PBs", painterResource(R.drawable.pbs)),
-        BottomBarNavItem(AppScreen.Settings.route, "Settings", painterResource(R.drawable.settings))
+        BottomNavigationItem(AppScreen.Workouts.route, "Workouts", painterResource(R.drawable.dumbbell)),
+        BottomNavigationItem(AppScreen.PBs.route, "PBs", painterResource(R.drawable.pbs)),
+        BottomNavigationItem(AppScreen.Settings.route, "Settings", painterResource(R.drawable.settings))
     )
 }
