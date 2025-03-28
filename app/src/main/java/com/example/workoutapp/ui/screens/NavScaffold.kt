@@ -53,7 +53,11 @@ fun NavScaffold(
                                 painter = item.icon,
                                 contentDescription = item.name
                             )
-                        })
+                        },
+                        label = {
+                            Text(item.name)
+                        }
+                    )
                 }
             }
         }
