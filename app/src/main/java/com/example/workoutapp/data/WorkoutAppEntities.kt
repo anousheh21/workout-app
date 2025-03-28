@@ -35,7 +35,7 @@ data class ScheduledWorkoutExercise(
 
 @Entity(tableName = "plannedExercise")
 data class PlannedExercise(
-    @PrimaryKey(autoGenerate = true) val id: Int = 0,
+    @PrimaryKey(autoGenerate = true) val plannedExerciseId: Int = 0,
     val exerciseName: String,
     val muscleGroup: MuscleGroup,
     val setNumber: Int
@@ -70,7 +70,7 @@ data class Workout(
         ForeignKey(
             entity = PlannedExercise::class,
             parentColumns = ["plannedExerciseId"],
-            childColumns = ["plannedExeriseId"],
+            childColumns = ["plannedExerciseId"],
             onDelete = ForeignKey.SET_NULL
         )
     ]
