@@ -18,6 +18,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
+import androidx.navigation.compose.currentBackStackEntryAsState
 
 // Enum to hold navigation routes
 enum class AppScreen(val route: String) {
@@ -34,7 +35,33 @@ fun NavScaffold(
 ) {
     Scaffold(
         topBar = {
-            TopAppBar(title = { Text("Workout App") })
+            // Variables to track the screen that is currently visible, so that the top bar can be changed for the different screens
+            val navBackStackEntry by navController.currentBackStackEntryAsState()
+
+            when (navBackStackEntry?.destination?.route) {
+                 AppScreen.Workouts.route -> {
+                     TopAppBar(
+                         title = {
+                             Text("Workouts")
+                         }
+                     )
+                 }
+                AppScreen.PBs.route -> {
+                    TopAppBar(
+                        title = {
+                            Text("PBs")
+                        }
+                    )
+                }
+
+                AppScreen.Settings.route -> {
+                    TopAppBar(
+                        title = {
+                            Text("Settings")
+                        }
+                    )
+                }
+             }
         },
         bottomBar = {
             NavigationBar {
@@ -56,7 +83,8 @@ fun NavScaffold(
                         },
                         label = {
                             Text(item.name)
-                        }
+                        },
+                        alwaysShowLabel = true
                     )
                 }
             }
