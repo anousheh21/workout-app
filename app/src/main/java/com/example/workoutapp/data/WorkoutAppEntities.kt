@@ -3,7 +3,7 @@ package com.example.workoutapp.data
 import androidx.room.*
 
 @Entity(tableName = "scheduledWorkouts")
-data class ScheduledWorkoutsEntity(
+data class ScheduledWorkout(
     @PrimaryKey(autoGenerate = true) val workoutPlanId: Int = 0,
     val workoutName: String,
     val workoutDay: String,
@@ -14,27 +14,27 @@ data class ScheduledWorkoutsEntity(
     tableName = "scheduledWorkoutsExercises",
     foreignKeys = [
         ForeignKey(
-            entity = ScheduledWorkoutsEntity::class,
+            entity = ScheduledWorkout::class,
             parentColumns = ["workoutPlanId"],
             childColumns = ["workoutPlanId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = PlannedExercisesEntity::class,
+            entity = PlannedExercise::class,
             parentColumns = ["plannedExerciseId"],
             childColumns = ["plannedExerciseId"],
             onDelete = ForeignKey.CASCADE
         )
     ]
 )
-data class ScheduledWorkoutExercisesEntity(
+data class ScheduledWorkoutExercise(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val workoutPlanId: Int,
     val plannedExerciseId: Int
 )
 
 @Entity(tableName = "plannedExercise")
-data class PlannedExercisesEntity(
+data class PlannedExercise(
     @PrimaryKey(autoGenerate = true) val id: Int = 0,
     val exerciseName: String,
     val muscleGroup: MuscleGroup,
@@ -45,14 +45,14 @@ data class PlannedExercisesEntity(
     tableName = "workouts",
     foreignKeys = [
         ForeignKey(
-            entity = ScheduledWorkoutsEntity::class,
+            entity = ScheduledWorkout::class,
             parentColumns = ["workoutPlanId"],
             childColumns = ["workoutPlanId"],
             onDelete = ForeignKey.SET_NULL
         )
     ]
 )
-data class WorkoutsEntity(
+data class Workout(
     @PrimaryKey(autoGenerate = true) val workoutId: Int = 0,
     val workoutDate: String,
     val workoutPlanId: Int
@@ -62,20 +62,20 @@ data class WorkoutsEntity(
     tableName = "exercises",
     foreignKeys = [
         ForeignKey(
-            entity = WorkoutsEntity::class,
+            entity = Workout::class,
             parentColumns = ["workoutId"],
             childColumns = ["workoutId"],
             onDelete = ForeignKey.CASCADE
         ),
         ForeignKey(
-            entity = PlannedExercisesEntity::class,
+            entity = PlannedExercise::class,
             parentColumns = ["plannedExerciseId"],
             childColumns = ["plannedExeriseId"],
             onDelete = ForeignKey.SET_NULL
         )
     ]
 )
-data class ExercisesEntity(
+data class Exercise(
     @PrimaryKey(autoGenerate = true) val exerciseId: Int = 0,
     val workoutId: Int,
     val plannedExerciseId: Int,
