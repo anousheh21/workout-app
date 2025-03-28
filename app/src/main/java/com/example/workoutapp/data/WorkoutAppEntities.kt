@@ -11,7 +11,7 @@ data class ScheduledWorkout(
 )
 
 @Entity(
-    tableName = "scheduledWorkoutsExercises",
+    tableName = "scheduledWorkoutExercises",
     foreignKeys = [
         ForeignKey(
             entity = ScheduledWorkout::class,
