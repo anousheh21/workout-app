@@ -15,7 +15,7 @@ interface ScheduledWorkoutDao {
 }
 
 @Dao
-interface ScheduleWorkoutExerciseDao {
+interface ScheduledWorkoutExerciseDao {
     @Insert
     suspend fun insert(exercise: ScheduledWorkoutExercise)
 
@@ -45,7 +45,7 @@ interface PlannedExerciseDao {
 }
 
 @Dao
-interface WorkoutsDao {
+interface WorkoutDao {
     @Insert
     suspend fun insert(workout: Workout)
 
