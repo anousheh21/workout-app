@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -62,6 +64,26 @@ fun NavScaffold(
                     TopAppBar(
                         title = {
                             Text("Settings")
+                        }
+                    )
+                }
+
+                AppScreen.WorkoutDetail.route -> {
+                    val workoutName = navBackStackEntry?.arguments?.getString("workout")?.let {
+                        URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+                    } ?: "Workout"
+
+                    TopAppBar(
+                        title = {
+                            Text(text = workoutName)
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.popBackStack()}) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Back"
+                                )
+                            }
                         }
                     )
                 }
