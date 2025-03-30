@@ -1,6 +1,8 @@
 package com.example.workoutapp.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
@@ -14,6 +16,7 @@ import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
+import com.example.workoutapp.ui.theme.SeparatorGrey
 
 data class dummyData(
     val workoutName: String,
@@ -21,7 +24,9 @@ data class dummyData(
 )
 
 @Composable
-fun WorkoutsScreen() {
+fun WorkoutsScreen(
+    onClickWorkout: (String) -> Unit
+) {
     // DELETE THIS FOR DEVELOPMENT ONLY
     val workoutsArray = mutableListOf(
         dummyData("Push", "21/03/25"),
@@ -31,26 +36,31 @@ fun WorkoutsScreen() {
         dummyData("Pull", "14/03/25")
     )
 
-    WorkoutColumnList(workoutsArray)
+    WorkoutColumnList(workoutsArray, onClickWorkout)
 
 
 
 }
 
 @Composable
-fun WorkoutColumnList(workouts: List<dummyData>) {
+fun WorkoutColumnList(
+    workouts: List<dummyData>,
+    onClickWorkout: (String) -> Unit
+    ) {
     LazyColumn {
         items(workouts) { workout ->
-            WorkoutRow(workout)
-            Divider(color = Color.LightGray, thickness = 1.dp)
+            WorkoutRow(workout, onClickWorkout)
+            Divider(color = SeparatorGrey, thickness = 1.dp)
         }
     }
 }
 
 @Composable
-fun WorkoutRow(workout: dummyData) {
+fun WorkoutRow(workout: dummyData, onClickWorkout: (String) -> Unit) {
     Row(
         modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClickWorkout(workout.workoutName) }
             .padding(start = 32.dp)
             .padding(top = 18.dp)
             .padding(bottom = 22.dp)
@@ -62,7 +72,7 @@ fun WorkoutRow(workout: dummyData) {
                     append(workout.workoutName)
                 }
 
-                append(" - ")
+                append("   -   ")
                 append(workout.workoutDate)
             }
         )

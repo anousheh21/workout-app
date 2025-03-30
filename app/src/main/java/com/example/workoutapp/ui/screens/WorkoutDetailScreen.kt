@@ -4,6 +4,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun WorkoutDetailScreen() {
-    Text("Workout Detail")
+fun WorkoutDetailScreen(workout: String) {
+    Text(text = workout)
 }

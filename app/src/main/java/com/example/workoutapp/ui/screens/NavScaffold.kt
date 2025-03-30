@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.screens
 
+import android.text.style.TabStopSpan.Standard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
@@ -19,11 +20,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.navigation.compose.currentBackStackEntryAsState
+import java.net.URLDecoder
+import java.net.URLEncoder
+import java.nio.charset.StandardCharsets
 
 // Enum to hold navigation routes
 enum class AppScreen(val route: String) {
     Workouts("workouts"),
-    WorkoutDetail("workoutDetail/{workoutName}"),
+    WorkoutDetail("workoutDetail/{workout}"),
     PBs("pbs"),
     Settings("settings")
 }
@@ -96,11 +100,19 @@ fun NavScaffold(
             modifier = Modifier.padding(innerPadding)
         ) {
             composable(route = AppScreen.Workouts.route) {
-                WorkoutsScreen()
+                WorkoutsScreen(
+                    onClickWorkout = { workout ->
+                        val encodedWorkout = URLEncoder.encode( workout, StandardCharsets.UTF_8.toString())
+                        navController.navigate("workoutDetail/$encodedWorkout")
+                    }
+                )
             }
 
-            composable(route = AppScreen.WorkoutDetail.route) {
-                WorkoutDetailScreen()
+            composable(route = AppScreen.WorkoutDetail.route) { backStackEntry ->
+                val workout = backStackEntry.arguments?.getString("workout")?.let {
+                    URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+                } ?: "No Data"
+                WorkoutDetailScreen(workout)
             }
 
             composable(route = AppScreen.PBs.route) {
