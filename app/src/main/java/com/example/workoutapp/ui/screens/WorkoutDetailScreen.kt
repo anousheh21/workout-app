@@ -16,29 +16,8 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.ExerciseLogSingle
 
 @Composable
-fun WorkoutDetailScreen(workoutId: Int, viewModel: WorkoutViewModel = viewModel()) {
-    val context = LocalContext.current
-    // val workout by remember { mutableStateOf<Workout?>(null) }
-
-    LaunchedEffect(workoutId) {
-        viewModel.loadWorkoutById(context, workoutId)
-    }
-
-    val selectedWorkout = viewModel.selectedWorkout
-
-    Column {
-        if (selectedWorkout != null) {
-            Text("Workout: ${selectedWorkout.workoutDate}")
-
-            // If you want to show workout name:
-            Text("Name: ${viewModel.selectedWorkoutName}")
-
-            ExerciseLogSingle(selectedWorkout.workoutId)
-        } else {
-            Text("Loading workout...")
-        }
-    }
-
+fun WorkoutDetailScreen(workoutId: Int) {
+    ExerciseLogSingle(workoutId)
 }
 
 @Preview(showBackground = true)
