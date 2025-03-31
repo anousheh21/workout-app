@@ -20,6 +20,7 @@ import com.example.workoutapp.data.Exercise
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import com.example.workoutapp.data.ExerciseWithName
 
 @Composable
@@ -35,13 +36,24 @@ fun ExerciseLogSingle(workoutId: Int) {
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
-        Text("Exercises", style = MaterialTheme.typography.titleMedium)
+        ExerciseLogHeaders()
         Spacer(modifier = Modifier.height(8.dp))
 
         for (exercise in exercises.value) {
             ExerciseRow(workoutId, exercise)
             Divider()
         }
+    }
+}
+
+@Composable
+fun ExerciseLogHeaders() {
+    Row{
+        Text("Exercise", style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.width(20.dp))
+        Text(" Weight/kg", style = MaterialTheme.typography.titleMedium)
+        Spacer(modifier = Modifier.width(8.dp))
+        Text("Reps", style = MaterialTheme.typography.titleMedium)
     }
 }
 
