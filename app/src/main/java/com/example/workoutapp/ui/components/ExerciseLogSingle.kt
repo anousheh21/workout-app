@@ -30,6 +30,8 @@ import androidx.compose.ui.graphics.Color
 import com.example.workoutapp.data.ExerciseWithName
 import com.example.workoutapp.ui.theme.PrimaryText
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import com.example.workoutapp.ui.theme.PrimaryColor
 
 @Composable
@@ -85,43 +87,29 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
              Text(text = "${exercise.muscleGroup}")
          }
          // Text(text = "${exercise.weight}kg x ${exercise.reps}")
-         NumberBoxFloat(exercise.weight)
-         NumberBoxInt(exercise.reps)
+         NumberBox(exercise.weight.toInt())
+         NumberBox(exercise.reps)
 
      }
 }
 
 @Composable
-fun NumberBoxInt(number: Int) {
+fun NumberBox(number: Int) {
     Box(
         modifier = Modifier
-            .size(40.dp)
-            .clip(RoundedCornerShape(8.dp))
+            .width(41.dp)
+            .height(42.dp)
+            .clip(RoundedCornerShape(3.dp))
             .background(PrimaryText)
             .padding(8.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text = number.toString(),
-            style = MaterialTheme.typography.bodyMedium,
-            color = Color.Black
-        )
-    }
-}
-
-@Composable
-fun NumberBoxFloat(number: Float) {
-    Box(
-        modifier = Modifier
-            .size(40.dp)
-            .clip(RoundedCornerShape(8.dp))
-            .background(PrimaryText)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = number.toString(),
-            style = MaterialTheme.typography.bodyMedium,
+            style = MaterialTheme.typography.bodyMedium.copy(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            ),
             color = Color.Black
         )
     }
