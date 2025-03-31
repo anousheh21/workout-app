@@ -49,7 +49,6 @@ fun ExerciseLogSingle(workoutId: Int) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         ExerciseLogHeaders()
-        // Spacer(modifier = Modifier.height(8.dp))
 
         for (exercise in exercises.value) {
             ExerciseRow(workoutId, exercise)
@@ -58,91 +57,6 @@ fun ExerciseLogSingle(workoutId: Int) {
     }
 }
 
-@Composable
-fun ExerciseLogHeaders() {
-    Row{
-        Spacer(modifier = Modifier.width(34.dp))
-        Text("Exercise", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.width(97.dp))
-        Text(" Weight/kg", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.width(16.dp))
-        Text("Reps", style = MaterialTheme.typography.titleMedium)
-    }
-}
 
- @Composable
-fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
-     val context = LocalContext.current
-     val exercises = remember { mutableStateOf<List<ExerciseWithName>>(emptyList()) }
 
-     LaunchedEffect(workoutId) {
-         val db = DatabaseProvider.getDatabase(context)
-         val exerciseDao = db.exerciseDao()
-         exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
 
-     }
-     // Spacer(modifier = Modifier.width(334.dp))
-     Row(
-         modifier = Modifier
-             .padding(vertical = 12.dp)
-             .padding(start = 34.dp)
-             .fillMaxWidth(),
-         verticalAlignment = Alignment.CenterVertically
-     ) {
-         Column(
-             modifier = Modifier.weight(1f)
-         ) {
-             Text(
-                 text = exercise.exerciseName,
-                 style = MaterialTheme.typography.bodyMedium
-             )
-             Spacer(modifier = Modifier.height(7.dp))
-             Text(
-                 text = exercise.muscleGroup.toTitleCase(),
-                 style = MaterialTheme.typography.bodySmall
-             )
-         }
-         // Text(text = "${exercise.weight}kg x ${exercise.reps}")
-         Spacer(modifier = Modifier.width(16.dp))
-
-         NumberBox(number = exercise.weight.toInt())
-
-         Spacer(modifier = Modifier.width(31.dp))
-
-         NumberBox(number = exercise.reps)
-
-         Spacer(modifier = Modifier.width(33.dp))
-
-     }
-}
-
-fun Enum<*>.toTitleCase(): String {
-    return name
-        .lowercase()
-        .split('_')
-        .joinToString(" ") { word ->
-            word.replaceFirstChar { it.uppercase() }
-        }
-}
-
-@Composable
-fun NumberBox(number: Int) {
-    Box(
-        modifier = Modifier
-            .width(41.dp)
-            .height(42.dp)
-            .clip(RoundedCornerShape(3.dp))
-            .background(PrimaryText)
-            .padding(8.dp),
-        contentAlignment = Alignment.Center
-    ) {
-        Text(
-            text = number.toString(),
-            style = MaterialTheme.typography.bodyMedium.copy(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal
-            ),
-            color = Color.Black
-        )
-    }
-}
