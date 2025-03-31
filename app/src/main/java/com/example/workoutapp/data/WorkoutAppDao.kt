@@ -42,7 +42,7 @@ interface ScheduledWorkoutExerciseDao {
 @Dao
 interface PlannedExerciseDao {
     @Insert
-    suspend fun insert(exercise: PlannedExercise)
+    suspend fun insert(exercise: PlannedExercise): Long
 
     @Insert
     suspend fun insertMultiple(exercises: List<PlannedExercise>)
@@ -57,7 +57,7 @@ interface PlannedExerciseDao {
 @Dao
 interface WorkoutDao {
     @Insert
-    suspend fun insert(workout: Workout)
+    suspend fun insert(workout: Workout): Long
 
     @Query("SELECT * FROM workouts")
     suspend fun getAll(): List<Workout>
@@ -87,7 +87,15 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercises")
     suspend fun getAll(): List<Exercise>
 
+    // Debug query to log joined exercises
+    @Query("""
+    SELECT e.exerciseId, e.workoutId, e.plannedExerciseId, p.exerciseName, e.weight, e.reps, e.pb
+    FROM exercises e
+    INNER JOIN plannedExercise p ON e.plannedExerciseId = p.plannedExerciseId
+    WHERE e.workoutId = :workoutId
+""")
+    suspend fun getExercisesWithNamesForWorkout(workoutId: Int): List<ExerciseWithName>
+
     @Delete
     suspend fun delete(exercise: Exercise)
 }
-

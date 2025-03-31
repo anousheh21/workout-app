@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.screens
 
+import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,11 +33,19 @@ fun WorkoutsScreen(
 ) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
-        // viewModel.clearAllWorkouts(context = context)
+        //viewModel.clearAllWorkouts(context = context)
+        viewModel.debugExercisesFor(context, 22)
         viewModel.seedDummyData(context = context)
         viewModel.loadWorkouts(context = context)
     }
     val workoutsArray = viewModel.workoutsArray
+
+    LaunchedEffect(workoutsArray) {
+        workoutsArray.forEach {
+            Log.d("DEBUG", "WorkoutDetails => workoutId=${it.workoutId}, planId=${it.workoutPlanId}, date=${it.workoutDate}, name=${it.workoutName}")
+        }
+    }
+
     WorkoutColumnList(workoutsArray, onClickWorkout)
 
 
