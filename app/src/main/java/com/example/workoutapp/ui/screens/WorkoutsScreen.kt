@@ -32,6 +32,7 @@ fun WorkoutsScreen(
 ) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
+        // viewModel.clearAllWorkouts(context = context)
         viewModel.seedDummyData(context = context)
         viewModel.loadWorkouts(context = context)
     }

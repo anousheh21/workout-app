@@ -23,6 +23,17 @@ import kotlinx.coroutines.launch
 class WorkoutViewModel() : ViewModel() {
 
         // DUMMY DATA FOR DEVELOPMENT
+        fun clearAllWorkouts(context: Context) {
+            val db = DatabaseProvider.getDatabase(context)
+            val workoutDao = db.workoutDao()
+            val scheduledWorkoutDao = db.scheduledWorkoutDao()
+
+            viewModelScope.launch(Dispatchers.IO) {
+                workoutDao.deleteAll()
+                scheduledWorkoutDao.deleteAll()
+                Log.d("WorkoutViewModel", "🧹 Cleared all workouts")
+            }
+        }
         fun seedDummyData(context: Context) {
             val db = DatabaseProvider.getDatabase(context)
             val scheduledWorkoutDao = db.scheduledWorkoutDao()
@@ -31,22 +42,26 @@ class WorkoutViewModel() : ViewModel() {
             viewModelScope.launch(Dispatchers.IO) {
                 try {
                     if (workoutDao.getAll().isEmpty()) {
-                        val scheduledWorkout = ScheduledWorkout(
-                            workoutName = "Push",
-                            workoutDay = "Monday",
-                            workoutTime = "09:00"
+
+                        val scheduledWorkouts = listOf(
+                            ScheduledWorkout(workoutName = "Push", workoutDay = "Monday", workoutTime = "09:00"),
+                            ScheduledWorkout(workoutName = "Pull", workoutDay = "Wednesday", workoutTime = "10:00"),
+                            ScheduledWorkout(workoutName = "Legs", workoutDay = "Friday", workoutTime = "08:30")
                         )
 
-                        // Insert the workout above, and return the ID
-                        val insertedPlanId =
-                            scheduledWorkoutDao.insertAndReturnId(scheduledWorkout).toInt()
+                        val workoutDates = listOf("09/05/25", "10/05/25", "11/05/25")
 
-                        val workout = Workout(
-                            workoutDate = "09/05/25",
-                            workoutPlanId = insertedPlanId
-                        )
+                        scheduledWorkouts.forEachIndexed { index, plan ->
+                            val planId = scheduledWorkoutDao.insertAndReturnId(plan).toInt()
 
-                        workoutDao.insert(workout)
+                            val workout = Workout(
+                                workoutDate = workoutDates[index],
+                                workoutPlanId = planId
+                            )
+
+                            workoutDao.insert(workout)
+                            Log.d("WorkoutViewModel", "Inserted workout for ${plan.workoutName}")
+                        }
                     }
 
 
@@ -67,6 +82,11 @@ class WorkoutViewModel() : ViewModel() {
                 try {
                     val data = workoutDao.getWorkoutsWithDetails()
                     _workoutsArray.value = data
+
+                    Log.d("WorkoutViewModel", "Fetched ${data.size} workouts from DB")
+                    data.forEach {
+                        Log.d("WorkoutViewModel", "Workout: ${it.workoutName}, Date: ${it.workoutDate}")
+                    }
                 } catch (e: Exception) {
                     Log.e("WorkoutViewModel ","Error Loading workouts:", e)
                 }

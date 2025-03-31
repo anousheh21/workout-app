@@ -17,6 +17,9 @@ interface ScheduledWorkoutDao {
     @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
     suspend fun getById(id: Int): ScheduledWorkout
 
+    @Query("DELETE FROM scheduledWorkouts")
+    suspend fun deleteAll()
+
     @Delete
     suspend fun delete(scheduledWorkout: ScheduledWorkout)
 }
@@ -68,6 +71,9 @@ interface WorkoutDao {
 
     @Query("SELECT * FROM workouts WHERE workoutId = :id")
     suspend fun getById(id: Int): Workout
+
+    @Query("DELETE FROM workouts")
+    suspend fun deleteAll()
 
     @Delete
     suspend fun delete(workout: Workout)
