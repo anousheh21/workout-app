@@ -56,6 +56,13 @@ interface WorkoutDao {
     @Query("SELECT * FROM workouts")
     suspend fun getAll(): List<Workout>
 
+    @Query("""
+    SELECT workouts.workoutId, workouts.workoutPlanId, workouts.workoutDate, scheduledWorkouts.workoutName 
+    FROM workouts
+    INNER JOIN scheduledWorkouts ON workouts.workoutPlanId = scheduledWorkouts.workoutPlanId
+""")
+    suspend fun getWorkoutsWithDetails(): List<WorkoutDetails>
+
     @Delete
     suspend fun delete(workout: Workout)
 }

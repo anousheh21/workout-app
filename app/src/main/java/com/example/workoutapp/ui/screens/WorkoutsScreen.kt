@@ -21,12 +21,13 @@ import androidx.compose.ui.unit.dp
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 
 
 @Composable
 fun WorkoutsScreen(
-    onClickWorkout: (Workout) -> Unit,
+    onClickWorkout: (WorkoutDetails) -> Unit,
     viewModel: WorkoutViewModel = viewModel()
 ) {
     val context = LocalContext.current
@@ -43,8 +44,8 @@ fun WorkoutsScreen(
 
 @Composable
 fun WorkoutColumnList(
-    workouts: List<Workout>,
-    onClickWorkout: (Workout) -> Unit
+    workouts: List<WorkoutDetails>,
+    onClickWorkout: (WorkoutDetails) -> Unit
     ) {
     LazyColumn {
         items(workouts) { workout ->
@@ -55,7 +56,7 @@ fun WorkoutColumnList(
 }
 
 @Composable
-fun WorkoutRow(workout: Workout, onClickWorkout: (Workout) -> Unit) {
+fun WorkoutRow(workout: WorkoutDetails, onClickWorkout: (WorkoutDetails) -> Unit) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -68,7 +69,7 @@ fun WorkoutRow(workout: Workout, onClickWorkout: (Workout) -> Unit) {
         Text(
             text = buildAnnotatedString {
                 withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
-                    append(workout.workoutPlanId.toString())
+                    append(workout.workoutName)
                 }
 
                 append("   -   ")

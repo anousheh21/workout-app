@@ -14,22 +14,11 @@ import com.example.workoutapp.data.ScheduledWorkoutDao
 import com.example.workoutapp.data.ScheduledWorkoutExerciseDao
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.data.WorkoutDao
+import com.example.workoutapp.data.WorkoutDetails
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 
-// DELETE THESE DATA CLASSES, AS THEY ARE FOR DEVELOPMENT ONLY!!!
-//data class dummyData(
-//    val workoutName: String,
-//    val workoutDate: String
-//)
-
-class WorkoutViewModel(
-//    private val scheduledWorkoutDao: ScheduledWorkoutDao,
-//    private val scheduledWorkoutExerciseDao: ScheduledWorkoutExerciseDao,
-//    private  val plannedExerciseDao: PlannedExerciseDao,
-//    private val workoutDao: WorkoutDao,
-//    private val exerciseDao: ExerciseDao,
-    ) : ViewModel() {
+class WorkoutViewModel() : ViewModel() {
 
         // DUMMY DATA FOR DEVELOPMENT
         fun seedDummyData(context: Context) {
@@ -65,8 +54,8 @@ class WorkoutViewModel(
             }
         }
 
-        private val _workoutsArray = mutableStateOf<List<Workout>>(emptyList())
-        val workoutsArray: List<Workout> get() = _workoutsArray.value
+        private val _workoutsArray = mutableStateOf<List<WorkoutDetails>>(emptyList())
+        val workoutsArray: List<WorkoutDetails> get() = _workoutsArray.value
 
         fun loadWorkouts(context: Context) {
             val db = DatabaseProvider.getDatabase(context)
@@ -74,23 +63,11 @@ class WorkoutViewModel(
 
             viewModelScope.launch(Dispatchers.IO) {
                 try {
-                    val data = workoutDao.getAll()
+                    val data = workoutDao.getWorkoutsWithDetails()
                     _workoutsArray.value = data
                 } catch (e: Exception) {
                     Log.e("WorkoutViewModel ","Error Loading workouts:", e)
                 }
             }
         }
-
-
-
-//    private val _workoutsArray = mutableListOf(
-//        dummyData("Push", "21/03/25"),
-//        dummyData("Pull", "19/03/25"),
-//        dummyData("Legs", "18/03/25"),
-//        dummyData("Push", "16/03/25"),
-//        dummyData("Pull", "14/03/25")
-//    )
-//
-//    val workoutsArray: List<dummyData> get() = _workoutsArray
 }
