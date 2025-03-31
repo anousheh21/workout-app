@@ -1,6 +1,8 @@
 package com.example.workoutapp.ui.components
 
 import android.util.Log
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -20,8 +22,15 @@ import com.example.workoutapp.data.Exercise
 import androidx.compose.ui.Modifier
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import com.example.workoutapp.data.ExerciseWithName
+import com.example.workoutapp.ui.theme.PrimaryText
+import androidx.compose.ui.Alignment
+import com.example.workoutapp.ui.theme.PrimaryColor
 
 @Composable
 fun ExerciseLogSingle(workoutId: Int) {
@@ -37,7 +46,7 @@ fun ExerciseLogSingle(workoutId: Int) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         ExerciseLogHeaders()
-        Spacer(modifier = Modifier.height(8.dp))
+        // Spacer(modifier = Modifier.height(8.dp))
 
         for (exercise in exercises.value) {
             ExerciseRow(workoutId, exercise)
@@ -66,23 +75,54 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
          val db = DatabaseProvider.getDatabase(context)
          val exerciseDao = db.exerciseDao()
          exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
-         // val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
 
      }
 
      Row(modifier = Modifier.padding(vertical = 8.dp)) {
-         Text(
-             text = exercise.exerciseName,
-             modifier = Modifier.weight(1f)
-         )
-         Text(
-             text = "${exercise.weight}kg x ${exercise.reps}",
-             modifier = Modifier.weight(1f)
-         )
-         Text(
-             text = "${exercise.muscleGroup}",
-             modifier = Modifier.weight(1f)
-         )
+         Column {
+             Text(text = exercise.exerciseName)
+             Spacer(modifier = Modifier.height(8.dp))
+             Text(text = "${exercise.muscleGroup}")
+         }
+         // Text(text = "${exercise.weight}kg x ${exercise.reps}")
+         NumberBoxFloat(exercise.weight)
+         NumberBoxInt(exercise.reps)
 
      }
+}
+
+@Composable
+fun NumberBoxInt(number: Int) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(PrimaryText)
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = number.toString(),
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.Black
+        )
+    }
+}
+
+@Composable
+fun NumberBoxFloat(number: Float) {
+    Box(
+        modifier = Modifier
+            .size(40.dp)
+            .clip(RoundedCornerShape(8.dp))
+            .background(PrimaryText)
+            .padding(8.dp),
+        contentAlignment = Alignment.Center
+    ) {
+        Text(
+            text = number.toString(),
+            style = MaterialTheme.typography.bodyMedium,
+            color = Color.Black
+        )
+    }
 }
