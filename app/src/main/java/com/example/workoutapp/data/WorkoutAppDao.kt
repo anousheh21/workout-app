@@ -89,7 +89,7 @@ interface ExerciseDao {
 
     // Debug query to log joined exercises
     @Query("""
-    SELECT e.exerciseId, e.workoutId, e.plannedExerciseId, p.exerciseName, e.weight, e.reps, e.pb
+    SELECT e.exerciseId, e.workoutId, e.plannedExerciseId, p.exerciseName, p.muscleGroup, e.weight, e.reps, e.pb
     FROM exercises e
     INNER JOIN plannedExercise p ON e.plannedExerciseId = p.plannedExerciseId
     WHERE e.workoutId = :workoutId

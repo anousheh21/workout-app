@@ -12,6 +12,7 @@ data class ExerciseWithName(
     val workoutId: Int,
     val plannedExerciseId: Int,
     val exerciseName: String,
+    val muscleGroup: MuscleGroup,
     val weight: Float,
     val reps: Int,
     val pb: Boolean

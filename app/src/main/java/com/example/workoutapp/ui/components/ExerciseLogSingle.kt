@@ -54,7 +54,7 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
          val db = DatabaseProvider.getDatabase(context)
          val exerciseDao = db.exerciseDao()
          exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
-         val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+         // val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
 
      }
 
@@ -65,6 +65,10 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
          )
          Text(
              text = "${exercise.weight}kg x ${exercise.reps}",
+             modifier = Modifier.weight(1f)
+         )
+         Text(
+             text = "${exercise.muscleGroup}",
              modifier = Modifier.weight(1f)
          )
 
