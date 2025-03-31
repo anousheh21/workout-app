@@ -29,7 +29,7 @@ import java.nio.charset.StandardCharsets
 // Enum to hold navigation routes
 enum class AppScreen(val route: String) {
     Workouts("workouts"),
-    WorkoutDetail("workoutDetail/{workout}"),
+    WorkoutDetail("workoutDetail/{workoutId}"),
     PBs("pbs"),
     Settings("settings")
 }
@@ -69,7 +69,7 @@ fun NavScaffold(
                 }
 
                 AppScreen.WorkoutDetail.route -> {
-                    val workoutName = navBackStackEntry?.arguments?.getString("workout")?.let {
+                    val workoutName = navBackStackEntry?.arguments?.getString("workoutId")?.let {
                         URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
                     } ?: "Workout"
 
@@ -124,17 +124,25 @@ fun NavScaffold(
             composable(route = AppScreen.Workouts.route) {
                 WorkoutsScreen(
                     onClickWorkout = { workout ->
-                        val encodedWorkout = URLEncoder.encode( workout.workoutPlanId.toString(), StandardCharsets.UTF_8.toString())
-                        navController.navigate("workoutDetail/$encodedWorkout")
+                        // val encodedWorkout = URLEncoder.encode( workout.workoutId.toString(), StandardCharsets.UTF_8.toString())
+                        navController.navigate("workoutDetail/${workout.workoutId}")
                     }
                 )
             }
 
             composable(route = AppScreen.WorkoutDetail.route) { backStackEntry ->
-                val workout = backStackEntry.arguments?.getString("workout")?.let {
-                    URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
-                } ?: "No Data"
-                WorkoutDetailScreen(workout)
+//                val workout = backStackEntry.arguments?.getString("workoutId")?.let {
+//                    URLDecoder.decode(it, StandardCharsets.UTF_8.toString())
+//                } ?: "No Data"
+//                WorkoutDetailScreen(workout)
+
+                val workoutId = backStackEntry.arguments?.getString("workoutId")?.toIntOrNull()
+
+                if (workoutId != null) {
+                    WorkoutDetailScreen(workoutId = workoutId)
+                } else {
+                    Text("Invalid workout ID")
+                }
             }
 
             composable(route = AppScreen.PBs.route) {

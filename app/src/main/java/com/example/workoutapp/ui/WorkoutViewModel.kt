@@ -2,7 +2,9 @@ package com.example.workoutapp.ui
 
 import android.content.Context
 import android.util.Log
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import androidx.room.Database
@@ -70,4 +72,28 @@ class WorkoutViewModel() : ViewModel() {
                 }
             }
         }
+
+    private val _selectedWorkout = mutableStateOf<Workout?>(null)
+    val selectedWorkout: Workout? get() = _selectedWorkout.value
+
+    var selectedWorkoutName by mutableStateOf("")
+
+    fun loadWorkoutById(context: Context, workoutId: Int) {
+        val db = DatabaseProvider.getDatabase(context)
+        val workoutDao = db.workoutDao()
+        val scheduledDao = db.scheduledWorkoutDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val workout = workoutDao.getById(workoutId)
+                _selectedWorkout.value = workout
+
+                // Get the workout name from scheduled workout
+                val scheduledWorkout = scheduledDao.getById(workout.workoutPlanId)
+                selectedWorkoutName = scheduledWorkout.workoutName
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error loading workout by ID", e)
+            }
+        }
+    }
 }

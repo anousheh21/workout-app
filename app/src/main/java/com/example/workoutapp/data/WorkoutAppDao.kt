@@ -14,6 +14,9 @@ interface ScheduledWorkoutDao {
     @Query("SELECT * FROM scheduledWorkouts")
     suspend fun getAll(): List<ScheduledWorkout>
 
+    @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
+    suspend fun getById(id: Int): ScheduledWorkout
+
     @Delete
     suspend fun delete(scheduledWorkout: ScheduledWorkout)
 }
@@ -62,6 +65,9 @@ interface WorkoutDao {
     INNER JOIN scheduledWorkouts ON workouts.workoutPlanId = scheduledWorkouts.workoutPlanId
 """)
     suspend fun getWorkoutsWithDetails(): List<WorkoutDetails>
+
+    @Query("SELECT * FROM workouts WHERE workoutId = :id")
+    suspend fun getById(id: Int): Workout
 
     @Delete
     suspend fun delete(workout: Workout)

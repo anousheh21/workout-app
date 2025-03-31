@@ -4,6 +4,6 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 
 @Composable
-fun ExerciseLogSingle(workout: String) {
-    Text(text = workout)
+fun ExerciseLogSingle(workout: Int) {
+    Text(text = "$workout")
 }
