@@ -1,11 +1,15 @@
 package com.example.workoutapp.data
 
 import androidx.room.*
+import org.jetbrains.annotations.Async.Schedule
 
 @Dao
 interface ScheduledWorkoutDao {
     @Insert
     suspend fun insert(scheduledWorkout: ScheduledWorkout)
+
+    @Insert
+    suspend fun insertAndReturnId(scheduledWorkout: ScheduledWorkout): Long
 
     @Query("SELECT * FROM scheduledWorkouts")
     suspend fun getAll(): List<ScheduledWorkout>

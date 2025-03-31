@@ -124,7 +124,7 @@ fun NavScaffold(
             composable(route = AppScreen.Workouts.route) {
                 WorkoutsScreen(
                     onClickWorkout = { workout ->
-                        val encodedWorkout = URLEncoder.encode( workout, StandardCharsets.UTF_8.toString())
+                        val encodedWorkout = URLEncoder.encode( workout.workoutPlanId.toString(), StandardCharsets.UTF_8.toString())
                         navController.navigate("workoutDetail/$encodedWorkout")
                     }
                 )
