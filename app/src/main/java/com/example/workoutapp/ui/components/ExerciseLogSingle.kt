@@ -61,10 +61,11 @@ fun ExerciseLogSingle(workoutId: Int) {
 @Composable
 fun ExerciseLogHeaders() {
     Row{
+        Spacer(modifier = Modifier.width(34.dp))
         Text("Exercise", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.width(20.dp))
+        Spacer(modifier = Modifier.width(97.dp))
         Text(" Weight/kg", style = MaterialTheme.typography.titleMedium)
-        Spacer(modifier = Modifier.width(8.dp))
+        Spacer(modifier = Modifier.width(16.dp))
         Text("Reps", style = MaterialTheme.typography.titleMedium)
     }
 }
