@@ -32,11 +32,6 @@ fun ExerciseLogSingle(workoutId: Int) {
         val exerciseDao = db.exerciseDao()
         exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
         val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
-
-        Log.d("ExerciseDebug", "Loaded ${results.size} exercises for workoutId=$workoutId")
-        results.forEach {
-            Log.d("ExerciseDebug", "Exercise: ${it.exerciseName}, weight=${it.weight}, reps=${it.reps}, pb=${it.pb}")
-        }
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -44,17 +39,34 @@ fun ExerciseLogSingle(workoutId: Int) {
         Spacer(modifier = Modifier.height(8.dp))
 
         for (exercise in exercises.value) {
-            Row(modifier = Modifier.padding(vertical = 8.dp)) {
-                Text(
-                    text = exercise.exerciseName,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    text = "${exercise.weight}kg x ${exercise.reps}",
-                    modifier = Modifier.weight(1f)
-                )
-            }
+            ExerciseRow(workoutId, exercise)
             Divider()
         }
     }
+}
+
+ @Composable
+fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
+     val context = LocalContext.current
+     val exercises = remember { mutableStateOf<List<ExerciseWithName>>(emptyList()) }
+
+     LaunchedEffect(workoutId) {
+         val db = DatabaseProvider.getDatabase(context)
+         val exerciseDao = db.exerciseDao()
+         exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+         val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+
+     }
+
+     Row(modifier = Modifier.padding(vertical = 8.dp)) {
+         Text(
+             text = exercise.exerciseName,
+             modifier = Modifier.weight(1f)
+         )
+         Text(
+             text = "${exercise.weight}kg x ${exercise.reps}",
+             modifier = Modifier.weight(1f)
+         )
+
+     }
 }
