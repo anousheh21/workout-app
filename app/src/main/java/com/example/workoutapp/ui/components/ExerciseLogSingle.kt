@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material3.Divider
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
@@ -79,16 +80,37 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
          exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
 
      }
-
-     Row(modifier = Modifier.padding(vertical = 8.dp)) {
-         Column {
-             Text(text = exercise.exerciseName)
-             Spacer(modifier = Modifier.height(8.dp))
-             Text(text = exercise.muscleGroup.toTitleCase())
+     // Spacer(modifier = Modifier.width(334.dp))
+     Row(
+         modifier = Modifier
+             .padding(vertical = 12.dp)
+             .padding(start = 34.dp)
+             .fillMaxWidth(),
+         verticalAlignment = Alignment.CenterVertically
+     ) {
+         Column(
+             modifier = Modifier.weight(1f)
+         ) {
+             Text(
+                 text = exercise.exerciseName,
+                 style = MaterialTheme.typography.bodyMedium
+             )
+             Spacer(modifier = Modifier.height(7.dp))
+             Text(
+                 text = exercise.muscleGroup.toTitleCase(),
+                 style = MaterialTheme.typography.bodySmall
+             )
          }
          // Text(text = "${exercise.weight}kg x ${exercise.reps}")
-         NumberBox(exercise.weight.toInt())
-         NumberBox(exercise.reps)
+         Spacer(modifier = Modifier.width(16.dp))
+
+         NumberBox(number = exercise.weight.toInt())
+
+         Spacer(modifier = Modifier.width(31.dp))
+
+         NumberBox(number = exercise.reps)
+
+         Spacer(modifier = Modifier.width(33.dp))
 
      }
 }
