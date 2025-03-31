@@ -84,13 +84,22 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
          Column {
              Text(text = exercise.exerciseName)
              Spacer(modifier = Modifier.height(8.dp))
-             Text(text = "${exercise.muscleGroup}")
+             Text(text = exercise.muscleGroup.toTitleCase())
          }
          // Text(text = "${exercise.weight}kg x ${exercise.reps}")
          NumberBox(exercise.weight.toInt())
          NumberBox(exercise.reps)
 
      }
+}
+
+fun Enum<*>.toTitleCase(): String {
+    return name
+        .lowercase()
+        .split('_')
+        .joinToString(" ") { word ->
+            word.replaceFirstChar { it.uppercase() }
+        }
 }
 
 @Composable
