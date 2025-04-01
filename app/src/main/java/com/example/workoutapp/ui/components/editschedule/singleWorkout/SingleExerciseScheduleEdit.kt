@@ -89,6 +89,7 @@ fun SingleExerciseScheduleEdit(
             saveExercise = {
                 coroutineScope.launch {
                     vm.addNewPlannedExercise(context, newExercise)
+                    vm.loadPlannedExercises(context)
                     onModalClose()
                 }
             },
