@@ -1,6 +1,9 @@
 package com.example.workoutapp.ui.screens
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
@@ -12,26 +15,36 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 
 @Composable
 fun Settings(
-
+    navEditSchedule: () -> Unit,
+    navNotificationSettings: () -> Unit,
 ) {
     Column {
-        SettingsRow("Edit Schedule")
-        SettingsRow("Notifications")
+        SettingsRow("Edit Schedule", navEditSchedule)
+        SettingsRow("Notifications", navNotificationSettings)
 
     }
 }
 
 @Composable
-fun SettingsRow(name: String) {
-    Text(
-        text = name,
+fun SettingsRow(
+        name: String,
+        onClickSetting: () -> Unit,
+    ) {
+    Row(
         modifier = Modifier
-            .padding(
-                start = 32.dp,
-                top = 19.dp,
-                bottom = 21.dp
-            )
-    )
+            .fillMaxWidth()
+            .clickable { onClickSetting() }
+    ) {
+        Text(
+            text = name,
+            modifier = Modifier
+                .padding(
+                    start = 32.dp,
+                    top = 19.dp,
+                    bottom = 21.dp
+                )
+        )
+    }
 
     Divider(color = SeparatorGrey, thickness = 1.dp)
 }

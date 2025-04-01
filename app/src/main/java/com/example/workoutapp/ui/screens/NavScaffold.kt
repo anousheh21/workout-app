@@ -336,7 +336,18 @@ fun NavScaffold(
 
             // ---- COMPOSABLE for Settings ----
             composable(route = AppScreen.Settings.route) {
-                Settings()
+                Settings(
+                    navEditSchedule = { navController.navigate(AppScreen.EditSchedule.route) },
+                    navNotificationSettings = { navController.navigate(AppScreen.NotificationSettings.route) }
+                )
+            }
+
+            composable(route = AppScreen.NotificationSettings.route) {
+
+            }
+
+            composable(route = AppScreen.EditSchedule.route) {
+
             }
         }
     }
