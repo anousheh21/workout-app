@@ -75,16 +75,16 @@ fun TimeBox(
 
     Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(vertical = 16.dp)
+            // .fillMaxWidth()
+            // .padding(start = 21.dp, end = 20.dp, top = 10.dp, bottom = 11.dp)
             .clickable { showTimePicker = true }
-            .background(PrimaryText, shape = RoundedCornerShape(12.dp))
-            .padding(32.dp),
+            .background(PrimaryText, shape = RoundedCornerShape(3.dp))
+            .padding(start = 21.dp, end = 20.dp, top = 10.dp, bottom = 11.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
             text =  workoutTime,
-            style = TextStyle(fontSize = 32.sp, color = DarkText)
+            style = TextStyle(fontSize = 16.sp, color = DarkText)
         )
     }
 
