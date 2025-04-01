@@ -33,6 +33,7 @@ import androidx.compose.material3.TimeInput
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
@@ -67,19 +68,26 @@ import java.util.Calendar
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val scrollState = rememberScrollState()
 
+    var nextWorkoutPlanId by remember { mutableStateOf(1) }
+    val workoutIds = remember { mutableStateListOf<Int>() }
+
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
-        SingleWorkoutScheduleEdit(navAddExercises)
-        SingleWorkoutScheduleEdit(navAddExercises)
+        workoutIds.forEach { id ->
+            SingleWorkoutScheduleEdit(navAddExercises = { navAddExercises(id) })
+        }
 
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit()
+            AddNewWorkoutScheduleEdit(nextWorkoutPlanId) { id ->
+                workoutIds.add(id)
+                nextWorkoutPlanId++
+            }
             Spacer(modifier = Modifier.height(27.dp))
             SaveWorkoutSchedule()
             Spacer(modifier = Modifier.height(75.dp))
@@ -88,9 +96,12 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 }
 
 @Composable
-fun AddNewWorkoutScheduleEdit() {
+fun AddNewWorkoutScheduleEdit(
+    nextWorkoutPlanId: Int,
+    onAddNewRow: (Int) -> Unit
+) {
     Button(
-        onClick = { addNewRow() },
+        onClick = { onAddNewRow(nextWorkoutPlanId) },
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = SecondPurple),
         contentPadding = PaddingValues(start = 35.dp, end = 35.dp, top = 12.dp, bottom = 13.dp),
