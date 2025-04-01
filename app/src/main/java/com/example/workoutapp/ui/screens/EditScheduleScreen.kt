@@ -4,6 +4,7 @@ import android.util.Log
 import android.view.RoundedCorner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -76,7 +77,10 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
         )
 
-        Row {
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(23.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ){
             WorkoutDay()
             TimeBox(
                 initialHour,
@@ -84,7 +88,10 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             )
         }
 
-        Row {
+        Row (
+            horizontalArrangement = Arrangement.spacedBy(17.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             AddExercisesButton(navAddExercises)
             AddToCalendarButton()
         }
@@ -147,9 +154,10 @@ fun TimeBox(
         modifier = Modifier
             // .fillMaxWidth()
             // .padding(start = 21.dp, end = 20.dp, top = 10.dp, bottom = 11.dp)
+            .height(56.dp)
             .clickable { showTimePicker = true }
             .background(PrimaryText, shape = RoundedCornerShape(3.dp))
-            .padding(start = 21.dp, end = 20.dp, top = 10.dp, bottom = 11.dp),
+            .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center
     ) {
         Text(
@@ -224,9 +232,18 @@ fun WorkoutDay() {
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },
-            textStyle = TextStyle(color = DarkText),
+            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+            shape = RoundedCornerShape(3.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = PrimaryText,
+                unfocusedContainerColor = PrimaryText,
+                disabledContainerColor = PrimaryText,
+                focusedLabelColor = DarkText,
+                unfocusedLabelColor = DarkText,
+            ),
             modifier = Modifier
                 .menuAnchor()
+                .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
                 // .fillMaxWidth()
         )
 
