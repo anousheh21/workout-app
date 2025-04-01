@@ -69,7 +69,7 @@ fun NavScaffold(
                 // ---- TOP BAR for PBs ----
                 AppScreen.PBs.route -> {
                     TopAppBar(
-                        title = { Text("PBs") }
+                        title = { Text("Exercises") }
                     )
                 }
                 // ---- TOP BAR for Settings ----

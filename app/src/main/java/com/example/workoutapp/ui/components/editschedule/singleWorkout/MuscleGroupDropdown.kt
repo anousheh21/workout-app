@@ -53,8 +53,8 @@ fun MuscleGroupDropDown() {
             ),
             modifier = Modifier
                 .menuAnchor()
-                .width(208.dp)
-                .padding(end = 26.dp)
+                //.width(208.dp)
+               // .padding(end = 26.dp)
         )
 
         ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {

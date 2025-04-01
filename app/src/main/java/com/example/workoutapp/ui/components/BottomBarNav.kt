@@ -17,7 +17,7 @@ data class BottomNavigationItem(
 fun bottomNavItems(): List<BottomNavigationItem> {
     return listOf(
         BottomNavigationItem(AppScreen.Workouts.route, "Workouts", painterResource(R.drawable.dumbbell)),
-        BottomNavigationItem(AppScreen.PBs.route, "PBs", painterResource(R.drawable.pbs)),
+        BottomNavigationItem(AppScreen.PBs.route, "Exercises", painterResource(R.drawable.pbs)),
         BottomNavigationItem(AppScreen.Settings.route, "Settings", painterResource(R.drawable.settings))
     )
 }

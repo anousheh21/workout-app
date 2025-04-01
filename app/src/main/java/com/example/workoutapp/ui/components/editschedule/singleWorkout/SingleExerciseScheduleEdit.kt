@@ -35,18 +35,21 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 @Composable
 fun SingleExerciseScheduleEdit() {
     Column() {
-        Spacer(modifier = Modifier.height(19.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(23.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(start = 26.dp)
-        ) {
-            ExerciseInput()
-            MuscleGroupDropDown()
-        }
-        Spacer(modifier = Modifier.height(21.dp))
-        Divider(color = SeparatorGrey, thickness = 1.dp)
+        ExerciseInput()
+        Spacer(modifier = Modifier.height(20.dp))
+        MuscleGroupDropDown()
+//        Spacer(modifier = Modifier.height(19.dp))
+//        Row(
+//            horizontalArrangement = Arrangement.spacedBy(23.dp),
+//            verticalAlignment = Alignment.CenterVertically,
+//            modifier = Modifier
+//               // .padding(start = 26.dp)
+//        ) {
+//            ExerciseInput()
+//            MuscleGroupDropDown()
+//        }
+//        Spacer(modifier = Modifier.height(21.dp))
+        // Divider(color = SeparatorGrey, thickness = 1.dp)
     }
 }
 

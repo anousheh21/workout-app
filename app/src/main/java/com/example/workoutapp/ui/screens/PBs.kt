@@ -24,6 +24,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.window.Dialog
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.theme.ThirdPurple
@@ -32,6 +33,8 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 fun PBs() {
     val scrollState = rememberScrollState()
 
+    var showExerciseModal by remember { mutableStateOf(false) }
+
     var nextExerciseId by remember { mutableStateOf(1) }
     val exerciseIds = remember { mutableStateListOf<Int>() }
 
@@ -39,23 +42,23 @@ fun PBs() {
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
-
-        exerciseIds.forEach { id ->
-            SingleExerciseScheduleEdit()
-        }
-
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit(nextExerciseId) { id ->
-                exerciseIds.add(id)
-                nextExerciseId++
+            AddNewWorkoutScheduleEdit(nextExerciseId) {
+                showExerciseModal = true
             }
             Spacer(modifier = Modifier.height(27.dp))
             SaveExercises()
             Spacer(modifier = Modifier.height(75.dp))
+        }
+    }
+
+    if (showExerciseModal) {
+        Dialog(onDismissRequest = { showExerciseModal = false}) {
+            SingleExerciseScheduleEdit()
         }
     }
 }
