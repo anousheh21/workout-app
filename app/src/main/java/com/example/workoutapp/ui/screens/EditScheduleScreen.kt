@@ -47,12 +47,14 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import com.example.workoutapp.R
+import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
 import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
 import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.TimeBox
 import com.example.workoutapp.ui.components.editschedule.WorkoutDay
+import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
@@ -100,10 +102,17 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 @Composable
 fun SingleExerciseScheduleEdit() {
     Column() {
-        Row {
+        Spacer(modifier = Modifier.height(19.dp))
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(23.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(start = 26.dp)
+        ) {
             ExerciseInput()
             MuscleGroupDropDown()
         }
+        Spacer(modifier = Modifier.height(21.dp))
         Divider(color = SeparatorGrey, thickness = 1.dp)
     }
 }
@@ -126,14 +135,56 @@ fun ExerciseInput() {
             unfocusedLabelColor = DarkText,
         ),
         modifier = Modifier
-            //.width(143.dp)
-            .padding(top = 10.dp, bottom = 11.dp, start = 22.dp, end = 57.dp)
+            .width(143.dp)
+            //.padding(top = 10.dp, bottom = 11.dp)
     )
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MuscleGroupDropDown() {
+    var expanded by remember { mutableStateOf(false) }
+    var selectedGroup by remember { mutableStateOf("") }
 
+    ExposedDropdownMenuBox(
+        expanded = expanded,
+        onExpandedChange = { expanded = !expanded }
+    ) {
+        TextField(
+            value = selectedGroup,
+            onValueChange = {},
+            readOnly = true,
+            placeholder = { Text("Muscle Group") },
+            trailingIcon = {
+                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
+            },
+            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+            shape = RoundedCornerShape(3.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = PrimaryText,
+                unfocusedContainerColor = PrimaryText,
+                disabledContainerColor = PrimaryText,
+                focusedLabelColor = DarkText,
+                unfocusedLabelColor = DarkText,
+            ),
+            modifier = Modifier
+                .menuAnchor()
+                .width(208.dp)
+                .padding(end = 26.dp)
+        )
+        
+        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
+            for (group in MuscleGroup.entries) {
+                DropdownMenuItem(
+                    text = { Text(group.toTitleCase()) },
+                    onClick = {
+                        selectedGroup = group.toTitleCase()
+                        expanded = false
+                    }
+                )
+            }
+        }
+    }
 }
 
 @Composable
