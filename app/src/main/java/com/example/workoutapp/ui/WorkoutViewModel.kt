@@ -57,6 +57,36 @@ class WorkoutViewModel() : ViewModel() {
 
     }
 
+    fun addNewScheduledWorkout(context: Context, workout: ScheduledWorkout) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                scheduledWorkoutDao.insert(workout)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Inserting Scheduled Workout:", e)
+            }
+        }
+    }
+
+    private val _scheduledWorkoutsArray = mutableStateOf<List<ScheduledWorkout>>(emptyList())
+    val scheduledWorkoutsArray: List<ScheduledWorkout> get() = _scheduledWorkoutsArray.value
+
+    fun loadScheduledWorkouts(context: Context) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val data = scheduledWorkoutDao.getAll()
+                _scheduledWorkoutsArray.value = data
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Retrieving Exercises:", e)
+            }
+        }
+    }
+
     private val _workoutsArray = mutableStateOf<List<WorkoutDetails>>(emptyList())
     val workoutsArray: List<WorkoutDetails> get() = _workoutsArray.value
 

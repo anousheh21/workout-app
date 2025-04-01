@@ -28,6 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
@@ -81,6 +82,11 @@ fun PBs() {
             SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
         }
     }
+}
+
+@Composable
+fun DisplayPlannedExercise(exercise: PlannedExercise) {
+
 }
 
 
