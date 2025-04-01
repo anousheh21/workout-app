@@ -24,6 +24,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
@@ -46,6 +47,7 @@ import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
 import java.util.Calendar
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     var workoutNameInput by remember { mutableStateOf("") }
@@ -60,7 +62,18 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             value = workoutNameInput,
             onValueChange = { workoutNameInput = it },
             label = { Text("Workout Name") },
-            textStyle = TextStyle(color = DarkText)
+            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+            shape = RoundedCornerShape(3.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = PrimaryText,
+                unfocusedContainerColor = PrimaryText,
+                disabledContainerColor = PrimaryText,
+                focusedLabelColor = DarkText,
+                unfocusedLabelColor = DarkText,
+            ),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
         )
 
         Row {
