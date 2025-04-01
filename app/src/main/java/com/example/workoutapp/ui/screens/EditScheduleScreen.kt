@@ -59,6 +59,11 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
+    SingleWorkoutScheduleEdit(navAddExercises)
+}
+
+@Composable
+fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
     var workoutNameInput by remember { mutableStateOf("") }
 
     // Time picker variables
