@@ -41,6 +41,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
@@ -54,7 +55,9 @@ import com.example.workoutapp.ui.components.editschedule.WorkoutDay
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.SecondPurple
 import com.example.workoutapp.ui.theme.SeparatorGrey
+import com.example.workoutapp.ui.theme.ThirdPurple
 import java.util.Calendar
 
 
@@ -71,17 +74,36 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
         SingleWorkoutScheduleEdit(navAddExercises)
         SingleWorkoutScheduleEdit(navAddExercises)
 
-        AddNewWorkoutScheduleEdit()
-        SaveWorkoutSchedule()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+        ) {
+            Spacer(modifier = Modifier.height(42.dp))
+            AddNewWorkoutScheduleEdit()
+            Spacer(modifier = Modifier.height(27.dp))
+            SaveWorkoutSchedule()
+            Spacer(modifier = Modifier.height(75.dp))
+        }
     }
 }
 
 @Composable
 fun AddNewWorkoutScheduleEdit() {
     Button(
-        onClick = { addNewRow() }
+        onClick = { addNewRow() },
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = SecondPurple),
+        contentPadding = PaddingValues(start = 35.dp, end = 35.dp, top = 12.dp, bottom = 13.dp),
+        modifier = Modifier
+            .width(150.dp)
     ) {
-        Text("Add New")
+        Text(
+            text = "Add New",
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Medium
+            )
+        )
     }
 }
 
@@ -92,9 +114,20 @@ fun addNewRow() {
 @Composable
 fun SaveWorkoutSchedule() {
     Button(
-        onClick = { saveSchedule() }
+        onClick = { saveSchedule() },
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
+        contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
+        modifier = Modifier
+            .width(102.dp)
     ) {
-        Text("Save")
+        Text(
+            text = "Save",
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
     }
 }
 

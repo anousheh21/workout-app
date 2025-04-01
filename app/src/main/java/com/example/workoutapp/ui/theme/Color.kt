@@ -15,6 +15,7 @@ val SecondaryColor = Color(0xFF1E293B)
 
 val PrimaryColor = Color(0xFF6366F1)
 val SecondPurple = Color(0xFF7A7DF0)
+val ThirdPurple = Color(0xFF4447DC)
 
 val PrimaryText = Color(0xFFE2E8F0)
 val SecondaryText = Color(0xFF94A3B8)
