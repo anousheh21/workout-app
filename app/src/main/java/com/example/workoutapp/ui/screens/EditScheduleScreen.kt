@@ -31,12 +31,13 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 import java.util.Calendar
 
 @Composable
-fun EditScheduleScreen() {
+fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     var workoutNameInput by remember { mutableStateOf("") }
 
     // Time picker variables
@@ -45,7 +46,7 @@ fun EditScheduleScreen() {
     val initialMinute = currentTime.get(Calendar.MINUTE)
 
 
-        Column() {
+        Column {
             TextField(
                 value = workoutNameInput,
                 onValueChange = { workoutNameInput = it },
@@ -61,7 +62,31 @@ fun EditScheduleScreen() {
                 )
             }
 
+            Row {
+                AddExercisesButton(navAddExercises)
+            }
+
+
         }
+}
+
+@Composable
+fun AddExercisesButton(navAddExercises: (Int) -> Unit ) {
+    val tempWorkoutPlanId = 1
+    Button(onClick = { navAddExercises(tempWorkoutPlanId) }) {
+        Text("Add Exercises")
+    }
+}
+
+@Composable
+fun AddToCalendarButton() {
+    Button(onClick = { addWorkoutToCalendar() }) {
+        Text("icon")
+    }
+}
+
+fun addWorkoutToCalendar() {
+
 }
 
 @Composable
@@ -104,7 +129,6 @@ fun TimeBox(
         }
     }
 }
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutTime(

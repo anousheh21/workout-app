@@ -41,6 +41,7 @@ enum class AppScreen(val route: String) {
     PBs("pbs"),
     Settings("settings"),
     EditSchedule("editSchedule"),
+    EditScheduledExercises("editScheduledExercises/{workoutPlanId}"),
     NotificationSettings("notificationSettings"),
 
 }
@@ -198,7 +199,21 @@ fun NavScaffold(
             }
 
             composable(route = AppScreen.EditSchedule.route) {
-                EditScheduleScreen()
+                EditScheduleScreen(
+                    navAddExercises = { tempWorkoutPlanId: Int ->
+                        // Navigate with ID only
+                        navController.navigate("editScheduledExercises/${tempWorkoutPlanId}")
+                    }
+                )
+            }
+
+            composable(route = AppScreen.EditScheduledExercises.route) { backStackEntry ->
+                val workoutPlanId = backStackEntry.arguments?.getString("workoutPlanId")?.toIntOrNull()
+                if (workoutPlanId != null) {
+                    EditScheduledExercises(workoutPlanId = workoutPlanId)
+                } else {
+                    Text("Invalid workout plan ID")
+                }
             }
         }
     }
