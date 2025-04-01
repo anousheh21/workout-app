@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
@@ -46,7 +47,10 @@ import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.SeparatorGrey
 import java.util.Calendar
+
+
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -58,7 +62,13 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
     val initialMinute = currentTime.get(Calendar.MINUTE)
 
-    Column {
+    Column (
+        modifier = Modifier
+            .padding(start = 10.dp, top = 30.dp, bottom = 30.dp),
+            //.fillMaxWidth(),
+        horizontalAlignment = Alignment.CenterHorizontally
+
+    ) {
         TextField(
             value = workoutNameInput,
             onValueChange = { workoutNameInput = it },
@@ -73,7 +83,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 unfocusedLabelColor = DarkText,
             ),
             modifier = Modifier
-                .fillMaxWidth()
+                .width(319.dp)
                 .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
         )
 
@@ -88,14 +98,19 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             )
         }
 
+        Spacer(modifier = Modifier.height(10.dp))
+
         Row (
-            horizontalArrangement = Arrangement.spacedBy(17.dp),
-            verticalAlignment = Alignment.CenterVertically
+            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+                .padding(start = 22.dp)
         ) {
             AddExercisesButton(navAddExercises)
             AddToCalendarButton()
         }
 
+        Divider(color = SeparatorGrey, thickness = 1.dp)
 
     }
 }
@@ -107,11 +122,14 @@ fun AddExercisesButton(navAddExercises: (Int) -> Unit ) {
         onClick = { navAddExercises(tempWorkoutPlanId) },
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor),
-        contentPadding = PaddingValues(start = 25.dp, top = 14.dp, bottom = 14.dp, end = 25.dp)
+        contentPadding = PaddingValues(start = 25.dp, top = 14.dp, bottom = 14.dp, end = 25.dp),
+        modifier = Modifier
+            .width(240.dp)
+
     ) {
         Row {
             Text("Add Exercises")
-            Spacer(modifier = Modifier.width(82.dp))
+            Spacer(modifier = Modifier.width(70.dp))
             Icon(
                 painter = painterResource(id = R.drawable.smallplus),
                 contentDescription = "plus"
@@ -155,6 +173,7 @@ fun TimeBox(
             // .fillMaxWidth()
             // .padding(start = 21.dp, end = 20.dp, top = 10.dp, bottom = 11.dp)
             .height(56.dp)
+            .width(86.dp)
             .clickable { showTimePicker = true }
             .background(PrimaryText, shape = RoundedCornerShape(3.dp))
             .padding(horizontal = 10.dp),
@@ -243,6 +262,7 @@ fun WorkoutDay() {
             ),
             modifier = Modifier
                 .menuAnchor()
+                .width(210.dp)
                 .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
                 // .fillMaxWidth()
         )
