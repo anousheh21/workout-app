@@ -196,7 +196,10 @@ enum class AppScreen(val route: String) {
     // We’ll only pass the workoutId here, not a name:
     WorkoutDetail("workoutDetail/{workoutId}"),
     PBs("pbs"),
-    Settings("settings")
+    Settings("settings"),
+    EditSchedule("editSchedule"),
+    NotificationSettings("notificationSettings"),
+
 }
 
 @OptIn(ExperimentalMaterial3Api::class)

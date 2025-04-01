@@ -11,7 +11,9 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 
 
 @Composable
-fun Settings() {
+fun Settings(
+
+) {
     Column {
         SettingsRow("Edit Schedule")
         SettingsRow("Notifications")
