@@ -45,29 +45,28 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
     val initialMinute = currentTime.get(Calendar.MINUTE)
 
+    Column {
+        TextField(
+            value = workoutNameInput,
+            onValueChange = { workoutNameInput = it },
+            label = { Text("Workout Name") },
+            textStyle = TextStyle(color = DarkText)
+        )
 
-        Column {
-            TextField(
-                value = workoutNameInput,
-                onValueChange = { workoutNameInput = it },
-                label = { Text("Workout Name") },
-                textStyle = TextStyle(color = DarkText)
+        Row {
+            WorkoutDay()
+            TimeBox(
+                initialHour,
+                initialMinute,
             )
-
-            Row {
-                WorkoutDay()
-                TimeBox(
-                    initialHour,
-                    initialMinute,
-                )
-            }
-
-            Row {
-                AddExercisesButton(navAddExercises)
-            }
-
-
         }
+
+        Row {
+            AddExercisesButton(navAddExercises)
+        }
+
+
+    }
 }
 
 @Composable
