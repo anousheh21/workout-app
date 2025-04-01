@@ -70,9 +70,36 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     ) {
         SingleWorkoutScheduleEdit(navAddExercises)
         SingleWorkoutScheduleEdit(navAddExercises)
-        SingleWorkoutScheduleEdit(navAddExercises)
-        SingleWorkoutScheduleEdit(navAddExercises)
+
+        AddNewWorkoutScheduleEdit()
+        SaveWorkoutSchedule()
     }
+}
+
+@Composable
+fun AddNewWorkoutScheduleEdit() {
+    Button(
+        onClick = { addNewRow() }
+    ) {
+        Text("Add New")
+    }
+}
+
+fun addNewRow() {
+    TODO("Not yet implemented")
+}
+
+@Composable
+fun SaveWorkoutSchedule() {
+    Button(
+        onClick = { saveSchedule() }
+    ) {
+        Text("Save")
+    }
+}
+
+fun saveSchedule() {
+    TODO("Not yet implemented")
 }
 
 
