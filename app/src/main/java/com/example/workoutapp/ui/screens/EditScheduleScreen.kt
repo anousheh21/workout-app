@@ -1,6 +1,7 @@
 package com.example.workoutapp.ui.screens
 
 import android.util.Log
+import android.view.RoundedCorner
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -12,6 +13,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -81,8 +83,20 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 @Composable
 fun AddExercisesButton(navAddExercises: (Int) -> Unit ) {
     val tempWorkoutPlanId = 1
-    Button(onClick = { navAddExercises(tempWorkoutPlanId) }) {
-        Text("Add Exercises")
+    Button(
+        onClick = { navAddExercises(tempWorkoutPlanId) },
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor),
+        contentPadding = PaddingValues(start = 25.dp, top = 14.dp, bottom = 14.dp, end = 25.dp)
+    ) {
+        Row {
+            Text("Add Exercises")
+            Spacer(modifier = Modifier.width(82.dp))
+            Icon(
+                painter = painterResource(id = R.drawable.smallplus),
+                contentDescription = "plus"
+            )
+        }
     }
 }
 
