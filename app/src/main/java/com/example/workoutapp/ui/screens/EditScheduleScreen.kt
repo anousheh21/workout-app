@@ -50,10 +50,12 @@ import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
+import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
 import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.TimeBox
 import com.example.workoutapp.ui.components.editschedule.WorkoutDay
+import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryColor
@@ -94,121 +96,14 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             SaveWorkoutSchedule()
             Spacer(modifier = Modifier.height(75.dp))
         }
-
-        SingleExerciseScheduleEdit()
     }
 }
 
-@Composable
-fun SingleExerciseScheduleEdit() {
-    Column() {
-        Spacer(modifier = Modifier.height(19.dp))
-        Row(
-            horizontalArrangement = Arrangement.spacedBy(23.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(start = 26.dp)
-        ) {
-            ExerciseInput()
-            MuscleGroupDropDown()
-        }
-        Spacer(modifier = Modifier.height(21.dp))
-        Divider(color = SeparatorGrey, thickness = 1.dp)
-    }
-}
 
-@Composable
-fun ExerciseInput() {
-    var exerciseNameInput by remember {mutableStateOf("") }
 
-    TextField(
-        value = exerciseNameInput,
-        onValueChange = { exerciseNameInput = it },
-        label = { Text("Exercise") },
-        textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-        shape = RoundedCornerShape(3.dp),
-        colors = TextFieldDefaults.colors(
-            focusedContainerColor = PrimaryText,
-            unfocusedContainerColor = PrimaryText,
-            disabledContainerColor = PrimaryText,
-            focusedLabelColor = DarkText,
-            unfocusedLabelColor = DarkText,
-        ),
-        modifier = Modifier
-            .width(143.dp)
-            //.padding(top = 10.dp, bottom = 11.dp)
-    )
-}
 
-@OptIn(ExperimentalMaterial3Api::class)
-@Composable
-fun MuscleGroupDropDown() {
-    var expanded by remember { mutableStateOf(false) }
-    var selectedGroup by remember { mutableStateOf("") }
 
-    ExposedDropdownMenuBox(
-        expanded = expanded,
-        onExpandedChange = { expanded = !expanded }
-    ) {
-        TextField(
-            value = selectedGroup,
-            onValueChange = {},
-            readOnly = true,
-            placeholder = { Text("Muscle Group") },
-            trailingIcon = {
-                ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
-            },
-            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-            shape = RoundedCornerShape(3.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = PrimaryText,
-                unfocusedContainerColor = PrimaryText,
-                disabledContainerColor = PrimaryText,
-                focusedLabelColor = DarkText,
-                unfocusedLabelColor = DarkText,
-            ),
-            modifier = Modifier
-                .menuAnchor()
-                .width(208.dp)
-                .padding(end = 26.dp)
-        )
-        
-        ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
-            for (group in MuscleGroup.entries) {
-                DropdownMenuItem(
-                    text = { Text(group.toTitleCase()) },
-                    onClick = {
-                        selectedGroup = group.toTitleCase()
-                        expanded = false
-                    }
-                )
-            }
-        }
-    }
-}
 
-@Composable
-fun AddNewWorkoutScheduleEdit(
-    nextWorkoutPlanId: Int,
-    onAddNewRow: (Int) -> Unit
-) {
-    Button(
-        onClick = { onAddNewRow(nextWorkoutPlanId) },
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = SecondPurple),
-        contentPadding = PaddingValues(start = 35.dp, end = 35.dp, top = 12.dp, bottom = 13.dp),
-        modifier = Modifier
-            .width(150.dp)
-    ) {
-        Text(
-            text = "Add New",
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Medium
-            )
-        )
-    }
-}
 
 @Composable
 fun SaveWorkoutSchedule() {
