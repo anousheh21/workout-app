@@ -1,6 +1,5 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -18,16 +17,15 @@ import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 
 @Composable
-fun ExerciseInput(
-    exerciseNameInput: String,
+fun ExerciseSetNumber(
+    setNumberInput: String,
     onValueChange: (String) -> Unit
 ) {
 
-
     TextField(
-        value = exerciseNameInput,
+        value = setNumberInput,
         onValueChange = onValueChange,
-        label = { Text("Exercise") },
+        label = { Text("Number of Sets") },
         textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
         shape = RoundedCornerShape(3.dp),
         colors = TextFieldDefaults.colors(
@@ -38,7 +36,7 @@ fun ExerciseInput(
             unfocusedLabelColor = DarkText,
         ),
         modifier = Modifier
-            .width(143.dp)
+        //.width(143.dp)
         //.padding(top = 10.dp, bottom = 11.dp)
     )
 }

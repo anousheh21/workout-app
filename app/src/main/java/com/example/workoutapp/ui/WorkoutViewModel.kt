@@ -26,6 +26,37 @@ import kotlinx.coroutines.launch
 
 class WorkoutViewModel() : ViewModel() {
 
+    fun addNewPlannedExercise(context: Context, exercise: PlannedExercise) {
+        val db = DatabaseProvider.getDatabase(context)
+        val plannedExerciseDao = db.plannedExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                plannedExerciseDao.insert(exercise)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Inserting Exercises:", e)
+            }
+        }
+    }
+
+    private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
+    val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
+
+    fun loadPlannedExercises(context: Context) {
+        val db = DatabaseProvider.getDatabase(context)
+        val plannedExerciseDao = db.plannedExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val data = plannedExerciseDao.getAll()
+                _plannedExercisesArray.value = data
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Loading Planned Exercises", e)
+            }
+        }
+
+    }
+
     private val _workoutsArray = mutableStateOf<List<WorkoutDetails>>(emptyList())
     val workoutsArray: List<WorkoutDetails> get() = _workoutsArray.value
 

@@ -27,16 +27,19 @@ import com.example.workoutapp.ui.theme.PrimaryText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MuscleGroupDropDown() {
+fun MuscleGroupDropDown(
+    selectedGroup: MuscleGroup,
+    onGroupSelected: (MuscleGroup) -> Unit
+) {
     var expanded by remember { mutableStateOf(false) }
-    var selectedGroup by remember { mutableStateOf("") }
+    // var selectedGroup by remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
         TextField(
-            value = selectedGroup,
+            value = selectedGroup.toTitleCase(),
             onValueChange = {},
             readOnly = true,
             placeholder = { Text("Muscle Group") },
@@ -64,7 +67,7 @@ fun MuscleGroupDropDown() {
                 DropdownMenuItem(
                     text = { Text(group.toTitleCase()) },
                     onClick = {
-                        selectedGroup = group.toTitleCase()
+                        onGroupSelected(group)
                         expanded = false
                     }
                 )
