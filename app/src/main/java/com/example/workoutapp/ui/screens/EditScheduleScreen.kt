@@ -48,6 +48,7 @@ import com.example.workoutapp.R
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
 import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
+import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.TimeBox
 import com.example.workoutapp.ui.components.editschedule.WorkoutDay
 import com.example.workoutapp.ui.theme.DarkText
@@ -74,68 +75,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     }
 }
 
-@Composable
-fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
-    var workoutNameInput by remember { mutableStateOf("") }
 
-    // Time picker variables
-    val currentTime = Calendar.getInstance()
-    val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
-    val initialMinute = currentTime.get(Calendar.MINUTE)
-
-    Column (
-        modifier = Modifier
-            .padding(start = 17.dp, top = 30.dp)
-            .fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-
-    ) {
-        TextField(
-            value = workoutNameInput,
-            onValueChange = { workoutNameInput = it },
-            label = { Text("Workout Name") },
-            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-            shape = RoundedCornerShape(3.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = PrimaryText,
-                unfocusedContainerColor = PrimaryText,
-                disabledContainerColor = PrimaryText,
-                focusedLabelColor = DarkText,
-                unfocusedLabelColor = DarkText,
-            ),
-            modifier = Modifier
-                .width(319.dp)
-                .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
-        )
-
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(23.dp),
-            verticalAlignment = Alignment.CenterVertically
-        ){
-            WorkoutDay()
-            TimeBox(
-                initialHour,
-                initialMinute,
-            )
-        }
-
-        Spacer(modifier = Modifier.height(10.dp))
-
-        Row (
-            horizontalArrangement = Arrangement.spacedBy(15.dp),
-            verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier
-                .padding(start = 22.dp)
-        ) {
-            AddExercisesButton(navAddExercises)
-            AddToCalendarButton()
-        }
-
-        Spacer(modifier = Modifier.height(30.dp))
-        Divider(color = SeparatorGrey, thickness = 1.dp)
-
-    }
-}
 
 
 
