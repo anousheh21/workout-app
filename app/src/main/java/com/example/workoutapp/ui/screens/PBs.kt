@@ -78,7 +78,7 @@ fun PBs() {
 
     if (showExerciseModal) {
         Dialog(onDismissRequest = { showExerciseModal = false}) {
-            SingleExerciseScheduleEdit()
+            SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
         }
     }
 }

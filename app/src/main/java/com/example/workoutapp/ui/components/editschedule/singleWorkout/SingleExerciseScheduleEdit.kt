@@ -45,7 +45,10 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 import kotlinx.coroutines.launch
 
 @Composable
-fun SingleExerciseScheduleEdit(vm: WorkoutViewModel = viewModel()) {
+fun SingleExerciseScheduleEdit(
+        vm: WorkoutViewModel = viewModel(),
+        onModalClose: () -> Unit
+    ) {
     var exerciseNameInput by remember { mutableStateOf("") }
     var setNumberInput by remember { mutableStateOf("") }
     var selectedMuscleGroup by remember { mutableStateOf(MuscleGroup.CHEST) }
@@ -86,6 +89,7 @@ fun SingleExerciseScheduleEdit(vm: WorkoutViewModel = viewModel()) {
             saveExercise = {
                 coroutineScope.launch {
                     vm.addNewPlannedExercise(context, newExercise)
+                    onModalClose()
                 }
             },
         )
