@@ -92,7 +92,48 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             SaveWorkoutSchedule()
             Spacer(modifier = Modifier.height(75.dp))
         }
+
+        SingleExerciseScheduleEdit()
     }
+}
+
+@Composable
+fun SingleExerciseScheduleEdit() {
+    Column() {
+        Row {
+            ExerciseInput()
+            MuscleGroupDropDown()
+        }
+        Divider(color = SeparatorGrey, thickness = 1.dp)
+    }
+}
+
+@Composable
+fun ExerciseInput() {
+    var exerciseNameInput by remember {mutableStateOf("") }
+
+    TextField(
+        value = exerciseNameInput,
+        onValueChange = { exerciseNameInput = it },
+        label = { Text("Exercise") },
+        textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+        shape = RoundedCornerShape(3.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = PrimaryText,
+            unfocusedContainerColor = PrimaryText,
+            disabledContainerColor = PrimaryText,
+            focusedLabelColor = DarkText,
+            unfocusedLabelColor = DarkText,
+        ),
+        modifier = Modifier
+            //.width(143.dp)
+            .padding(top = 10.dp, bottom = 11.dp, start = 22.dp, end = 57.dp)
+    )
+}
+
+@Composable
+fun MuscleGroupDropDown() {
+
 }
 
 @Composable
@@ -116,10 +157,6 @@ fun AddNewWorkoutScheduleEdit(
             )
         )
     }
-}
-
-fun addNewRow() {
-    TODO("Not yet implemented")
 }
 
 @Composable
