@@ -285,6 +285,10 @@ fun NavScaffold(
                 AppScreen.NotificationSettings.route -> {
                     TopBarBack("Notification Settings", navController)
                 }
+
+                AppScreen.EditSchedule.route -> {
+                    TopBarBack("Edit Schedule", navController)
+                }
             }
         },
         bottomBar = {
@@ -348,11 +352,11 @@ fun NavScaffold(
             }
 
             composable(route = AppScreen.NotificationSettings.route) {
-
+                NotificationSettingsScreen()
             }
 
             composable(route = AppScreen.EditSchedule.route) {
-
+                EditScheduleScreen()
             }
         }
     }
