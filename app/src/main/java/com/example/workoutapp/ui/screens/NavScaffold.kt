@@ -187,6 +187,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
+import com.example.workoutapp.ui.components.TopBarBack
 import com.example.workoutapp.ui.components.bottomNavItems
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -279,6 +280,10 @@ fun NavScaffold(
                             }
                         )
                     }
+                }
+
+                AppScreen.NotificationSettings.route -> {
+                    TopBarBack("Notification Settings", navController)
                 }
             }
         },
