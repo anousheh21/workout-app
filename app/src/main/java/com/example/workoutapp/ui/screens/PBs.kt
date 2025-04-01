@@ -35,8 +35,8 @@ fun PBs() {
 
     var showExerciseModal by remember { mutableStateOf(false) }
 
-    var nextExerciseId by remember { mutableStateOf(1) }
-    val exerciseIds = remember { mutableStateListOf<Int>() }
+//    var nextExerciseId by remember { mutableStateOf(1) }
+//    val exerciseIds = remember { mutableStateListOf<Int>() }
 
     Column(
         modifier = Modifier
@@ -47,11 +47,10 @@ fun PBs() {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit(nextExerciseId) {
+            AddNewWorkoutScheduleEdit(0) {
                 showExerciseModal = true
             }
-            Spacer(modifier = Modifier.height(27.dp))
-            SaveExercises()
+
             Spacer(modifier = Modifier.height(75.dp))
         }
     }
@@ -63,26 +62,4 @@ fun PBs() {
     }
 }
 
-@Composable
-fun SaveExercises() {
-    Button(
-        onClick = { saveExercises() },
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
-        contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
-        modifier = Modifier
-            .width(102.dp)
-    ) {
-        Text(
-            text = "Save",
-            style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-    }
-}
 
-fun saveExercises() {
-    TODO("Not yet implemented")
-}
