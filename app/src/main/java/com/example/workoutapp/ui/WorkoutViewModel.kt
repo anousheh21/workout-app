@@ -38,7 +38,6 @@ class WorkoutViewModel() : ViewModel() {
                 Log.d("WorkoutViewModel", "Cleared all workouts")
             }
         }
-
         fun seedDummyData(context: Context) {
             val db = DatabaseProvider.getDatabase(context)
             val scheduledWorkoutDao = db.scheduledWorkoutDao()
