@@ -64,9 +64,9 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     Column (
         modifier = Modifier
-            .padding(top = 30.dp, bottom = 30.dp),
-            //.fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+            .padding(start = 17.dp, top = 30.dp)
+            .fillMaxWidth(),
+        horizontalAlignment = Alignment.Start
 
     ) {
         TextField(
@@ -110,6 +110,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             AddToCalendarButton()
         }
 
+        Spacer(modifier = Modifier.height(30.dp))
         Divider(color = SeparatorGrey, thickness = 1.dp)
 
     }
