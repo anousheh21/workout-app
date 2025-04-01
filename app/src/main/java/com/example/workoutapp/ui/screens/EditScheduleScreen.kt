@@ -64,7 +64,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     Column (
         modifier = Modifier
-            .padding(start = 10.dp, top = 30.dp, bottom = 30.dp),
+            .padding(top = 30.dp, bottom = 30.dp),
             //.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
 
