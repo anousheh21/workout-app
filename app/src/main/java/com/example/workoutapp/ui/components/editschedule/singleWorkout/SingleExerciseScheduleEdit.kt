@@ -40,12 +40,42 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 @Composable
 fun SingleExerciseScheduleEdit() {
     Column() {
-        ExerciseInput()
+        Row(
+            horizontalArrangement = Arrangement.spacedBy(23.dp),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            ExerciseInput()
+            ExerciseSetNumber()
+        }
+
         Spacer(modifier = Modifier.height(20.dp))
         MuscleGroupDropDown()
         Spacer(modifier = Modifier.height(35.dp))
         SaveExercise()
     }
+}
+
+@Composable
+fun ExerciseSetNumber() {
+    var setNumberInput by remember { mutableStateOf("") }
+
+    TextField(
+        value = setNumberInput,
+        onValueChange = { setNumberInput = it },
+        label = { Text("Number of Sets") },
+        textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+        shape = RoundedCornerShape(3.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = PrimaryText,
+            unfocusedContainerColor = PrimaryText,
+            disabledContainerColor = PrimaryText,
+            focusedLabelColor = DarkText,
+            unfocusedLabelColor = DarkText,
+        ),
+        modifier = Modifier
+        //.width(143.dp)
+        //.padding(top = 10.dp, bottom = 11.dp)
+    )
 }
 
 @Composable

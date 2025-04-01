@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -53,6 +54,7 @@ fun MuscleGroupDropDown() {
             ),
             modifier = Modifier
                 .menuAnchor()
+                .fillMaxWidth()
                 //.width(208.dp)
                // .padding(end = 26.dp)
         )

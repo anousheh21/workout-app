@@ -35,7 +35,7 @@ fun ExerciseInput() {
             unfocusedLabelColor = DarkText,
         ),
         modifier = Modifier
-            //.width(143.dp)
+            .width(143.dp)
         //.padding(top = 10.dp, bottom = 11.dp)
     )
 }
