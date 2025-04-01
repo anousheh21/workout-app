@@ -125,6 +125,27 @@ fun NavScaffold(
                     }
                 }
 
+                AppScreen.EditScheduledExercises.route -> {
+                    val tempPlanId = navBackStackEntry
+                        ?.arguments
+                        ?.getString("workoutPlanId")
+                        ?.toIntOrNull()
+
+                    TopAppBar(
+                        title = {
+                            Text(text = "$tempPlanId")
+                        },
+                        navigationIcon = {
+                            IconButton(onClick = { navController.popBackStack() }) {
+                                Icon(
+                                    imageVector = Icons.Default.ArrowBack,
+                                    contentDescription = "Back"
+                                )
+                            }
+                        }
+                    )
+                }
+
                 AppScreen.NotificationSettings.route -> {
                     TopBarBack("Notification Settings", navController)
                 }
