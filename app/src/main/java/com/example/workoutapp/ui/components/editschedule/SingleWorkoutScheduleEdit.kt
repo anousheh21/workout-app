@@ -60,6 +60,7 @@ fun SingleWorkoutScheduleEdit(
 ) {
     var workoutNameInput by remember { mutableStateOf("") }
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
+    var selectedDay by remember { mutableStateOf("") }
 
     // Time picker variables
     val currentTime = Calendar.getInstance()
@@ -83,7 +84,10 @@ fun SingleWorkoutScheduleEdit(
             horizontalArrangement = Arrangement.spacedBy(23.dp),
             verticalAlignment = Alignment.CenterVertically
         ){
-            WorkoutDay()
+            WorkoutDay(
+                selectedDay = selectedDay,
+                onDaySelected = { selectedDay = it }
+            )
             TimeBox(
                 initialHour,
                 initialMinute,

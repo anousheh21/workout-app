@@ -25,10 +25,12 @@ import com.example.workoutapp.ui.theme.PrimaryText
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun WorkoutDay() {
+fun WorkoutDay(
+    selectedDay: String,
+    onDaySelected: (String) -> Unit
+) {
     val daysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
     var expanded by remember { mutableStateOf(false) }
-    var selectedDay by remember { mutableStateOf("") }
     var submittedDay by remember { mutableStateOf("") }
 
     ExposedDropdownMenuBox(
@@ -67,7 +69,7 @@ fun WorkoutDay() {
                 DropdownMenuItem(
                     text = { Text(day) },
                     onClick = {
-                        selectedDay = day
+                        onDaySelected(day)
                         expanded = false
                     }
                 )
