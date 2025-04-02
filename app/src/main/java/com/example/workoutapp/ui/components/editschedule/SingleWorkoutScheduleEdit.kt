@@ -56,6 +56,7 @@ import java.util.Calendar
 @Composable
 fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
     var workoutNameInput by remember { mutableStateOf("") }
+    val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
 
     // Time picker variables
     val currentTime = Calendar.getInstance()
@@ -97,7 +98,12 @@ fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
 //            AddExercisesButton(navAddExercises)
 //            AddToCalendarButton()
 
-            AddExercisesMultiSelect()
+            AddExercisesMultiSelect(
+                selectedExercises = selectedExercises
+            )
+            SelectedExercisesList(
+                selectedExercises = selectedExercises
+            )
         }
 
         Spacer(modifier = Modifier.height(30.dp))
@@ -108,6 +114,7 @@ fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
 
 @Composable
 fun AddExercisesMultiSelect(
+    selectedExercises: MutableList<PlannedExercise>,
     vm : WorkoutViewModel = viewModel()
 ) {
     // Read in list of planned exercises from database
@@ -118,7 +125,7 @@ fun AddExercisesMultiSelect(
 
     val plannedExercisesArray = vm.plannedExercisesArray
 
-    val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
+
     var showDialog by remember { mutableStateOf(false) }
 
     Column(
@@ -128,9 +135,9 @@ fun AddExercisesMultiSelect(
             Text("Open MultiSelect Dialog")
         }
 
-        SelectedExercisesList(
-            selectedExercises = selectedExercises
-        )
+//        SelectedExercisesList(
+//            selectedExercises = selectedExercises
+//        )
 
         if (showDialog) {
             ExerciseSelectDialog(
