@@ -44,22 +44,10 @@ fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
         horizontalAlignment = Alignment.Start
 
     ) {
-        TextField(
-            value = workoutNameInput,
-            onValueChange = { workoutNameInput = it },
-            label = { Text("Workout Name") },
-            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-            shape = RoundedCornerShape(3.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = PrimaryText,
-                unfocusedContainerColor = PrimaryText,
-                disabledContainerColor = PrimaryText,
-                focusedLabelColor = DarkText,
-                unfocusedLabelColor = DarkText,
-            ),
-            modifier = Modifier
-                .width(319.dp)
-                .padding(start = 22.dp, top = 10.dp, bottom = 11.dp)
+
+        WorkoutNameInputField(
+            workoutNameInput = workoutNameInput,
+            onChangeValue = { workoutNameInput = it }
         )
 
         Row (
@@ -90,3 +78,4 @@ fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
 
     }
 }
+
