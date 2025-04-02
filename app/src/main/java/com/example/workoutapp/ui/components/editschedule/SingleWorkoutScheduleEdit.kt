@@ -120,7 +120,7 @@ fun AddExercisesMultiSelect(
 
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
     var showDialog by remember { mutableStateOf(false) }
-    var searchQuery by remember { mutableStateOf("") }
+    // var searchQuery by remember { mutableStateOf("") }
     var muscleFilter by remember { mutableStateOf<MuscleGroup?>(null) }
 
     Column(
@@ -147,14 +147,14 @@ fun AddExercisesMultiSelect(
                 title = {Text("Select Items")},
                 text = {
                     Column(modifier = Modifier.fillMaxWidth()) {
-                        OutlinedTextField(
-                            value = searchQuery,
-                            onValueChange = { searchQuery = it },
-                            label = { Text("Search by muscle group") },
-                            modifier = Modifier.fillMaxWidth()
-                        )
-
-                        Spacer(Modifier.height(8.dp))
+//                        OutlinedTextField(
+//                            value = searchQuery,
+//                            onValueChange = { searchQuery = it },
+//                            label = { Text("Search by muscle group") },
+//                            modifier = Modifier.fillMaxWidth()
+//                        )
+//
+//                        Spacer(Modifier.height(8.dp))
 
                         var filterDropDownExpanded by remember { mutableStateOf(false) }
 
@@ -189,7 +189,7 @@ fun AddExercisesMultiSelect(
                         Spacer(Modifier.height(8.dp))
 
                         val filteredOptions = plannedExercisesArray.filter {
-                            (searchQuery.isBlank() || it.exerciseName.contains(searchQuery, ignoreCase = true)) && (muscleFilter == null || it.muscleGroup == muscleFilter)
+                            (muscleFilter == null || it.muscleGroup == muscleFilter)
                         }
 
                         Column(
@@ -198,6 +198,7 @@ fun AddExercisesMultiSelect(
                                 .verticalScroll(rememberScrollState())
                         ) {
                             filteredOptions.forEach { item ->
+                                val selectionIndex = selectedExercises.indexOf(item).takeIf { it >= 0}
                                 Row(
                                     verticalAlignment = Alignment.CenterVertically,
                                     modifier = Modifier
@@ -219,6 +220,10 @@ fun AddExercisesMultiSelect(
                                         }
                                     )
                                     Text(text = item.exerciseName)
+                                    Spacer(Modifier.weight(1f))
+                                    if (selectionIndex != null) {
+                                        Text("#${selectionIndex + 1}", style = MaterialTheme.typography.labelSmall)
+                                    }
                                     Spacer(Modifier.weight(1f))
                                     Text(text = item.muscleGroup.toTitleCase(), style = MaterialTheme.typography.labelSmall)
                                 }
