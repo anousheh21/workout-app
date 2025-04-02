@@ -120,7 +120,7 @@ fun AddExercisesMultiSelect(
 
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
     var showDialog by remember { mutableStateOf(false) }
- 
+
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
@@ -128,9 +128,8 @@ fun AddExercisesMultiSelect(
             Text("Open MultiSelect Dialog")
         }
 
-        Text(
-            text = "Selected: ${selectedExercises.joinToString {it.exerciseName}}",
-            modifier = Modifier.padding(top = 8.dp)
+        SelectedExercisesList(
+            selectedExercises = selectedExercises
         )
 
         if (showDialog) {
@@ -141,6 +140,16 @@ fun AddExercisesMultiSelect(
             )
         }
     }
+}
+
+@Composable
+fun SelectedExercisesList(
+    selectedExercises: List<PlannedExercise>
+) {
+    Text(
+        text = "Selected: ${selectedExercises.joinToString {it.exerciseName}}",
+        modifier = Modifier.padding(top = 8.dp)
+    )
 }
 
 @Composable
