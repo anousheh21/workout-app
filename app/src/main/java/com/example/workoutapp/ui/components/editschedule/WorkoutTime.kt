@@ -11,11 +11,13 @@ import androidx.compose.runtime.Composable
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WorkoutTime(
-    initialHour: Int,
-    initialMinute: Int,
-    onConfirm: (Int, Int) -> Unit,
-    onDismiss: () -> Unit,
+    initialTime: String,
+    onConfirm: (String) -> Unit,
+    onDismiss: () -> Unit
 ) {
+    val parts = initialTime.split(":")
+    val initialHour = parts.getOrNull(0)?.toIntOrNull() ?: 12
+    val initialMinute = parts.getOrNull(1)?.toIntOrNull() ?: 0
 
     val timePickerState = rememberTimePickerState(
         initialHour = initialHour,
@@ -30,7 +32,10 @@ fun WorkoutTime(
         Button(onClick = { onDismiss() }) {
             Text("Cancel")
         }
-        Button(onClick = {onConfirm(timePickerState.hour, timePickerState.minute) }) {
+        Button(onClick = {
+            onConfirm(String.format("%02d:%02d", timePickerState.hour, timePickerState.minute))
+            onDismiss()
+        }) {
             Text("Confirm")
         }
     }

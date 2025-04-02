@@ -63,9 +63,7 @@ fun SingleWorkoutScheduleEdit(
     var selectedDay by remember { mutableStateOf("") }
 
     // Time picker variables
-    val currentTime = Calendar.getInstance()
-    val initialHour = currentTime.get(Calendar.HOUR_OF_DAY)
-    val initialMinute = currentTime.get(Calendar.MINUTE)
+    var workoutTime by remember { mutableStateOf("14:30") }
 
     Column (
         modifier = Modifier
@@ -89,8 +87,8 @@ fun SingleWorkoutScheduleEdit(
                 onDaySelected = { selectedDay = it }
             )
             TimeBox(
-                initialHour,
-                initialMinute,
+                workoutTime = workoutTime,
+                onTimeChange = { workoutTime = it }
             )
         }
 

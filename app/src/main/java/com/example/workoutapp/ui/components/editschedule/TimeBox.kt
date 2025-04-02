@@ -24,12 +24,12 @@ import com.example.workoutapp.ui.theme.PrimaryText
 
 @Composable
 fun TimeBox(
-    initialHour: Int,
-    initialMinute: Int,
+    workoutTime: String,
+    onTimeChange: (String) -> Unit
 
     ) {
     var showTimePicker by remember { mutableStateOf(false) }
-    var workoutTime by remember { mutableStateOf(String.format("%02d:%02d", initialHour, initialMinute)) }
+    val displayedTime = workoutTime
 
     Box(
         modifier = Modifier
@@ -51,15 +51,9 @@ fun TimeBox(
     if (showTimePicker) {
         Dialog(onDismissRequest = { showTimePicker = false }) {
             WorkoutTime(
-                initialHour = initialHour,
-                initialMinute = initialMinute,
-                onConfirm = { hour, minute ->
-                    workoutTime = String.format("%02d:%02d", hour, minute)
-                    showTimePicker = false
-                },
-                onDismiss = {
-                    showTimePicker = false
-                }
+                initialTime = workoutTime,
+                onConfirm = { onTimeChange(it) },
+                onDismiss = { showTimePicker = false }
             )
         }
     }
