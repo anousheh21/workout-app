@@ -54,7 +54,10 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 import java.util.Calendar
 
 @Composable
-fun SingleWorkoutScheduleEdit(navAddExercises: (Int) -> Unit) {
+fun SingleWorkoutScheduleEdit(
+    // navAddExercises: (Int) -> Unit,
+    onModalClose: () -> Unit
+) {
     var workoutNameInput by remember { mutableStateOf("") }
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
 

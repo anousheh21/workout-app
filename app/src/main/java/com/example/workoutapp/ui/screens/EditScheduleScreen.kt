@@ -71,30 +71,36 @@ import java.util.Calendar
 @Composable
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val scrollState = rememberScrollState()
+    var showWorkoutModal by remember { mutableStateOf(false) }
 
-    var nextWorkoutPlanId by remember { mutableStateOf(1) }
-    val workoutIds = remember { mutableStateListOf<Int>() }
+//    var nextWorkoutPlanId by remember { mutableStateOf(1) }
+//    val workoutIds = remember { mutableStateListOf<Int>() }
 
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
-        workoutIds.forEach { id ->
-            SingleWorkoutScheduleEdit(navAddExercises = { navAddExercises(id) })
-        }
+//        workoutIds.forEach { id ->
+//            SingleWorkoutScheduleEdit(navAddExercises = { navAddExercises(id) })
+//        }
 
         Column(
             modifier = Modifier.fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit(nextWorkoutPlanId) { id ->
-                workoutIds.add(id)
-                nextWorkoutPlanId++
+            AddNewWorkoutScheduleEdit(0) {
+                showWorkoutModal = true
             }
             Spacer(modifier = Modifier.height(27.dp))
             SaveWorkoutSchedule()
             Spacer(modifier = Modifier.height(75.dp))
+        }
+    }
+
+    if (showWorkoutModal) {
+        Dialog(onDismissRequest = { showWorkoutModal = false }) {
+            SingleWorkoutScheduleEdit(onModalClose = {showWorkoutModal = false})
         }
     }
 }
