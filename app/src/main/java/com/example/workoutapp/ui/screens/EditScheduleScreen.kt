@@ -26,12 +26,14 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExposedDropdownMenuBox
 import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -40,15 +42,18 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
+import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.WorkoutDetails
+import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
@@ -73,6 +78,15 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val scrollState = rememberScrollState()
     var showWorkoutModal by remember { mutableStateOf(false) }
 
+    val vm: WorkoutViewModel = viewModel()
+    val context = LocalContext.current
+
+    LaunchedEffect(Unit) {
+        vm.loadScheduledWorkoutsWithExercises(context)
+    }
+
+    val scheduledWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
+
 //    var nextWorkoutPlanId by remember { mutableStateOf(1) }
 //    val workoutIds = remember { mutableStateListOf<Int>() }
 
@@ -93,8 +107,36 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 showWorkoutModal = true
             }
             Spacer(modifier = Modifier.height(27.dp))
-            SaveWorkoutSchedule()
+//            SaveWorkoutSchedule()
+            scheduledWorkoutWithExercises.forEach { item ->
+                // Workout Info
+                Text(
+                    text = item.workoutName,
+                    style = MaterialTheme.typography.titleMedium
+                )
+                Text(
+                    text = "${item.workoutDay} at ${item.workoutTime}",
+                    style = MaterialTheme.typography.bodyMedium
+                )
+
+                Spacer(modifier = Modifier.height(8.dp))
+                Text(
+                    text = "Exercises:",
+                    style = MaterialTheme.typography.labelLarge
+                )
+
+                // Exercises list
+                item.workoutExercises.forEach { ex ->
+                    Text(
+                        text = "• ${ex.exerciseName} (${ex.muscleGroup}) - ${ex.setNumber} sets",
+                        style = MaterialTheme.typography.bodySmall
+                    )
+                }
+
+                Spacer(modifier = Modifier.height(24.dp)) // Space between workouts
+            }
             Spacer(modifier = Modifier.height(75.dp))
+
         }
     }
 

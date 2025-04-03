@@ -126,21 +126,6 @@ fun SingleWorkoutScheduleEdit(
             workoutTime = workoutTime
         )
 
-        // Turn PlannedExercises into ScheduledWorkoutExercises
-        // Get ID of each of the planned exercises
-        val plannedExerciseIds = selectedExercises.map { it.plannedExerciseId }
-
-        // Get ID of the workout
-        val scheduledWorkoutId = newScheduledWorkout.workoutPlanId
-
-        // Create ScheduledWorkoutExercise
-        val scheduledWorkoutExercises = plannedExerciseIds.map { plannedId ->
-            ScheduledWorkoutExercise(
-                workoutPlanId = scheduledWorkoutId,
-                plannedExerciseId = plannedId
-            )
-        }
-
 
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
@@ -148,12 +133,15 @@ fun SingleWorkoutScheduleEdit(
         SaveScheduledWorkoutWithExercises(
             newScheduledWorkout = newScheduledWorkout,
             saveScheduledWorkoutWithExercises = {
-                coroutineScope.launch {
-                    vm.addNewScheduledWorkout(context, newScheduledWorkout)
+                val plannedExerciseIds = selectedExercises.map { it.plannedExerciseId }
 
-                    // add the list of scheduledWorkoutExercises to the database
-                    vm.addExercisesToScheduledWorkout(context, scheduledWorkoutExercises)
-                }
+                vm.addNewScheduledWorkoutReturnId(
+                    context = context,
+                    workout = newScheduledWorkout,
+                    plannedExerciseIds = plannedExerciseIds
+                )
+
+                onModalClose()
             }
         )
 

@@ -14,6 +14,9 @@ interface ScheduledWorkoutDao {
     @Query("SELECT * FROM scheduledWorkouts")
     suspend fun getAll(): List<ScheduledWorkout>
 
+    @Query("SELECT * FROM scheduledWorkouts")
+    suspend fun getAllScheduledWorkouts(): List<ScheduledWorkout>
+
     @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
     suspend fun getById(id: Int): ScheduledWorkout
 
@@ -34,6 +37,13 @@ interface ScheduledWorkoutExerciseDao {
 
     @Query("SELECT * FROM scheduledWorkoutExercises WHERE workoutPlanId = :planId")
     suspend fun getExercisesForPlan(planId: Int): List<ScheduledWorkoutExercise>
+
+    @Query("""
+        SELECT p.* FROM plannedExercise p
+        INNER JOIN scheduledWorkoutExercises swe ON p.plannedExerciseId = swe.plannedExerciseId
+        WHERE swe.workoutPlanId = :planId
+    """)
+    suspend fun getExercisesForWorkout(planId: Int): List<PlannedExercise>
 
     @Delete
     suspend fun delete(exercise: ScheduledWorkoutExercise)

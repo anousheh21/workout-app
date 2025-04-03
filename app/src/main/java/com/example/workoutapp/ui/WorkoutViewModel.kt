@@ -18,6 +18,7 @@ import com.example.workoutapp.data.ScheduledWorkout
 import com.example.workoutapp.data.ScheduledWorkoutDao
 import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutExerciseDao
+import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.data.WorkoutDao
 import com.example.workoutapp.data.WorkoutDetails
@@ -82,6 +83,62 @@ class WorkoutViewModel() : ViewModel() {
                 scheduledWorkoutDao.insert(workout)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Scheduled Workout:", e)
+            }
+        }
+    }
+
+    fun addNewScheduledWorkoutReturnId(
+        context: Context,
+        workout: ScheduledWorkout,
+        plannedExerciseIds: List<Int>
+    ) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val insertedId = scheduledWorkoutDao.insertAndReturnId(workout).toInt()
+
+                val scheduledWorkoutExercises = plannedExerciseIds.map { plannedId ->
+                    ScheduledWorkoutExercise(
+                        workoutPlanId = insertedId,
+                        plannedExerciseId = plannedId
+                    )
+                }
+
+                scheduledWorkoutExerciseDao.insertMultiple(scheduledWorkoutExercises)
+
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error inserting scheduled workout with exercises", e)
+            }
+        }
+    }
+
+    private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
+    val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
+
+    fun loadScheduledWorkoutsWithExercises(context: Context) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val scheduledWorkouts = scheduledWorkoutDao.getAllScheduledWorkouts()
+                val data = scheduledWorkouts.map { scheduledWorkout ->
+                    val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
+                    ScheduledWorkoutWithExercises(
+                        workoutPlanId = scheduledWorkout.workoutPlanId,
+                        workoutName = scheduledWorkout.workoutName,
+                        workoutDay = scheduledWorkout.workoutDay,
+                        workoutTime = scheduledWorkout.workoutTime,
+                        workoutExercises = exercises
+                    )
+                }
+                _scheduledWorkoutsWithExercises.value = data
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Loading Scheduled workouts with exercises", e)
             }
         }
     }
