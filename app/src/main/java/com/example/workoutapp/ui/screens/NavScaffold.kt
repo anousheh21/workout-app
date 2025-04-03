@@ -43,6 +43,7 @@ enum class AppScreen(val route: String) {
     EditSchedule("editSchedule"),
     EditScheduledExercises("editScheduledExercises/{workoutPlanId}"),
     NotificationSettings("notificationSettings"),
+    NewWorkout("newWorkout"),
 
 }
 
@@ -153,6 +154,10 @@ fun NavScaffold(
                 AppScreen.EditSchedule.route -> {
                     TopBarBack("Edit Schedule", navController)
                 }
+
+                AppScreen.NewWorkout.route -> {
+                    TopBarBack("Select Workout", navController)
+                }
             }
         },
         bottomBar = {
@@ -235,6 +240,10 @@ fun NavScaffold(
                 } else {
                     Text("Invalid workout plan ID")
                 }
+            }
+
+            composable(route = AppScreen.NewWorkout.route) {
+                NewWorkoutScreen()
             }
         }
     }
