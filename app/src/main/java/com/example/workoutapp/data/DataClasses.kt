@@ -17,3 +17,11 @@ data class ExerciseWithName(
     val reps: Int,
     val pb: Boolean
 )
+
+data class ScheduledWorkoutWithExercises(
+    val workoutPlanId: Int,
+    val workoutName: String,
+    val workoutDay: String,
+    val workoutTime: String,
+    val workoutExercises: List<PlannedExercise>
+)
