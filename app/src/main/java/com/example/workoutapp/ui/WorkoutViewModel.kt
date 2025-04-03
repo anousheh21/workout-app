@@ -149,6 +149,11 @@ class WorkoutViewModel() : ViewModel() {
         }
     }
 
+
+//    fun loadRelevantScheduledExerciseArray(context: Context, workoutPlanId: Int) {
+//        thdnthd
+//    }
+
     private val _scheduledWorkoutsArray = mutableStateOf<List<ScheduledWorkout>>(emptyList())
     val scheduledWorkoutsArray: List<ScheduledWorkout> get() = _scheduledWorkoutsArray.value
 

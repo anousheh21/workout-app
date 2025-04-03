@@ -16,15 +16,28 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 
     LaunchedEffect(Unit) {
         vm.loadWorkoutById(context, workoutId)
+        vm.loadScheduledWorkoutsWithExercises(context)
     }
 
     val selectedWorkout = vm.selectedWorkout
     val selectedWorkoutName = vm.selectedWorkoutName
 
+    // Get array of exercises associated with the workout plan that the workout is associated with
+    val schedWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
+    val scheduledExerciseArray = schedWorkoutWithExercises
+        .filter {
+            it.workoutPlanId == (selectedWorkout?.workoutPlanId ?: -1)
+        }
+        .map { it.workoutExercises }
+
     Column() {
         Text("$workoutId")
         Text(selectedWorkoutName)
         Text("$selectedWorkout")
+        if (selectedWorkout != null) {
+            Text("${selectedWorkout.workoutPlanId}")
+        }
+        Text("$scheduledExerciseArray")
     }
 
 
