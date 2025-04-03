@@ -45,6 +45,7 @@ enum class AppScreen(val route: String) {
     EditScheduledExercises("editScheduledExercises/{workoutPlanId}"),
     NotificationSettings("notificationSettings"),
     NewWorkout("newWorkout"),
+    CurrentWorkout("currentWorkout/{workoutId}"),
 
 }
 
@@ -85,6 +86,49 @@ fun NavScaffold(
                         title = { Text("Settings") }
                     )
                 }
+
+                AppScreen.CurrentWorkout.route -> {
+                    val workoutIdParam = navBackStackEntry
+                        ?.arguments
+                        ?.getString("workoutId")
+                        ?.toIntOrNull()
+
+                    if (workoutIdParam != null) {
+                        LaunchedEffect(workoutIdParam) {
+                            viewModel.loadWorkoutById(context, workoutIdParam)
+                        }
+
+                        TopAppBar(
+                            title = {
+                                Text(text = viewModel.selectedWorkoutName.ifBlank { "Workout" })
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { navController.popBackStack() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            }
+                        )
+                    } else {
+                        // If there's no valid ID in the route
+                        TopAppBar(
+                            title = {
+                                Text(text = "Invalid Workout")
+                            },
+                            navigationIcon = {
+                                IconButton(onClick = { navController.popBackStack() }) {
+                                    Icon(
+                                        imageVector = Icons.Default.ArrowBack,
+                                        contentDescription = "Back"
+                                    )
+                                }
+                            }
+                        )
+                    }
+                }
+
                 // ---- TOP BAR for WorkoutDetail ----
                 AppScreen.WorkoutDetail.route -> {
                     // Grab workoutId from arguments
@@ -250,6 +294,17 @@ fun NavScaffold(
 
             composable(route = AppScreen.NewWorkout.route) {
                 NewWorkoutScreen()
+            }
+
+            composable(route = AppScreen.CurrentWorkout.route) { backStackEntry ->
+                val workoutId = backStackEntry.arguments?.getString("workoutId")?.toIntOrNull()
+                if (workoutId != null) {
+                    // Show actual details screen
+                    CurrentWorkoutScreen(workoutId = workoutId)
+                } else {
+                    // ID is missing or not an integer
+                    Text("Invalid workout ID")
+                }
             }
         }
     }

@@ -69,6 +69,8 @@ fun NewWorkoutScreen() {
                         workoutPlanId = workoutPlanId
                     )
 
+                    // Add workout to the database, returning the workout ID
+
                     // Navigate to the current workout page, and pass the workout just create to it
                 }
             )
