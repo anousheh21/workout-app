@@ -64,6 +64,16 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 }
 
 @Composable
+fun SwipeScreenChild(
+    exercise: PlannedExercise
+) {
+    Text(
+        text = exercise.exerciseName,
+        textAlign = TextAlign.Center
+    )
+}
+
+@Composable
 fun ExerciseSwipeScreen(
     scheduledExerciseArray: List<PlannedExercise>
 ) {
@@ -91,10 +101,7 @@ fun ExerciseSwipeScreen(
         contentAlignment = Alignment.Center
     ) {
         val safeIndex = currentIndex.coerceIn(0, scheduledExerciseArray.lastIndex)
-        Text(
-            text = scheduledExerciseArray[safeIndex].exerciseName,
-            textAlign = TextAlign.Center
-        )
+        SwipeScreenChild(scheduledExerciseArray[safeIndex])
     }
 }
 
