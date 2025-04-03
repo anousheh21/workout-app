@@ -68,7 +68,8 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 fun SwipeScreenChild(
     exercise: PlannedExercise,
     index: Int,
-    arraySize: Int
+    arraySize: Int,
+    nextExercise: String
 ) {
     Column() {
         Text(
@@ -81,6 +82,9 @@ fun SwipeScreenChild(
         )
         Text(
             text = "Exercise: ${index + 1}/${arraySize}"
+        )
+        Text(
+            text = "Next Exercise: $nextExercise",
         )
     }
 }
@@ -114,10 +118,19 @@ fun ExerciseSwipeScreen(
         contentAlignment = Alignment.Center
     ) {
         val safeIndex = currentIndex.coerceIn(0, scheduledExerciseArray.lastIndex)
+        val nextExercise: String
+
+        if (safeIndex < arrayLength - 1) {
+            nextExercise = scheduledExerciseArray[safeIndex + 1].exerciseName
+        } else {
+            nextExercise = "End"
+        }
+
         SwipeScreenChild(
             scheduledExerciseArray[safeIndex],
             safeIndex,
-            arrayLength
+            arrayLength,
+            nextExercise
         )
     }
 }
