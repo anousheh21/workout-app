@@ -4,6 +4,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,6 +17,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Checkbox
 import androidx.compose.material3.Divider
 import androidx.compose.material3.DropdownMenu
@@ -40,17 +42,20 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.PlannedExercise
+import com.example.workoutapp.data.ScheduledWorkout
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.SeparatorGrey
+import com.example.workoutapp.ui.theme.ThirdPurple
 import java.util.Calendar
 
 @Composable
@@ -61,9 +66,7 @@ fun SingleWorkoutScheduleEdit(
     var workoutNameInput by remember { mutableStateOf("") }
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
     var selectedDay by remember { mutableStateOf("") }
-
-    // Time picker variables
-    var workoutTime by remember { mutableStateOf("14:30") }
+    var workoutTime by remember { mutableStateOf("00:00") }
 
     Column (
         modifier = Modifier
@@ -112,8 +115,33 @@ fun SingleWorkoutScheduleEdit(
         }
 
         Spacer(modifier = Modifier.height(30.dp))
+
         Divider(color = SeparatorGrey, thickness = 1.dp)
 
+    }
+}
+
+@Composable
+fun SaveScheduledWorkout(
+        newScheduledWorkout: ScheduledWorkout,
+        saveScheduledWorkout: (ScheduledWorkout) -> Unit,
+
+    ) {
+    Button(
+        onClick = { saveScheduledWorkout(newScheduledWorkout) },
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
+        contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
+        modifier = Modifier
+            .width(102.dp)
+    ) {
+        Text(
+            text = "Save",
+            style = TextStyle(
+                fontSize = 18.sp,
+                fontWeight = FontWeight.Bold
+            )
+        )
     }
 }
 
