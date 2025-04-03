@@ -66,7 +66,9 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 
 @Composable
 fun SwipeScreenChild(
-    exercise: PlannedExercise
+    exercise: PlannedExercise,
+    index: Int,
+    arraySize: Int
 ) {
     Column() {
         Text(
@@ -77,6 +79,9 @@ fun SwipeScreenChild(
             text = exercise.exerciseName,
             textAlign = TextAlign.Center
         )
+        Text(
+            text = "Exercise: ${index + 1}/${arraySize}"
+        )
     }
 }
 
@@ -86,6 +91,7 @@ fun ExerciseSwipeScreen(
 ) {
     var currentIndex by remember { mutableStateOf(0) }
     var accumulatedDrag by remember { mutableStateOf(0f) }
+    val arrayLength = scheduledExerciseArray.size
 
     Box(
         modifier = Modifier
@@ -98,7 +104,7 @@ fun ExerciseSwipeScreen(
                         } else if (accumulatedDrag < -100) {
                             if (currentIndex < scheduledExerciseArray.lastIndex) currentIndex++
                         }
-                        accumulatedDrag = 0f // reset for next gesture
+                        accumulatedDrag = 0f
                     },
                     onHorizontalDrag = { change, dragAmount ->
                         accumulatedDrag += dragAmount
@@ -108,7 +114,11 @@ fun ExerciseSwipeScreen(
         contentAlignment = Alignment.Center
     ) {
         val safeIndex = currentIndex.coerceIn(0, scheduledExerciseArray.lastIndex)
-        SwipeScreenChild(scheduledExerciseArray[safeIndex])
+        SwipeScreenChild(
+            scheduledExerciseArray[safeIndex],
+            safeIndex,
+            arrayLength
+        )
     }
 }
 
