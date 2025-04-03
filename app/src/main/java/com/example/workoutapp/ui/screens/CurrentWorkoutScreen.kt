@@ -21,6 +21,7 @@ import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
+import com.example.workoutapp.ui.extensions.toTitleCase
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
@@ -67,10 +68,16 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 fun SwipeScreenChild(
     exercise: PlannedExercise
 ) {
-    Text(
-        text = exercise.exerciseName,
-        textAlign = TextAlign.Center
-    )
+    Column() {
+        Text(
+            text = exercise.muscleGroup.toTitleCase(),
+            textAlign = TextAlign.Center
+        )
+        Text(
+            text = exercise.exerciseName,
+            textAlign = TextAlign.Center
+        )
+    }
 }
 
 @Composable
