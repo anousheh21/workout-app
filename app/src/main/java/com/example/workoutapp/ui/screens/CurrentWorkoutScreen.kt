@@ -86,6 +86,12 @@ fun SwipeScreenChild(
         Text(
             text = "Next Exercise: $nextExercise",
         )
+        Text(
+            text = "Swipe right for next exercise, swipe left for previous exercise",
+        )
+        Text(
+            text = "Swipe down to see previous stats"
+        )
     }
 }
 
