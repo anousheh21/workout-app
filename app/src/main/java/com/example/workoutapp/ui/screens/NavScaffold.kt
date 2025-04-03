@@ -11,6 +11,7 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -64,7 +65,12 @@ fun NavScaffold(
                 // ---- TOP BAR for Workouts ----
                 AppScreen.Workouts.route -> {
                     TopAppBar(
-                        title = { Text("Workouts") }
+                        title = { Text("Workouts") },
+                        actions = {
+                            TextButton(onClick = { navController.navigate(AppScreen.NewWorkout.route) }) {
+                                Text("New Workout")
+                            }
+                        }
                     )
                 }
                 // ---- TOP BAR for PBs ----
