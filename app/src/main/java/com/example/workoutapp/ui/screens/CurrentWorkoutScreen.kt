@@ -118,12 +118,11 @@ fun ExerciseSwipeScreen(
         contentAlignment = Alignment.Center
     ) {
         val safeIndex = currentIndex.coerceIn(0, scheduledExerciseArray.lastIndex)
-        val nextExercise: String
 
-        if (safeIndex < arrayLength - 1) {
-            nextExercise = scheduledExerciseArray[safeIndex + 1].exerciseName
+        val nextExercise: String = if (safeIndex < arrayLength - 1) {
+            scheduledExerciseArray[safeIndex + 1].exerciseName
         } else {
-            nextExercise = "End"
+            "End"
         }
 
         SwipeScreenChild(
