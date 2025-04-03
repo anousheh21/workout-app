@@ -6,6 +6,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.data.PlannedExercise
+import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
 
 @Composable
@@ -30,15 +32,30 @@ fun CurrentWorkoutScreen(workoutId: Int) {
         }
         .map { it.workoutExercises }
 
+    if (selectedWorkout != null) {
+        TestingDisplay(
+            workoutId,
+            selectedWorkoutName,
+            selectedWorkout,
+            scheduledExerciseArray
+        )
+    }
+
+}
+
+@Composable
+fun TestingDisplay(
+    workoutId: Int,
+    selectedWorkoutName: String,
+    selectedWorkout: Workout,
+    scheduledExerciseArray: List<List<PlannedExercise>>
+    ) {
+
     Column() {
         Text("$workoutId")
         Text(selectedWorkoutName)
         Text("$selectedWorkout")
-        if (selectedWorkout != null) {
-            Text("${selectedWorkout.workoutPlanId}")
-        }
+        Text("${selectedWorkout.workoutPlanId}")
         Text("$scheduledExerciseArray")
     }
-
-
 }
