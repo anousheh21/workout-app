@@ -57,6 +57,22 @@ class WorkoutViewModel() : ViewModel() {
 
     }
 
+    fun addExercisesToScheduledWorkout(
+        context: Context,
+        scheduledWorkoutExercises: List<ScheduledWorkoutExercise>
+    ) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                scheduledWorkoutExerciseDao.insertMultiple(scheduledWorkoutExercises)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Inserting Scheduled Workout:", e)
+            }
+        }
+    }
+
     fun addNewScheduledWorkout(context: Context, workout: ScheduledWorkout) {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutDao = db.scheduledWorkoutDao()

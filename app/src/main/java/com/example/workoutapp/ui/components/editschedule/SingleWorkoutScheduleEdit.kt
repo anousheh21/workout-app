@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -50,17 +51,20 @@ import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.ScheduledWorkout
+import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @Composable
 fun SingleWorkoutScheduleEdit(
     // navAddExercises: (Int) -> Unit,
+    vm: WorkoutViewModel = viewModel(),
     onModalClose: () -> Unit
 ) {
     var workoutNameInput by remember { mutableStateOf("") }
@@ -116,19 +120,56 @@ fun SingleWorkoutScheduleEdit(
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        val newScheduledWorkout = ScheduledWorkout(
+            workoutName = workoutNameInput,
+            workoutDay = selectedDay,
+            workoutTime = workoutTime
+        )
+
+        // Turn PlannedExercises into ScheduledWorkoutExercises
+        // Get ID of each of the planned exercises
+        val plannedExerciseIds = selectedExercises.map { it.plannedExerciseId }
+
+        // Get ID of the workout
+        val scheduledWorkoutId = newScheduledWorkout.workoutPlanId
+
+        // Create ScheduledWorkoutExercise
+        val scheduledWorkoutExercises = plannedExerciseIds.map { plannedId ->
+            ScheduledWorkoutExercise(
+                workoutPlanId = scheduledWorkoutId,
+                plannedExerciseId = plannedId
+            )
+        }
+
+
+        val context = LocalContext.current
+        val coroutineScope = rememberCoroutineScope()
+
+        SaveScheduledWorkoutWithExercises(
+            newScheduledWorkout = newScheduledWorkout,
+            saveScheduledWorkoutWithExercises = {
+                coroutineScope.launch {
+                    vm.addNewScheduledWorkout(context, newScheduledWorkout)
+
+                    // add the list of scheduledWorkoutExercises to the database
+                    vm.addExercisesToScheduledWorkout(context, scheduledWorkoutExercises)
+                }
+            }
+        )
+
         Divider(color = SeparatorGrey, thickness = 1.dp)
 
     }
 }
 
 @Composable
-fun SaveScheduledWorkout(
+fun SaveScheduledWorkoutWithExercises(
         newScheduledWorkout: ScheduledWorkout,
-        saveScheduledWorkout: (ScheduledWorkout) -> Unit,
+        saveScheduledWorkoutWithExercises: (ScheduledWorkout) -> Unit,
 
     ) {
     Button(
-        onClick = { saveScheduledWorkout(newScheduledWorkout) },
+        onClick = { saveScheduledWorkoutWithExercises(newScheduledWorkout) },
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
         contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
