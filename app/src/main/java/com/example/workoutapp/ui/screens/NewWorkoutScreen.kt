@@ -24,6 +24,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
+import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SeparatorGrey
@@ -50,6 +51,25 @@ fun NewWorkoutScreen() {
                 schedWorkout = item,
                 startWorkout = {
                     // TODO: Implement this!
+
+                    // Get the workout plan ID from the start button that was pressed
+                    val workoutPlanId = item.workoutPlanId
+
+                    // Get today's date
+                    val calendar = java.util.Calendar.getInstance()
+                    val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+                    val month = calendar.get(java.util.Calendar.MONTH) + 1
+                    val year = calendar.get(java.util.Calendar.YEAR) % 100
+
+                    val dateToday = String.format("%02d/%02d/%02d", day, month, year)
+
+                    // Create a new workout
+                    val newWorkout = Workout(
+                        workoutDate = dateToday,
+                        workoutPlanId = workoutPlanId
+                    )
+
+                    // Navigate to the current workout page, and pass the workout just create to it
                 }
             )
 
