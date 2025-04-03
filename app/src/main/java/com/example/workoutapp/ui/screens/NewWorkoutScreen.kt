@@ -14,6 +14,7 @@ import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.semantics.Role.Companion.Button
@@ -29,12 +30,16 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
+import kotlinx.coroutines.launch
 
 @Composable
-fun NewWorkoutScreen() {
+fun NewWorkoutScreen(
+    onClickStartWorkout: (Int) -> Unit
+) {
     val scrollState = rememberScrollState()
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
+    val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
         vm.loadScheduledWorkoutsWithExercises(context)
@@ -50,28 +55,33 @@ fun NewWorkoutScreen() {
             SelectWorkoutRow(
                 schedWorkout = item,
                 startWorkout = {
-                    // TODO: Implement this!
+                    scope.launch{
+                        // TODO: Implement this!
 
-                    // Get the workout plan ID from the start button that was pressed
-                    val workoutPlanId = item.workoutPlanId
+                        // Get the workout plan ID from the start button that was pressed
+                        val workoutPlanId = item.workoutPlanId
 
-                    // Get today's date
-                    val calendar = java.util.Calendar.getInstance()
-                    val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-                    val month = calendar.get(java.util.Calendar.MONTH) + 1
-                    val year = calendar.get(java.util.Calendar.YEAR) % 100
+                        // Get today's date
+                        val calendar = java.util.Calendar.getInstance()
+                        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+                        val month = calendar.get(java.util.Calendar.MONTH) + 1
+                        val year = calendar.get(java.util.Calendar.YEAR) % 100
 
-                    val dateToday = String.format("%02d/%02d/%02d", day, month, year)
+                        val dateToday = String.format("%02d/%02d/%02d", day, month, year)
 
-                    // Create a new workout
-                    val newWorkout = Workout(
-                        workoutDate = dateToday,
-                        workoutPlanId = workoutPlanId
-                    )
+                        // Create a new workout
+                        val newWorkout = Workout(
+                            workoutDate = dateToday,
+                            workoutPlanId = workoutPlanId
+                        )
 
-                    // Add workout to the database, returning the workout ID
+                        // Add workout to the database, returning the workout ID
+                        val newWorkoutId = vm.insertWorkoutAndReturnId(context, newWorkout)
 
-                    // Navigate to the current workout page, and pass the workout just create to it
+                        // Navigate to the current workout page, and pass the workout just create to it
+                        onClickStartWorkout(newWorkoutId)
+                    }
+
                 }
             )
 

@@ -293,7 +293,11 @@ fun NavScaffold(
             }
 
             composable(route = AppScreen.NewWorkout.route) {
-                NewWorkoutScreen()
+                NewWorkoutScreen(
+                    onClickStartWorkout = { workoutId: Int ->
+                        navController.navigate("currentWorkout/${workoutId}")
+                    }
+                )
             }
 
             composable(route = AppScreen.CurrentWorkout.route) { backStackEntry ->
