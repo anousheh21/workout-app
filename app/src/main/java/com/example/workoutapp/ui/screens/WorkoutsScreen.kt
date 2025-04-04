@@ -38,7 +38,9 @@ fun WorkoutsScreen(
         // viewModel.seedDummyData(context = context)
         viewModel.loadWorkouts(context = context)
     }
-    val workoutsArray = viewModel.workoutsArray
+
+    val initialWorkoutsArray = viewModel.workoutsArray
+    val workoutsArray = initialWorkoutsArray.sortedByDescending { it.workoutDate }
 
     LaunchedEffect(workoutsArray) {
         workoutsArray.forEach {
