@@ -4,7 +4,10 @@ import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextField
+import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -15,13 +18,18 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
+import com.example.workoutapp.ui.theme.DarkText
+import com.example.workoutapp.ui.theme.PrimaryText
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
@@ -69,7 +77,11 @@ fun SwipeScreenChild(
     exercise: PlannedExercise,
     index: Int,
     arraySize: Int,
-    nextExercise: String
+    nextExercise: String,
+    weightInput: String,
+    onWeightValueChange: (String) -> Unit,
+    repsInput: String,
+    onRepsValueChange: (String) -> Unit
 ) {
     Column() {
         Text(
@@ -80,6 +92,35 @@ fun SwipeScreenChild(
             text = exercise.exerciseName,
             textAlign = TextAlign.Center
         )
+
+        TextField(
+            value = weightInput,
+            onValueChange = onWeightValueChange,
+            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+            shape = RoundedCornerShape(3.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = PrimaryText,
+                unfocusedContainerColor = PrimaryText,
+                disabledContainerColor = PrimaryText,
+                focusedLabelColor = DarkText,
+                unfocusedLabelColor = DarkText,
+            ),
+        )
+
+        TextField(
+            value = repsInput,
+            onValueChange = onRepsValueChange,
+            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+            shape = RoundedCornerShape(3.dp),
+            colors = TextFieldDefaults.colors(
+                focusedContainerColor = PrimaryText,
+                unfocusedContainerColor = PrimaryText,
+                disabledContainerColor = PrimaryText,
+                focusedLabelColor = DarkText,
+                unfocusedLabelColor = DarkText,
+            ),
+        )
+
         Text(
             text = "Exercise: ${index + 1}/${arraySize}"
         )
@@ -102,6 +143,9 @@ fun ExerciseSwipeScreen(
     var currentIndex by remember { mutableStateOf(0) }
     var accumulatedDrag by remember { mutableStateOf(0f) }
     val arrayLength = scheduledExerciseArray.size
+
+    var weightInput by remember { mutableStateOf("") }
+    var repsInput by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
@@ -135,7 +179,11 @@ fun ExerciseSwipeScreen(
             scheduledExerciseArray[safeIndex],
             safeIndex,
             arrayLength,
-            nextExercise
+            nextExercise,
+            weightInput = weightInput,
+            onWeightValueChange = { weightInput = it },
+            repsInput = repsInput,
+            onRepsValueChange = { repsInput = it }
         )
     }
 }
