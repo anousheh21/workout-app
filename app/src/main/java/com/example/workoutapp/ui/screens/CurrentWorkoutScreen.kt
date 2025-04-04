@@ -1,15 +1,8 @@
 package com.example.workoutapp.ui.screens
 
 import android.content.Context
-import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -24,7 +17,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
@@ -40,9 +32,8 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.SecondPurple
 import com.example.workoutapp.ui.theme.ThirdPurple
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Divider
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
@@ -106,25 +97,72 @@ fun SwipeScreenChild(
     completedExercises: List<Exercise>,
     vm: WorkoutViewModel = viewModel()
 ) {
-    Column() {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        modifier = Modifier.fillMaxSize()
+    ) {
+        Spacer(modifier = Modifier.height(67.dp))
         Text(
             text = exercise.muscleGroup.toTitleCase(),
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Normal
+            )
         )
+        Spacer(modifier = Modifier.height(10.dp))
         Text(
             text = exercise.exerciseName,
-            textAlign = TextAlign.Center
+            textAlign = TextAlign.Center,
+            style = TextStyle(
+                fontSize = 28.sp,
+                fontWeight = FontWeight.SemiBold
+            )
         )
 
-        CurrentExerciseStatsInput(
-            statsInput = weightInput,
-            onStatsValueChange = onWeightValueChange
-        )
+        Spacer(modifier = Modifier.height(55.dp))
 
-        CurrentExerciseStatsInput(
-            statsInput = repsInput,
-            onStatsValueChange = onRepsValueChange
-        )
+        Row(
+
+        ) {
+            Column() {
+                CurrentExerciseStatsInput(
+                    statsInput = weightInput,
+                    onStatsValueChange = onWeightValueChange
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Weight/kg",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
+
+            Spacer(modifier = Modifier.width(43.dp))
+
+            Column() {
+                CurrentExerciseStatsInput(
+                    statsInput = repsInput,
+                    onStatsValueChange = onRepsValueChange
+                )
+
+                Spacer(modifier = Modifier.height(16.dp))
+
+                Text(
+                    text = "Reps",
+                    style = TextStyle(
+                        fontSize = 12.sp,
+                        fontWeight = FontWeight.Medium
+                    )
+                )
+            }
+        }
+
+        Spacer(modifier = Modifier.height(56.dp))
 
 
         // Display all exercises, just as text for now
@@ -163,25 +201,13 @@ fun SwipeScreenChild(
            enabled = canAddMoreSets
         )
 
+        Spacer(modifier = Modifier.height(37.dp))
+
         // Display all exercises, just as text for now
         currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
 
-
-
-
-//        Column {
-//            Text("Completed Sets:")
-//
-////            currentExercise.forEach { set ->
-////                Text("• ${set.weight}kg x ${set.reps} reps${if (set.pb) " (PB!)" else ""}")
-////            }
-//
-//
-//        }
-
         CompletedExerciseTable(exercises = currentExercise, plannedExercise = exercise)
 
-//        Text(text = "${exercise.setNumber}")
 
         Text(
             text = "Exercise: ${index + 1}/${arraySize}"
@@ -204,32 +230,6 @@ fun CompletedExerciseTable(
         plannedExercise: PlannedExercise,
     ) {
 
-//    Column() {
-//        Row() {
-//            Text("Set")
-//            Spacer(modifier = Modifier.width(20.dp))
-//            Text("Weight")
-//            Spacer(modifier = Modifier.width(20.dp))
-//            Text("Reps")
-//        }
-//        Spacer(modifier = Modifier.height(20.dp))
-//        for (i in 1..(plannedExercise.setNumber)) {
-//            Row {
-//                Text("${i}")
-//
-//                Spacer(modifier = Modifier.width(20.dp))
-//
-//                if (i <= exercises.size) {
-//                    val exercise = exercises[i - 1]
-//                    Text("${exercise.weight}")
-//                    Spacer(modifier = Modifier.width(20.dp))
-//                    Text("${exercise.reps}")
-//                }
-//            }
-//
-//            Spacer(modifier = Modifier.height(20.dp))
-//        }
-//    }
     Column {
         // Header row
         Row {
@@ -274,76 +274,6 @@ fun TableCell(
     )
 }
 
-//@Composable
-//fun CompletedExerciseTable(exercises: List<Exercise>) {
-//    val cellModifier = Modifier
-//        .padding(2.dp)
-//        .background(ThirdPurple)
-//        .padding(vertical = 12.dp)
-//
-//    Column {
-//        // Header Row: Set Numbers
-//        Row {
-//            Text(
-//                text = "Set",
-//                color = Color.White,
-//                textAlign = TextAlign.Center,
-//                modifier = cellModifier
-//                    .weight(1f)
-//            )
-//            exercises.indices.forEach { i ->
-//                Text(
-//                    text = "${i + 1}",
-//                    color = Color.White,
-//                    textAlign = TextAlign.Center,
-//                    modifier = cellModifier
-//                        .weight(1f)
-//                )
-//            }
-//        }
-//
-//        // Weight Row
-//        Row {
-//            Text(
-//                text = "Weight/kg",
-//                color = Color.White,
-//                textAlign = TextAlign.Center,
-//                modifier = cellModifier
-//                    .weight(1f)
-//            )
-//            exercises.forEach {
-//                Text(
-//                    text = "${it.weight}",
-//                    color = Color.White,
-//                    textAlign = TextAlign.Center,
-//                    modifier = cellModifier
-//                        .weight(1f)
-//                )
-//            }
-//        }
-//
-//        // Reps Row
-//        Row {
-//            Text(
-//                text = "Reps",
-//                color = Color.White,
-//                textAlign = TextAlign.Center,
-//                modifier = cellModifier
-//                    .weight(1f)
-//            )
-//            exercises.forEach {
-//                Text(
-//                    text = "${it.reps}",
-//                    color = Color.White,
-//                    textAlign = TextAlign.Center,
-//                    modifier = cellModifier
-//                        .weight(1f)
-//                )
-//            }
-//        }
-//    }
-//}
-
 @Composable
 fun CurrentExerciseStatsInput(
     statsInput: String,
@@ -361,6 +291,9 @@ fun CurrentExerciseStatsInput(
             focusedLabelColor = DarkText,
             unfocusedLabelColor = DarkText,
         ),
+        modifier = Modifier
+            .width(61.dp)
+            .height(60.dp)
     )
 }
 
@@ -377,7 +310,7 @@ fun NextSetButton(
         onClick = { saveSet(context, weightString, repsString) },
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
+        colors = ButtonDefaults.buttonColors(containerColor = SecondPurple),
         contentPadding = PaddingValues(start = 27.dp, end = 27.dp, top = 10.dp, bottom = 10.dp),
         modifier = Modifier
             .width(119.dp)
@@ -445,22 +378,5 @@ fun ExerciseSwipeScreen(
             selectedWorkout = selectedWorkout,
             completedExercises = completedExercises
         )
-    }
-}
-
-@Composable
-fun TestingDisplay(
-    workoutId: Int,
-    selectedWorkoutName: String,
-    selectedWorkout: Workout,
-    scheduledExerciseArray: List<List<PlannedExercise>>
-    ) {
-
-    Column() {
-        Text("$workoutId")
-        Text(selectedWorkoutName)
-        Text("$selectedWorkout")
-        Text("${selectedWorkout.workoutPlanId}")
-        Text("$scheduledExerciseArray")
     }
 }
