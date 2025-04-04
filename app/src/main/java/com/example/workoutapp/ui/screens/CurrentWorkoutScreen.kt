@@ -125,6 +125,15 @@ fun SwipeScreenChild(
             statsInput = repsInput,
             onStatsValueChange = onRepsValueChange
         )
+        
+
+        // Display all exercises, just as text for now
+        var currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
+
+        val setsCompleted = currentExercise.size
+        val setsPlanned = exercise.setNumber
+        val canAddMoreSets = setsCompleted < setsPlanned
+
 
         NextSetButton(
             weightString = weightInput,
@@ -150,12 +159,15 @@ fun SwipeScreenChild(
                 // Clear input boxes
                 onWeightValueChange("")
                 onRepsValueChange("")
-            }
+            },
+           enabled = canAddMoreSets
         )
 
-
         // Display all exercises, just as text for now
-        val currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
+        currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
+
+
+
 
 //        Column {
 //            Text("Completed Sets:")
@@ -357,11 +369,13 @@ fun NextSetButton(
     weightString: String,
     repsString: String,
     saveSet: (Context, String, String) -> Unit,
+    enabled: Boolean = true
 
     ) {
     val context = LocalContext.current
     Button(
         onClick = { saveSet(context, weightString, repsString) },
+        enabled = enabled,
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
         contentPadding = PaddingValues(start = 27.dp, end = 27.dp, top = 10.dp, bottom = 10.dp),
