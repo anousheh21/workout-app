@@ -149,17 +149,15 @@ fun SwipeScreenChild(
 
 
         // Display all exercises, just as text for now
-        val grouped = completedExercises.groupBy { it.plannedExerciseId }
+        val currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
 
         Column {
             Text("Completed Sets:")
 
-            grouped.forEach { (plannedId, sets) ->
-                Text("Planned Exercise ID: $plannedId")
-                sets.forEach { exercise ->
-                    Text("  • ${exercise.weight}kg x ${exercise.reps} reps ${if (exercise.pb) "(PB!)" else ""}")
-                }
+            currentExercise.forEach { set ->
+                Text("• ${set.weight}kg x ${set.reps} reps${if (set.pb) " (PB!)" else ""}")
             }
+
         }
 
         Text(
