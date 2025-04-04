@@ -93,32 +93,14 @@ fun SwipeScreenChild(
             textAlign = TextAlign.Center
         )
 
-        TextField(
-            value = weightInput,
-            onValueChange = onWeightValueChange,
-            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-            shape = RoundedCornerShape(3.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = PrimaryText,
-                unfocusedContainerColor = PrimaryText,
-                disabledContainerColor = PrimaryText,
-                focusedLabelColor = DarkText,
-                unfocusedLabelColor = DarkText,
-            ),
+        CurrentExerciseStatsInput(
+            statsInput = weightInput,
+            onStatsValueChange = onWeightValueChange
         )
 
-        TextField(
-            value = repsInput,
-            onValueChange = onRepsValueChange,
-            textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
-            shape = RoundedCornerShape(3.dp),
-            colors = TextFieldDefaults.colors(
-                focusedContainerColor = PrimaryText,
-                unfocusedContainerColor = PrimaryText,
-                disabledContainerColor = PrimaryText,
-                focusedLabelColor = DarkText,
-                unfocusedLabelColor = DarkText,
-            ),
+        CurrentExerciseStatsInput(
+            statsInput = repsInput,
+            onStatsValueChange = onRepsValueChange
         )
 
         Text(
@@ -134,6 +116,26 @@ fun SwipeScreenChild(
             text = "Swipe down to see previous stats"
         )
     }
+}
+
+@Composable
+fun CurrentExerciseStatsInput(
+    statsInput: String,
+    onStatsValueChange: (String) -> Unit
+) {
+    TextField(
+        value = statsInput,
+        onValueChange = onStatsValueChange,
+        textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+        shape = RoundedCornerShape(3.dp),
+        colors = TextFieldDefaults.colors(
+            focusedContainerColor = PrimaryText,
+            unfocusedContainerColor = PrimaryText,
+            disabledContainerColor = PrimaryText,
+            focusedLabelColor = DarkText,
+            unfocusedLabelColor = DarkText,
+        ),
+    )
 }
 
 @Composable
