@@ -192,32 +192,74 @@ fun CompletedExerciseTable(
         plannedExercise: PlannedExercise,
     ) {
 
-    Column() {
-        Row() {
-            Text("Set")
-            Spacer(modifier = Modifier.width(20.dp))
-            Text("Weight")
-            Spacer(modifier = Modifier.width(20.dp))
-            Text("Reps")
-        }
-        Spacer(modifier = Modifier.height(20.dp))
-        for (i in 1..(plannedExercise.setNumber)) {
+//    Column() {
+//        Row() {
+//            Text("Set")
+//            Spacer(modifier = Modifier.width(20.dp))
+//            Text("Weight")
+//            Spacer(modifier = Modifier.width(20.dp))
+//            Text("Reps")
+//        }
+//        Spacer(modifier = Modifier.height(20.dp))
+//        for (i in 1..(plannedExercise.setNumber)) {
+//            Row {
+//                Text("${i}")
+//
+//                Spacer(modifier = Modifier.width(20.dp))
+//
+//                if (i <= exercises.size) {
+//                    val exercise = exercises[i - 1]
+//                    Text("${exercise.weight}")
+//                    Spacer(modifier = Modifier.width(20.dp))
+//                    Text("${exercise.reps}")
+//                }
+//            }
+//
+//            Spacer(modifier = Modifier.height(20.dp))
+//        }
+//    }
+    Column {
+        // Header row
+        Row {
             Row {
-                Text("${i}")
+                TableCell("Set", bold = true, modifier = Modifier.weight(1f))
+                TableCell("Weight", bold = true, modifier = Modifier.weight(1f))
+                TableCell("Reps", bold = true, modifier = Modifier.weight(1f))
+            }
+        }
 
-                Spacer(modifier = Modifier.width(20.dp))
+        Spacer(modifier = Modifier.height(12.dp))
 
+        // Data rows
+        for (i in 1..plannedExercise.setNumber) {
+            Row {
+                TableCell("$i", modifier = Modifier.weight(1f))
                 if (i <= exercises.size) {
                     val exercise = exercises[i - 1]
-                    Text("${exercise.weight}")
-                    Spacer(modifier = Modifier.width(20.dp))
-                    Text("${exercise.reps}")
+                    TableCell("${exercise.weight}", modifier = Modifier.weight(1f))
+                    TableCell("${exercise.reps}", modifier = Modifier.weight(1f))
+                } else {
+                    TableCell(" ", modifier = Modifier.weight(1f))
+                    TableCell(" ", modifier = Modifier.weight(1f))
                 }
             }
-
-            Spacer(modifier = Modifier.height(20.dp))
         }
     }
+}
+
+@Composable
+fun TableCell(
+    text: String,
+    bold: Boolean = false,
+    modifier: Modifier = Modifier
+) {
+    Text(
+        text = text,
+        modifier = modifier
+            .padding(4.dp),
+        textAlign = TextAlign.Center,
+        fontWeight = if (bold) FontWeight.Bold else FontWeight.Normal
+    )
 }
 
 //@Composable
