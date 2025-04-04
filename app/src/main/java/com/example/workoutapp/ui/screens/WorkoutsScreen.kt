@@ -40,7 +40,7 @@ fun WorkoutsScreen(
     }
 
     val initialWorkoutsArray = viewModel.workoutsArray
-    val workoutsArray = initialWorkoutsArray.sortedByDescending { it.workoutDate }
+    val workoutsArray = initialWorkoutsArray.sortedByDescending { it.workoutId }
 
     LaunchedEffect(workoutsArray) {
         workoutsArray.forEach {
