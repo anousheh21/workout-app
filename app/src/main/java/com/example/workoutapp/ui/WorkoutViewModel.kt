@@ -58,6 +58,17 @@ class WorkoutViewModel() : ViewModel() {
 
     }
 
+    fun deleteWorkout(context: Context, workoutId: Int) {
+        viewModelScope.launch {
+            val db = DatabaseProvider.getDatabase(context)
+            db.exerciseDao().deleteExercisesForWorkout(workoutId)
+            db.workoutDao().deleteWorkoutById(workoutId)
+
+            // Reload updated workouts list
+            loadWorkouts(context)
+        }
+    }
+
     fun insertExercise(
         context: Context,
         exercise: Exercise

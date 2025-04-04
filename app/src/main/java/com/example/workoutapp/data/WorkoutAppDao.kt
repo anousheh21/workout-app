@@ -85,6 +85,9 @@ interface WorkoutDao {
     @Query("DELETE FROM workouts")
     suspend fun deleteAll()
 
+    @Query("DELETE FROM workouts WHERE workoutId = :workoutId")
+    suspend fun deleteWorkoutById(workoutId: Int)
+
     @Delete
     suspend fun delete(workout: Workout)
 }
@@ -108,6 +111,9 @@ interface ExerciseDao {
     WHERE e.workoutId = :workoutId
 """)
     suspend fun getExercisesWithNamesForWorkout(workoutId: Int): List<ExerciseWithName>
+
+    @Query("DELETE FROM exercises WHERE workoutId = :workoutId")
+    suspend fun deleteExercisesForWorkout(workoutId: Int)
 
     @Delete
     suspend fun delete(exercise: Exercise)

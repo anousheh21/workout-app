@@ -26,6 +26,7 @@ import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 
 
+
 @Composable
 fun WorkoutsScreen(
     onClickWorkout: (WorkoutDetails) -> Unit,
@@ -57,7 +58,7 @@ fun WorkoutsScreen(
 @Composable
 fun WorkoutColumnList(
     workouts: List<WorkoutDetails>,
-    onClickWorkout: (WorkoutDetails) -> Unit
+    onClickWorkout: (WorkoutDetails) -> Unit,
     ) {
     LazyColumn {
         items(workouts) { workout ->
