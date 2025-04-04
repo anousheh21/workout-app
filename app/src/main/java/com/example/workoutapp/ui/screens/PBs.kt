@@ -28,10 +28,12 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
+import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.ThirdPurple
 
 @Composable
@@ -65,13 +67,23 @@ fun PBs() {
             }
             Spacer(modifier = Modifier.height(20.dp))
 
-            plannedExercisesArray.forEach { exercise ->
-                Text(
-                    text = "${exercise.exerciseName} (${exercise.setNumber} sets) - ${exercise.muscleGroup.name}",
-                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
-                )
-                Spacer(modifier = Modifier.height(8.dp))
+            val groupedPlannedExercises = plannedExercisesArray.groupBy { it.muscleGroup }
+            val sortedGroupedExercises = groupedPlannedExercises.toSortedMap()
+
+            for((muscleGroup, exercisesInGroup) in sortedGroupedExercises) {
+                Text(muscleGroup.toTitleCase())
+                for (plannedExercise in exercisesInGroup) {
+                    Text(plannedExercise.exerciseName)
+                }
             }
+
+//            plannedExercisesArray.forEach { exercise ->
+//                Text(
+//                    text = "${exercise.exerciseName} (${exercise.setNumber} sets) - ${exercise.muscleGroup.name}",
+//                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
+//                )
+//                Spacer(modifier = Modifier.height(8.dp))
+//            }
 
             Spacer(modifier = Modifier.height(75.dp))
         }
@@ -85,8 +97,13 @@ fun PBs() {
 }
 
 @Composable
-fun DisplayPlannedExercise(exercise: PlannedExercise) {
+fun PlannedExerciseRow(exercise: PlannedExercise) {
 
+}
+
+@Composable
+fun MuscleGroupTitle(muscleGroup: MuscleGroup) {
+    
 }
 
 
