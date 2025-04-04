@@ -1,16 +1,20 @@
 package com.example.workoutapp.ui.screens
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -34,6 +38,7 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.extensions.toTitleCase
+import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
 
 @Composable
@@ -56,36 +61,23 @@ fun PBs() {
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
+            // .padding(horizontal = 38.dp)
     ) {
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit(0) {
-                showExerciseModal = true
+        val groupedPlannedExercises = plannedExercisesArray.groupBy { it.muscleGroup }
+        val sortedGroupedExercises = groupedPlannedExercises.toSortedMap()
+
+        for((muscleGroup, exercisesInGroup) in sortedGroupedExercises) {
+            MuscleGroupTitle(muscleGroup = muscleGroup)
+            for (plannedExercise in exercisesInGroup) {
+                PlannedExerciseRow(exercise = plannedExercise)
             }
-            Spacer(modifier = Modifier.height(20.dp))
-
-            val groupedPlannedExercises = plannedExercisesArray.groupBy { it.muscleGroup }
-            val sortedGroupedExercises = groupedPlannedExercises.toSortedMap()
-
-            for((muscleGroup, exercisesInGroup) in sortedGroupedExercises) {
-                Text(muscleGroup.toTitleCase())
-                for (plannedExercise in exercisesInGroup) {
-                    Text(plannedExercise.exerciseName)
-                }
-            }
-
-//            plannedExercisesArray.forEach { exercise ->
-//                Text(
-//                    text = "${exercise.exerciseName} (${exercise.setNumber} sets) - ${exercise.muscleGroup.name}",
-//                    style = TextStyle(fontSize = 16.sp, fontWeight = FontWeight.Normal)
-//                )
-//                Spacer(modifier = Modifier.height(8.dp))
-//            }
-
-            Spacer(modifier = Modifier.height(75.dp))
+        }
+        
+        Spacer(modifier = Modifier.height(100.dp))
+        
+        // COULD MOVE THIS TO THE TOP BAR!!!
+        AddNewWorkoutScheduleEdit(0) {
+            showExerciseModal = true
         }
     }
 
@@ -98,12 +90,53 @@ fun PBs() {
 
 @Composable
 fun PlannedExerciseRow(exercise: PlannedExercise) {
+    Spacer(modifier = Modifier.height(28.dp))
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+//            .padding(horizontal = 38.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
+    ) {
+        Text(
+            text = exercise.exerciseName,
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            ),
+            modifier = Modifier
+                .padding(horizontal = 38.dp)
+        )
 
+        Text(
+            text = "${exercise.setNumber} Sets",
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal
+            ),
+            modifier = Modifier
+                .padding(horizontal = 38.dp)
+        )
+    }
+    Spacer(modifier = Modifier.height(28.dp))
+    Divider(
+        color = SeparatorGrey,
+        thickness = 1.dp,
+    )
 }
 
 @Composable
 fun MuscleGroupTitle(muscleGroup: MuscleGroup) {
-    
+    Spacer(modifier = Modifier.height(36.dp))
+    Text(
+        text = muscleGroup.toTitleCase(),
+        style = TextStyle(
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Bold
+        ),
+        modifier = Modifier
+            .padding(horizontal = 38.dp)
+    )
+    // Spacer(modifier = Modifier.height(5.dp))
 }
 
 
