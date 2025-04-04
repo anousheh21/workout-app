@@ -44,7 +44,7 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 @Composable
 fun PBs() {
     val scrollState = rememberScrollState()
-    var showExerciseModal by remember { mutableStateOf(false) }
+    // var showExerciseModal by remember { mutableStateOf(false) }
 
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
@@ -76,16 +76,16 @@ fun PBs() {
         Spacer(modifier = Modifier.height(100.dp))
         
         // COULD MOVE THIS TO THE TOP BAR!!!
-        AddNewWorkoutScheduleEdit(0) {
-            showExerciseModal = true
-        }
+//        AddNewWorkoutScheduleEdit(0) {
+//            showExerciseModal = true
+//        }
     }
 
-    if (showExerciseModal) {
-        Dialog(onDismissRequest = { showExerciseModal = false}) {
-            SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
-        }
-    }
+//    if (showExerciseModal) {
+//        Dialog(onDismissRequest = { showExerciseModal = false}) {
+//            SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
+//        }
+//    }
 }
 
 @Composable

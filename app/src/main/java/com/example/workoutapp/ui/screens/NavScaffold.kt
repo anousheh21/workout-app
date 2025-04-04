@@ -19,12 +19,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
@@ -34,6 +36,8 @@ import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.TopBarBack
 import com.example.workoutapp.ui.components.bottomNavItems
+import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
+import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.theme.Purple40
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -60,6 +64,7 @@ fun NavScaffold(
 ) {
     // We’ll need context for loading from DB
     val context = LocalContext.current
+    var showExerciseModal by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -80,7 +85,12 @@ fun NavScaffold(
                 // ---- TOP BAR for PBs ----
                 AppScreen.PBs.route -> {
                     TopAppBar(
-                        title = { Text("Exercises") }
+                        title = { Text("Exercises") },
+                        actions = {
+                            AddNewWorkoutScheduleEdit(0) {
+                                showExerciseModal = true
+                            }
+                        }
                     )
                 }
                 // ---- TOP BAR for Settings ----
@@ -248,6 +258,11 @@ fun NavScaffold(
             }
         }
     ) { innerPadding ->
+        if (showExerciseModal) {
+            Dialog(onDismissRequest = { showExerciseModal = false }) {
+                SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
+            }
+        }
         NavHost(
             navController = navController,
             startDestination = AppScreen.Workouts.route,
