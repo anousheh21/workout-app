@@ -125,7 +125,7 @@ fun SwipeScreenChild(
             statsInput = repsInput,
             onStatsValueChange = onRepsValueChange
         )
-        
+
 
         // Display all exercises, just as text for now
         var currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }

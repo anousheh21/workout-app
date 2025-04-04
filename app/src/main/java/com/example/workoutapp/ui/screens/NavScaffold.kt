@@ -103,11 +103,14 @@ fun NavScaffold(
                                 Text(text = viewModel.selectedWorkoutName.ifBlank { "Workout" })
                             },
                             navigationIcon = {
-                                IconButton(onClick = { navController.popBackStack() }) {
-                                    Icon(
-                                        imageVector = Icons.Default.ArrowBack,
-                                        contentDescription = "Back"
-                                    )
+//                                IconButton(onClick = { navController.popBackStack() }) {
+//                                    Icon(
+//                                        imageVector = Icons.Default.ArrowBack,
+//                                        contentDescription = "Back"
+//                                    )
+//                                }
+                                TextButton(onClick = { navController.popBackStack() }) {
+                                    Text("End Workout")
                                 }
                             }
                         )
