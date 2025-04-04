@@ -3,8 +3,12 @@ package com.example.workoutapp.ui.screens
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
@@ -19,6 +23,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
@@ -30,6 +35,7 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.ThirdPurple
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
@@ -136,6 +142,30 @@ fun CurrentExerciseStatsInput(
             unfocusedLabelColor = DarkText,
         ),
     )
+}
+
+@Composable
+fun NextSetButton(
+    saveSet: (String, String) -> Unit,
+    weightString: String,
+    repsString: String,
+) {
+    Button(
+        onClick = { saveSet(weightString, repsString) },
+        shape = RoundedCornerShape(10.dp),
+        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
+        contentPadding = PaddingValues(start = 27.dp, end = 27.dp, top = 10.dp, bottom = 10.dp),
+        modifier = Modifier
+            .width(119.dp)
+    ) {
+        Text(
+            text = "Next Set",
+            style = TextStyle(
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
+            )
+        )
+    }
 }
 
 @Composable
