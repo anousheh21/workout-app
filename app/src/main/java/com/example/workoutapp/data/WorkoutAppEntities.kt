@@ -81,6 +81,7 @@ data class Exercise(
     val plannedExerciseId: Int,
     val weight: Float,
     val reps: Int,
-    val pb: Boolean
+    val pb: Boolean,
+    //val setNumber: Int
 )
 

@@ -58,6 +58,41 @@ class WorkoutViewModel() : ViewModel() {
 
     }
 
+    fun insertExercise(
+        context: Context,
+        exercise: Exercise
+    ) {
+        val  db = DatabaseProvider.getDatabase(context)
+        val exerciseDao = db.exerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                exerciseDao.insert(exercise)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Inserting New Exercise:", e)
+            }
+        }
+    }
+
+    private val _exercisesForWorkoutArray = mutableStateOf<List<Exercise>>(emptyList())
+    val exercisesForWorkoutArray: List<Exercise> get() = _exercisesForWorkoutArray.value
+    fun loadExercisesForWorkout(
+        context: Context,
+        workoutId: Int
+    ) {
+        val db = DatabaseProvider.getDatabase(context)
+        val exerciseDao = db.exerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                val data = exerciseDao.getExercisesForWorkout(workoutId)
+                _exercisesForWorkoutArray.value = data
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Retrieving Relevant Exercises:", e)
+            }
+        }
+    }
+
     fun addExercisesToScheduledWorkout(
         context: Context,
         scheduledWorkoutExercises: List<ScheduledWorkoutExercise>
@@ -285,17 +320,17 @@ class WorkoutViewModel() : ViewModel() {
                         )
                         val workoutId = workoutDao.insert(workout).toInt()
 
-                        plannedExerciseIds.forEach { plannedId ->
-                            exerciseDao.insert(
-                                Exercise(
-                                    workoutId = workoutId,
-                                    plannedExerciseId = plannedId,
-                                    weight = (50..100).random().toFloat(),
-                                    reps = (5..12).random(),
-                                    pb = listOf(true, false).random()
-                                )
-                            )
-                        }
+//                        plannedExerciseIds.forEach { plannedId ->
+//                            exerciseDao.insert(
+//                                Exercise(
+//                                    workoutId = workoutId,
+//                                    plannedExerciseId = plannedId,
+//                                    weight = (50..100).random().toFloat(),
+//                                    reps = (5..12).random(),
+//                                    pb = listOf(true, false).random()
+//                                )
+//                            )
+//                        }
                     }
                     Log.d("WorkoutViewModel", "Dummy data seeded successfully")
                 }
@@ -304,27 +339,27 @@ class WorkoutViewModel() : ViewModel() {
             }
         }
     }
-    fun debugExercisesFor(context: Context, workoutId: Int) {
-        val db = DatabaseProvider.getDatabase(context)
-        val exerciseDao = db.exerciseDao()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            // 1) Log all exercises in the database
-            val all = exerciseDao.getAll()
-            Log.d("ExerciseDebug", "---- All Exercises in DB: count=${all.size} ----")
-            all.forEachIndexed { index, ex ->
-                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
-                        "plannedExerciseId=${ex.plannedExerciseId}, reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
-            }
-
-            // 2) Log only the exercises for a given workoutId
-            val exercisesForId = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
-            Log.d("ExerciseDebug", "---- Exercises for workoutId=$workoutId: count=${exercisesForId.size} ----")
-            exercisesForId.forEachIndexed { index, ex ->
-                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
-                        "plannedExerciseId=${ex.plannedExerciseId}, name=${ex.exerciseName}, " +
-                        "reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
-            }
-        }
-    }
+//    fun debugExercisesFor(context: Context, workoutId: Int) {
+//        val db = DatabaseProvider.getDatabase(context)
+//        val exerciseDao = db.exerciseDao()
+//
+//        viewModelScope.launch(Dispatchers.IO) {
+//            // 1) Log all exercises in the database
+//            val all = exerciseDao.getAll()
+//            Log.d("ExerciseDebug", "---- All Exercises in DB: count=${all.size} ----")
+//            all.forEachIndexed { index, ex ->
+//                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
+//                        "plannedExerciseId=${ex.plannedExerciseId}, reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
+//            }
+//
+//            // 2) Log only the exercises for a given workoutId
+//            val exercisesForId = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+//            Log.d("ExerciseDebug", "---- Exercises for workoutId=$workoutId: count=${exercisesForId.size} ----")
+//            exercisesForId.forEachIndexed { index, ex ->
+//                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
+//                        "plannedExerciseId=${ex.plannedExerciseId}, name=${ex.exerciseName}, " +
+//                        "reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
+//            }
+//        }
+//    }
 }

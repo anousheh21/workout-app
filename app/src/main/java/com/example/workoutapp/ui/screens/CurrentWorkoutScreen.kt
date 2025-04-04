@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.screens
 
+import android.content.Context
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -46,10 +47,15 @@ fun CurrentWorkoutScreen(workoutId: Int) {
     LaunchedEffect(Unit) {
         vm.loadWorkoutById(context, workoutId)
         vm.loadScheduledWorkoutsWithExercises(context)
+
+        // Load all relevant
+        vm.loadExercisesForWorkout(context, workoutId)
     }
 
     val selectedWorkout = vm.selectedWorkout
     val selectedWorkoutName = vm.selectedWorkoutName
+
+    val completedExercises = vm.exercisesForWorkoutArray
 
     // Get array of exercises associated with the workout plan that the workout is associated with
     val schedWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
@@ -62,7 +68,9 @@ fun CurrentWorkoutScreen(workoutId: Int) {
     val listToUse = scheduledExerciseArray.flatten()
 
     if (listToUse.isNotEmpty()) {
-        ExerciseSwipeScreen(listToUse)
+        if (selectedWorkout != null) {
+            ExerciseSwipeScreen(listToUse, selectedWorkout, completedExercises)
+        }
     } else {
         Text("No exercises found for this workout.")
     }
@@ -87,7 +95,10 @@ fun SwipeScreenChild(
     weightInput: String,
     onWeightValueChange: (String) -> Unit,
     repsInput: String,
-    onRepsValueChange: (String) -> Unit
+    onRepsValueChange: (String) -> Unit,
+    selectedWorkout: Workout,
+    completedExercises: List<Exercise>,
+    vm: WorkoutViewModel = viewModel()
 ) {
     Column() {
         Text(
@@ -108,6 +119,48 @@ fun SwipeScreenChild(
             statsInput = repsInput,
             onStatsValueChange = onRepsValueChange
         )
+
+        NextSetButton(
+            weightString = weightInput,
+            repsString = repsInput,
+            saveSet = { context, weightString: String, repsString: String ->
+                val weight = weightString.toFloat()
+                val reps = repsString.toInt()
+
+                val newExerciseStats = Exercise(
+                    workoutId = selectedWorkout.workoutId,
+                    plannedExerciseId = exercise.plannedExerciseId,
+                    weight = weight,
+                    reps = reps,
+                    pb = false
+                )
+
+                // Add the exercise to the database
+                vm.insertExercise(context, newExerciseStats)
+
+                // Load all exercises again to refresh the page
+                vm.loadExercisesForWorkout(context, selectedWorkout.workoutId)
+
+                // Clear input boxes
+                onWeightValueChange("")
+                onRepsValueChange("")
+            }
+        )
+
+
+        // Display all exercises, just as text for now
+        val grouped = completedExercises.groupBy { it.plannedExerciseId }
+
+        Column {
+            Text("Completed Sets:")
+
+            grouped.forEach { (plannedId, sets) ->
+                Text("Planned Exercise ID: $plannedId")
+                sets.forEach { exercise ->
+                    Text("  • ${exercise.weight}kg x ${exercise.reps} reps ${if (exercise.pb) "(PB!)" else ""}")
+                }
+            }
+        }
 
         Text(
             text = "Exercise: ${index + 1}/${arraySize}"
@@ -146,12 +199,14 @@ fun CurrentExerciseStatsInput(
 
 @Composable
 fun NextSetButton(
-    saveSet: (String, String) -> Unit,
     weightString: String,
     repsString: String,
-) {
+    saveSet: (Context, String, String) -> Unit,
+
+    ) {
+    val context = LocalContext.current
     Button(
-        onClick = { saveSet(weightString, repsString) },
+        onClick = { saveSet(context, weightString, repsString) },
         shape = RoundedCornerShape(10.dp),
         colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
         contentPadding = PaddingValues(start = 27.dp, end = 27.dp, top = 10.dp, bottom = 10.dp),
@@ -170,7 +225,9 @@ fun NextSetButton(
 
 @Composable
 fun ExerciseSwipeScreen(
-    scheduledExerciseArray: List<PlannedExercise>
+    scheduledExerciseArray: List<PlannedExercise>,
+    selectedWorkout: Workout,
+    completedExercises: List<Exercise>
 ) {
     var currentIndex by remember { mutableStateOf(0) }
     var accumulatedDrag by remember { mutableStateOf(0f) }
@@ -215,7 +272,9 @@ fun ExerciseSwipeScreen(
             weightInput = weightInput,
             onWeightValueChange = { weightInput = it },
             repsInput = repsInput,
-            onRepsValueChange = { repsInput = it }
+            onRepsValueChange = { repsInput = it },
+            selectedWorkout = selectedWorkout,
+            completedExercises = completedExercises
         )
     }
 }

@@ -97,6 +97,9 @@ interface ExerciseDao {
     @Query("SELECT * FROM exercises")
     suspend fun getAll(): List<Exercise>
 
+    @Query("SELECT * FROM exercises WHERE workoutId = :workoutId")
+    suspend fun getExercisesForWorkout(workoutId: Int): List<Exercise>
+
     // Debug query to log joined exercises
     @Query("""
     SELECT e.exerciseId, e.workoutId, e.plannedExerciseId, p.exerciseName, p.muscleGroup, e.weight, e.reps, e.pb
