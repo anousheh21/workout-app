@@ -42,6 +42,7 @@ import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.ThirdPurple
 import androidx.compose.foundation.layout.*
+import androidx.compose.material3.Divider
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
@@ -190,7 +191,33 @@ fun CompletedExerciseTable(
         exercises: List<Exercise>,
         plannedExercise: PlannedExercise,
     ) {
-    Text("${plannedExercise.setNumber}")
+
+    Column() {
+        Row() {
+            Text("Set")
+            Spacer(modifier = Modifier.width(20.dp))
+            Text("Weight")
+            Spacer(modifier = Modifier.width(20.dp))
+            Text("Reps")
+        }
+        Spacer(modifier = Modifier.height(20.dp))
+        for (i in 1..(plannedExercise.setNumber)) {
+            Row {
+                Text("${i}")
+
+                Spacer(modifier = Modifier.width(20.dp))
+
+                if (i <= exercises.size) {
+                    val exercise = exercises[i - 1]
+                    Text("${exercise.weight}")
+                    Spacer(modifier = Modifier.width(20.dp))
+                    Text("${exercise.reps}")
+                }
+            }
+
+            Spacer(modifier = Modifier.height(20.dp))
+        }
+    }
 }
 
 //@Composable
