@@ -3,7 +3,9 @@ package com.example.workoutapp.ui.screens
 import android.content.Context
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
@@ -44,6 +46,8 @@ fun CurrentWorkoutScreen(workoutId: Int) {
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
 
+    val scrollState = rememberScrollState()
+
     LaunchedEffect(Unit) {
         vm.loadWorkoutById(context, workoutId)
         vm.loadScheduledWorkoutsWithExercises(context)
@@ -69,7 +73,11 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 
     if (listToUse.isNotEmpty()) {
         if (selectedWorkout != null) {
-            ExerciseSwipeScreen(listToUse, selectedWorkout, completedExercises)
+            Column(
+                modifier = Modifier.verticalScroll(scrollState)
+            ) {
+                ExerciseSwipeScreen(listToUse, selectedWorkout, completedExercises)
+            }
         }
     } else {
         Text("No exercises found for this workout.")
