@@ -8,6 +8,8 @@ import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.ui.theme.DarkText
@@ -21,7 +23,12 @@ fun CurrentExerciseStatsInput(
     TextField(
         value = statsInput,
         onValueChange = onStatsValueChange,
-        textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
+        textStyle = TextStyle(
+            color = DarkText,
+            fontSize = 20.sp,
+            textAlign = TextAlign.Center,
+            fontWeight = FontWeight.Medium
+        ),
         shape = RoundedCornerShape(3.dp),
         colors = TextFieldDefaults.colors(
             focusedContainerColor = PrimaryText,

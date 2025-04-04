@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.components.workout
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -10,9 +11,13 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
+import androidx.compose.ui.text.font.FontStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -21,6 +26,7 @@ import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
+import com.example.workoutapp.ui.theme.SecondaryText
 
 @Composable
 fun SwipeScreenChild(
@@ -64,7 +70,9 @@ fun SwipeScreenChild(
         Row(
 
         ) {
-            Column() {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 CurrentExerciseStatsInput(
                     statsInput = weightInput,
                     onStatsValueChange = onWeightValueChange
@@ -83,7 +91,9 @@ fun SwipeScreenChild(
 
             Spacer(modifier = Modifier.width(43.dp))
 
-            Column() {
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
                 CurrentExerciseStatsInput(
                     statsInput = repsInput,
                     onStatsValueChange = onRepsValueChange
@@ -147,18 +157,57 @@ fun SwipeScreenChild(
 
         CompletedExerciseTable(exercises = currentExercise, plannedExercise = exercise)
 
+        Spacer(modifier = Modifier.height(27.dp))
+
+        Row() {
+            Text(
+                text = "Exercise: ${index + 1}/${arraySize}",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal
+                )
+            )
+
+            Spacer(modifier = Modifier.width(110.dp))
+
+            Text(
+                text = buildAnnotatedString {
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
+                        append("Up Next: ")
+                    }
+                    withStyle(style = SpanStyle(fontWeight = FontWeight.Normal)) {
+                        append(nextExercise)
+                    }
+                },
+                fontSize = 14.sp
+            )
+        }
+
+        Spacer(modifier = Modifier.height(25.dp))
+
 
         Text(
-            text = "Exercise: ${index + 1}/${arraySize}"
-        )
-        Text(
-            text = "Next Exercise: $nextExercise",
-        )
-        Text(
             text = "Swipe right for next exercise, swipe left for previous exercise",
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = SecondaryText,
+                fontStyle = FontStyle.Italic
+            )
         )
-        Text(
-            text = "Swipe down to see previous stats"
-        )
+
+//        Spacer(modifier = Modifier.height(7.dp))
+//
+//        Text(
+//            text = "Swipe down to see previous stats",
+//            style = TextStyle(
+//                fontSize = 12.sp,
+//                fontWeight = FontWeight.Normal,
+//                color = SecondaryText,
+//                fontStyle = FontStyle.Italic
+//            )
+//        )
+
+        Spacer(modifier = Modifier.height(26.dp))
     }
 }
