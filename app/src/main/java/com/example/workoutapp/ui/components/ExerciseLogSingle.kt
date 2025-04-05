@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.components
 
+import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
@@ -26,6 +27,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.Button
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.example.workoutapp.data.ExerciseWithName
@@ -54,6 +56,36 @@ fun ExerciseLogSingle(workoutId: Int) {
             ExerciseRow(workoutId, exercise)
             Divider()
         }
+
+        Spacer(modifier = Modifier.height(50.dp))
+
+        ShareSheetButton(
+            workoutId = workoutId,
+            exercises = exercises.value,
+            shareWorkout = { workoutId, exercises ->
+                return@ShareSheetButton Intent(Intent.ACTION_SEND).apply {
+                    type = "text/plain"
+                    putExtra(Intent.EXTRA_TEXT, "hi")
+                }
+            })
+    }
+}
+
+@Composable
+fun ShareSheetButton(
+    workoutId: Int,
+    exercises: List<ExerciseWithName>,
+    shareWorkout: (Int, List<ExerciseWithName>) -> Intent
+) {
+    val context = LocalContext.current
+    Button(onClick = {
+        val intent = shareWorkout(workoutId, exercises)
+        val intentChooser = Intent.createChooser(intent, "Share Workout")
+        context.startActivity(intentChooser)
+    }) {
+        Text(
+            text = "Share Workout"
+        )
     }
 }
 
