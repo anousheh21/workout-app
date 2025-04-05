@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+import android.content.Intent
+import android.provider.CalendarContract
 import android.util.Log
 import android.view.RoundedCorner
 import androidx.compose.foundation.background
@@ -52,6 +54,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
+import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
@@ -61,6 +64,7 @@ import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
 import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.TimeBox
 import com.example.workoutapp.ui.components.editschedule.WorkoutDay
+import com.example.workoutapp.ui.components.editschedule.addWorkoutToCalendar
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
@@ -98,7 +102,53 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             Spacer(modifier = Modifier.height(19.dp))
             WorkoutScheduleRow(
                 workoutWithExercises = item,
-                navAddExercises
+                navAddExercises,
+                addScheduledWorkoutToCalendar = { workout ->
+                    val calendar = Calendar.getInstance()
+                    val splitTime = workout.workoutTime.split(":")
+                    val workoutHour = splitTime.getOrNull(0)?.toIntOrNull() ?: 9
+                    val workoutMinute = splitTime.getOrNull(1)?.toIntOrNull() ?: 0
+                    var byDay = "SA"
+
+                    if (workout.workoutDay == "Monday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 2)
+                        byDay = "MO"
+                    } else if (workout.workoutDay == "Tuesday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 3)
+                        byDay = "TU"
+                    } else if (workout.workoutDay == "Wednesday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 4)
+                        byDay = "WE"
+                    } else if (workout.workoutDay == "Thursday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 5)
+                        byDay = "TH"
+                    } else if (workout.workoutDay == "Friday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 6)
+                        byDay = "FR"
+                    } else if (workout.workoutDay == "Saturday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 7)
+                        byDay = "SA"
+                    } else if (workout.workoutDay == "Sunday") {
+                        calendar.set(Calendar.DAY_OF_WEEK, 1)
+                        byDay = "SU"
+                    }
+
+                    calendar.set(Calendar.HOUR_OF_DAY, workoutHour)
+                    calendar.set(Calendar.MINUTE, workoutMinute)
+
+                    val intent = Intent(Intent.ACTION_INSERT).apply {
+                        data = android.provider.CalendarContract.Events.CONTENT_URI
+                        putExtra(android.provider.CalendarContract.Events.TITLE, workout.workoutName)
+//                        putExtra(android.provider.CalendarContract.Events.EVENT_LOCATION, "Gym")
+                        putExtra(android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
+                       // putExtra(android.provider.CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + 60 * 60 * 1000)
+                        // putExtra(android.provider.CalendarContract.Events.DESCRIPTION, "Workout with ${workout.workoutExercises.size} exercises.")
+                        putExtra(CalendarContract.Events.RRULE, "FREQ=WEEKLY;BYDAY=${byDay}")
+                    }
+
+                    context.startActivity(intent)
+
+                }
             )
             Spacer(modifier = Modifier.height(19.dp))
 
@@ -123,7 +173,8 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 @Composable
 fun WorkoutScheduleRow(
         workoutWithExercises: ScheduledWorkoutWithExercises,
-        navAddExercises: (Int) -> Unit
+        navAddExercises: (Int) -> Unit,
+        addScheduledWorkoutToCalendar: (ScheduledWorkoutWithExercises) -> Unit
     ) {
 
     Row(
@@ -151,6 +202,21 @@ fun WorkoutScheduleRow(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Normal
                 )
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = "Add to Calendar",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Medium,
+                    color = SecondPurple
+                ),
+                modifier = Modifier
+                    .clickable {
+                        addScheduledWorkoutToCalendar(workoutWithExercises)
+                    }
             )
         }
 
