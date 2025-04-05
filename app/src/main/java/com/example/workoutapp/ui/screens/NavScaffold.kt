@@ -309,9 +309,9 @@ fun NavScaffold(
 
             composable(route = AppScreen.EditSchedule.route) {
                 EditScheduleScreen(
-                    navAddExercises = { tempWorkoutPlanId: Int ->
+                    navAddExercises = { workoutPlanId: Int ->
                         // Navigate with ID only
-                        navController.navigate("editScheduledExercises/${tempWorkoutPlanId}")
+                        navController.navigate("editScheduledExercises/${workoutPlanId}")
                     }
                 )
             }

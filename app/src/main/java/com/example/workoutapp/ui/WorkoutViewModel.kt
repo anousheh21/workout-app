@@ -262,6 +262,8 @@ class WorkoutViewModel() : ViewModel() {
         }
     }
 
+    
+
     // DUMMY DATA FOR DEVELOPMENT - CAN DELETE BEFORE SUBMISSION
     fun clearAllWorkouts(context: Context) {
         val db = DatabaseProvider.getDatabase(context)

@@ -18,5 +18,8 @@ import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExe
 fun EditScheduledExercises(workoutPlanId: Int) {
     val scrollState = rememberScrollState()
 
+    // Load in relevant exercises
+
+    Text("$workoutPlanId")
 
 }

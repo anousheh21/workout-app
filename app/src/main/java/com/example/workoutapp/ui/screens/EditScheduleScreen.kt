@@ -52,6 +52,7 @@ import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
+import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
@@ -98,46 +99,65 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 //            SingleWorkoutScheduleEdit(navAddExercises = { navAddExercises(id) })
 //        }
 
-        Column(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-        ) {
-            Spacer(modifier = Modifier.height(42.dp))
-            AddNewWorkoutScheduleEdit(0) {
-                showWorkoutModal = true
-            }
-            Spacer(modifier = Modifier.height(27.dp))
-//            SaveWorkoutSchedule()
-            scheduledWorkoutWithExercises.forEach { item ->
-                // Workout Info
-                Text(
-                    text = item.workoutName,
-                    style = MaterialTheme.typography.titleMedium
-                )
-                Text(
-                    text = "${item.workoutDay} at ${item.workoutTime}",
-                    style = MaterialTheme.typography.bodyMedium
-                )
+        scheduledWorkoutWithExercises.forEach { item ->
+            WorkoutScheduleRow(
+                workoutWithExercises = item,
+                navAddExercises
+//                viewExercises = {
+//                    // sort navigation to navigate to a page with all the exexrcesis
+//                    satoeusantoeuhasntoeuh
+//                }
+            )
 
-                Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = "Exercises:",
-                    style = MaterialTheme.typography.labelLarge
-                )
-
-                // Exercises list
-                item.workoutExercises.forEach { ex ->
-                    Text(
-                        text = "• ${ex.exerciseName} (${ex.muscleGroup}) - ${ex.setNumber} sets",
-                        style = MaterialTheme.typography.bodySmall
-                    )
-                }
-
-                Spacer(modifier = Modifier.height(24.dp)) // Space between workouts
-            }
-            Spacer(modifier = Modifier.height(75.dp))
-
+            Divider(
+                color = SeparatorGrey,
+                thickness = 1.dp,
+            )
         }
+
+        AddNewWorkoutScheduleEdit(0) {
+            showWorkoutModal = true
+        }
+//        Column(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalAlignment = Alignment.CenterHorizontally,
+//        ) {
+//            Spacer(modifier = Modifier.height(42.dp))
+//            AddNewWorkoutScheduleEdit(0) {
+//                showWorkoutModal = true
+//            }
+//            Spacer(modifier = Modifier.height(27.dp))
+////            SaveWorkoutSchedule()
+//            scheduledWorkoutWithExercises.forEach { item ->
+//                // Workout Info
+//                Text(
+//                    text = item.workoutName,
+//                    style = MaterialTheme.typography.titleMedium
+//                )
+//                Text(
+//                    text = "${item.workoutDay} at ${item.workoutTime}",
+//                    style = MaterialTheme.typography.bodyMedium
+//                )
+//
+//                Spacer(modifier = Modifier.height(8.dp))
+//                Text(
+//                    text = "Exercises:",
+//                    style = MaterialTheme.typography.labelLarge
+//                )
+//
+//                // Exercises list
+//                item.workoutExercises.forEach { ex ->
+//                    Text(
+//                        text = "• ${ex.exerciseName} (${ex.muscleGroup}) - ${ex.setNumber} sets",
+//                        style = MaterialTheme.typography.bodySmall
+//                    )
+//                }
+//
+//                Spacer(modifier = Modifier.height(24.dp)) // Space between workouts
+//            }
+//            Spacer(modifier = Modifier.height(75.dp))
+//
+//        }
     }
 
     if (showWorkoutModal) {
@@ -147,35 +167,55 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     }
 }
 
-
-
-
-
-
-
 @Composable
-fun SaveWorkoutSchedule() {
-    Button(
-        onClick = { saveSchedule() },
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
-        contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
+fun WorkoutScheduleRow(
+        workoutWithExercises: ScheduledWorkoutWithExercises,
+        navAddExercises: (Int) -> Unit
+    ) {
+    Row(
         modifier = Modifier
-            .width(102.dp)
+            .fillMaxWidth()
+            .padding(horizontal = 32.dp),
+        horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Text(
-            text = "Save",
+            text = "${workoutWithExercises.workoutName} -",
             style = TextStyle(
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold
+                fontSize = 16.sp,
+                fontWeight = FontWeight.Medium
             )
         )
+
+        Text(
+            text = "${workoutWithExercises.workoutDay}'s at ${workoutWithExercises.workoutTime}",
+            style = TextStyle(
+                fontSize = 14.sp,
+                fontWeight = FontWeight.Normal
+            )
+        )
+
+        Button(
+            onClick = { navAddExercises(workoutWithExercises.workoutPlanId) }
+        ) {
+            Text(
+                text = "View Exercises",
+                style = TextStyle(
+                    fontSize = 12.sp,
+                    fontWeight = FontWeight.Normal,
+                    color = SecondPurple
+                )
+            )
+        }
     }
 }
 
-fun saveSchedule() {
-    TODO("Not yet implemented")
-}
+
+
+
+
+
+
+
 
 
 
