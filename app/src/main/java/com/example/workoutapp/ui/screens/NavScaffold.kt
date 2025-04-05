@@ -258,9 +258,27 @@ fun NavScaffold(
             }
         }
     ) { innerPadding ->
+//        if (showExerciseModal) {
+//            Dialog(onDismissRequest = {
+//                showExerciseModal = false
+//                viewModel.loadPlannedExercises(context)
+//            }) {
+//                SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
+//            }
+//        }
         if (showExerciseModal) {
-            Dialog(onDismissRequest = { showExerciseModal = false }) {
-                SingleExerciseScheduleEdit(onModalClose = { showExerciseModal = false })
+            Dialog(
+                onDismissRequest = {
+                    showExerciseModal = false
+                    viewModel.loadPlannedExercises(context)
+                }
+            ) {
+                SingleExerciseScheduleEdit(
+                    onModalClose = {
+                        showExerciseModal = false
+                        viewModel.loadPlannedExercises(context)
+                    }
+                )
             }
         }
         NavHost(

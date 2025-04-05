@@ -34,6 +34,8 @@ class WorkoutViewModel() : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 plannedExerciseDao.insert(exercise)
+                val data = plannedExerciseDao.getAll()
+                _plannedExercisesArray.value = data
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Exercises:", e)
             }

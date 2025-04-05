@@ -44,7 +44,7 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 @Composable
 fun PBs() {
     val scrollState = rememberScrollState()
-    // var showExerciseModal by remember { mutableStateOf(false) }
+    //var showExerciseModal by remember { mutableStateOf(false) }
 
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
@@ -53,7 +53,8 @@ fun PBs() {
         vm.loadPlannedExercises(context)
     }
 
-    val plannedExercisesArray = vm.plannedExercisesArray
+    // val plannedExercisesArray = vm.plannedExercisesArray
+    val plannedExercisesArray by vm::plannedExercisesArray
 
 //    var nextExerciseId by remember { mutableStateOf(1) }
 //    val exerciseIds = remember { mutableStateListOf<Int>() }

@@ -141,6 +141,8 @@ fun SingleWorkoutScheduleEdit(
                     plannedExerciseIds = plannedExerciseIds
                 )
 
+//                vm.loadPlannedExercises(context)
+
                 onModalClose()
             }
         )
