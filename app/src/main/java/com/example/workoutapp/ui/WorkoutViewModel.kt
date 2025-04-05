@@ -262,7 +262,7 @@ class WorkoutViewModel() : ViewModel() {
         }
     }
 
-    
+    // private val _exercisesForScheduledWorkout = mutableStateOf<
 
     // DUMMY DATA FOR DEVELOPMENT - CAN DELETE BEFORE SUBMISSION
     fun clearAllWorkouts(context: Context) {
