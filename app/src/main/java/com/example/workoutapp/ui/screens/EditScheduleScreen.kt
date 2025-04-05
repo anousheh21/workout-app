@@ -94,10 +94,12 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     ) {
 
         scheduledWorkoutWithExercises.forEach { item ->
+            Spacer(modifier = Modifier.height(19.dp))
             WorkoutScheduleRow(
                 workoutWithExercises = item,
                 navAddExercises
             )
+            Spacer(modifier = Modifier.height(19.dp))
 
             Divider(
                 color = SeparatorGrey,
@@ -122,40 +124,60 @@ fun WorkoutScheduleRow(
         workoutWithExercises: ScheduledWorkoutWithExercises,
         navAddExercises: (Int) -> Unit
     ) {
+
     Row(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        Text(
-            text = "${workoutWithExercises.workoutName} -",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            )
-        )
 
-        Text(
-            text = "${workoutWithExercises.workoutDay}'s at ${workoutWithExercises.workoutTime}",
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal
-            )
-        )
-
-        Button(
-            onClick = { navAddExercises(workoutWithExercises.workoutPlanId) }
-        ) {
+        Column() {
             Text(
-                text = "View Exercises",
+                text = workoutWithExercises.workoutName,
                 style = TextStyle(
-                    fontSize = 12.sp,
-                    fontWeight = FontWeight.Normal,
-                    color = SecondPurple
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.Medium
+                )
+            )
+
+            Spacer(modifier = Modifier.height(6.dp))
+
+            Text(
+                text = "${workoutWithExercises.workoutDay}'s at ${workoutWithExercises.workoutTime}",
+                style = TextStyle(
+                    fontSize = 14.sp,
+                    fontWeight = FontWeight.Normal
                 )
             )
         }
+
+
+        Text(
+            text = "View Exercises",
+            style = TextStyle(
+                fontSize = 12.sp,
+                fontWeight = FontWeight.Normal,
+                color = SecondPurple
+            ),
+            modifier = Modifier
+                .clickable{
+                    navAddExercises(workoutWithExercises.workoutPlanId)
+                }
+        )
+
+//        Button(
+//            onClick = { navAddExercises(workoutWithExercises.workoutPlanId) }
+//        ) {
+//            Text(
+//                text = "View Exercises",
+//                style = TextStyle(
+//                    fontSize = 12.sp,
+//                    fontWeight = FontWeight.Normal,
+//                    color = SecondPurple
+//                )
+//            )
+//        }
     }
 }
 
