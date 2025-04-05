@@ -90,7 +90,8 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     Column(
         modifier = Modifier
-            .verticalScroll(scrollState)
+            .verticalScroll(scrollState),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
         scheduledWorkoutWithExercises.forEach { item ->
@@ -106,7 +107,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 thickness = 1.dp,
             )
         }
-
+        Spacer(modifier = Modifier.height(50.dp))
         AddNewWorkoutScheduleEdit(0) {
             showWorkoutModal = true
         }
@@ -166,19 +167,6 @@ fun WorkoutScheduleRow(
                     navAddExercises(workoutWithExercises.workoutPlanId)
                 }
         )
-
-//        Button(
-//            onClick = { navAddExercises(workoutWithExercises.workoutPlanId) }
-//        ) {
-//            Text(
-//                text = "View Exercises",
-//                style = TextStyle(
-//                    fontSize = 12.sp,
-//                    fontWeight = FontWeight.Normal,
-//                    color = SecondPurple
-//                )
-//            )
-//        }
     }
 }
 
