@@ -14,6 +14,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
@@ -38,9 +39,14 @@ fun EditScheduledExercises(workoutPlanId: Int) {
 
     Column() {
         relevantExercises.forEach { item ->
-            Text("$item")
+            ScheduledExerciseRow(exercise = item)
         }
     }
+}
 
-
+@Composable
+fun ScheduledExerciseRow(
+    exercise: PlannedExercise
+) {
+    Text("$exercise")
 }
