@@ -88,25 +88,15 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     val scheduledWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
 
-//    var nextWorkoutPlanId by remember { mutableStateOf(1) }
-//    val workoutIds = remember { mutableStateListOf<Int>() }
-
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
-//        workoutIds.forEach { id ->
-//            SingleWorkoutScheduleEdit(navAddExercises = { navAddExercises(id) })
-//        }
 
         scheduledWorkoutWithExercises.forEach { item ->
             WorkoutScheduleRow(
                 workoutWithExercises = item,
                 navAddExercises
-//                viewExercises = {
-//                    // sort navigation to navigate to a page with all the exexrcesis
-//                    satoeusantoeuhasntoeuh
-//                }
             )
 
             Divider(
@@ -118,46 +108,6 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
         AddNewWorkoutScheduleEdit(0) {
             showWorkoutModal = true
         }
-//        Column(
-//            modifier = Modifier.fillMaxWidth(),
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//        ) {
-//            Spacer(modifier = Modifier.height(42.dp))
-//            AddNewWorkoutScheduleEdit(0) {
-//                showWorkoutModal = true
-//            }
-//            Spacer(modifier = Modifier.height(27.dp))
-////            SaveWorkoutSchedule()
-//            scheduledWorkoutWithExercises.forEach { item ->
-//                // Workout Info
-//                Text(
-//                    text = item.workoutName,
-//                    style = MaterialTheme.typography.titleMedium
-//                )
-//                Text(
-//                    text = "${item.workoutDay} at ${item.workoutTime}",
-//                    style = MaterialTheme.typography.bodyMedium
-//                )
-//
-//                Spacer(modifier = Modifier.height(8.dp))
-//                Text(
-//                    text = "Exercises:",
-//                    style = MaterialTheme.typography.labelLarge
-//                )
-//
-//                // Exercises list
-//                item.workoutExercises.forEach { ex ->
-//                    Text(
-//                        text = "• ${ex.exerciseName} (${ex.muscleGroup}) - ${ex.setNumber} sets",
-//                        style = MaterialTheme.typography.bodySmall
-//                    )
-//                }
-//
-//                Spacer(modifier = Modifier.height(24.dp)) // Space between workouts
-//            }
-//            Spacer(modifier = Modifier.height(75.dp))
-//
-//        }
     }
 
     if (showWorkoutModal) {
