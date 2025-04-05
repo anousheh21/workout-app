@@ -129,7 +129,8 @@ fun WorkoutScheduleRow(
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = 32.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
+        horizontalArrangement = Arrangement.SpaceBetween,
+        verticalAlignment = Alignment.CenterVertically
     ) {
 
         Column() {
@@ -156,7 +157,7 @@ fun WorkoutScheduleRow(
         Text(
             text = "View Exercises",
             style = TextStyle(
-                fontSize = 12.sp,
+                fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,
                 color = SecondPurple
             ),
