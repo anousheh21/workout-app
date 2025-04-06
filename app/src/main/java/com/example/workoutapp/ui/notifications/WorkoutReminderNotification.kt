@@ -33,9 +33,11 @@ fun scheduleWorkoutNotification(
         putExtra("workoutDay", workoutDay)
     }
 
+    val requestId = (workoutName + timeString + workoutDay).hashCode()
+
     val pendingIntent = PendingIntent.getBroadcast(
         context,
-        dayInt, // You can make this more unique if needed
+        requestId,
         intent,
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
@@ -74,16 +76,17 @@ fun showScheduledWorkoutNotification(
         flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
     }
 
+    val requestId = (workoutName + timeString + workoutDay).hashCode()
     val pendingIntent = PendingIntent.getActivity(
         context,
-        dayInt,
+        requestId,
         intent,
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setContentTitle("Workout Scheduled in 1 Hour")
-        .setContentText("You have a $workoutName workout at $timeString on $workoutDay.")
+        .setContentText("You have a $workoutName workout at $timeString on $workoutDay")
         .setSmallIcon(android.R.drawable.ic_dialog_info)
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
         .setContentIntent(pendingIntent)
@@ -109,6 +112,9 @@ class NotificationReceiver : BroadcastReceiver() {
             val workoutName = intent?.getStringExtra("workoutName") ?: "Unnamed"
             val workoutDay = intent?.getStringExtra("workoutDay") ?: "Monday"
             showScheduledWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
+
+            // Reschedule the notification, so it appears every week
+            scheduleWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
         }
     }
 }
