@@ -18,60 +18,6 @@ import java.util.Calendar
 const val CHANNEL_ID = "scheduled-workout-notification"
 const val NOTIFICATION_ID = 1
 
-//@SuppressLint("ScheduleExactAlarm")
-//fun showScheduledWorkoutNotification(context: Context, dayInt: Int, timeString: String, workoutName: String, workoutDay: String) {
-//    val (workoutHour, workoutMinute) = timeString.split(":").map { it.toInt() }
-//
-//    val calendar = Calendar.getInstance().apply {
-//        set(Calendar.DAY_OF_WEEK, dayInt)
-//        set(Calendar.HOUR_OF_DAY, workoutHour)
-//        set(Calendar.MINUTE, workoutMinute)
-//    }
-//
-//
-//    val intent = Intent(context, MainActivity::class.java).apply {
-//        flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
-//    }
-//
-//    //val pendingIntent: PendingIntent = PendingIntent.getActivity(context, 0, intent, PendingIntent.FLAG_IMMUTABLE)
-//
-//    val pendingIntent = PendingIntent.getActivity(
-//        context,
-//        dayInt,
-//        intent,
-//        PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
-//    )
-//
-//    val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
-//    alarmManager.setExactAndAllowWhileIdle(
-//        AlarmManager.RTC_WAKEUP,
-//        calendar.timeInMillis,
-//        pendingIntent
-//    )
-//
-//// @SuppressLint("StaticFieldLeak")
-//    val builder = NotificationCompat.Builder(context, CHANNEL_ID)
-//        .setContentTitle("Workout Scheduled in 1 Hour")
-//        .setContentText("You have a $workoutName workout scheduled at $timeString today ($workoutDay)")
-//        .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-//        .setContentIntent(pendingIntent)
-//        .setAutoCancel(true)
-//
-//
-//    with(NotificationManagerCompat.from(context)) {
-//        if (androidx.core.app.ActivityCompat.checkSelfPermission(
-//                context,
-//                android.Manifest.permission.POST_NOTIFICATIONS
-//            ) != android.content.pm.PackageManager.PERMISSION_GRANTED
-//        ) {
-//
-//
-//            return
-//        }
-//        notify(NOTIFICATION_ID, builder.build())
-//    }
-//}
-
 @SuppressLint("ScheduleExactAlarm")
 fun scheduleWorkoutNotification(
     context: Context,
