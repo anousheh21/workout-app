@@ -22,8 +22,11 @@ import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.data.WorkoutDao
 import com.example.workoutapp.data.WorkoutDetails
+import com.example.workoutapp.ui.notifications.scheduleWorkoutNotification
+import com.example.workoutapp.ui.notifications.showScheduledWorkoutNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 class WorkoutViewModel() : ViewModel() {
 
@@ -156,6 +159,25 @@ class WorkoutViewModel() : ViewModel() {
                 }
 
                 scheduledWorkoutExerciseDao.insertMultiple(scheduledWorkoutExercises)
+
+                // SCHEDULE A NEW NOTIFICATION
+                val workoutDay = workout.workoutDay
+                val workoutTime = workout.workoutTime
+                val workoutName = workout.workoutName
+
+
+                val dayInt = when (workoutDay.lowercase()) {
+                    "monday" -> Calendar.MONDAY
+                    "tuesday" -> Calendar.TUESDAY
+                    "wednesday" -> Calendar.WEDNESDAY
+                    "thursday" -> Calendar.THURSDAY
+                    "friday" -> Calendar.FRIDAY
+                    "saturday" -> Calendar.SATURDAY
+                    "sunday" -> Calendar.SUNDAY
+                    else -> Calendar.MONDAY
+                }
+
+                scheduleWorkoutNotification(context, dayInt, workoutTime, workoutName, workoutDay)
 
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error inserting scheduled workout with exercises", e)

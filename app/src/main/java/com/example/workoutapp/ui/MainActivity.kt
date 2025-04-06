@@ -1,8 +1,10 @@
 package com.example.workoutapp.ui
 
+import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -12,10 +14,19 @@ import androidx.compose.ui.tooling.preview.Preview
 import com.example.workoutapp.R
 import com.example.workoutapp.ui.screens.NavScaffold
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
+import android.provider.Settings
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        createNotificationChannel()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
+            if (!alarmManager.canScheduleExactAlarms()) {
+                val intent = Intent(Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM)
+                startActivity(intent)
+            }
+        }
         setContent {
             WorkoutAppTheme {
                 NavScaffold()
