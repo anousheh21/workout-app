@@ -47,6 +47,8 @@ fun ExerciseLogSingle(workoutId: Int) {
         val exerciseDao = db.exerciseDao()
         exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
         val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+
+        // GET WORKOUT INFO
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -65,7 +67,11 @@ fun ExerciseLogSingle(workoutId: Int) {
             shareWorkout = { workoutId, exercises ->
                 return@ShareSheetButton Intent(Intent.ACTION_SEND).apply {
                     type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT, "hi")
+                    putExtra(Intent.EXTRA_TEXT,
+                        "$" +
+                            "\nEXERCISES COMPLETED:" +
+                            "\n"
+                    )
                 }
             })
     }
