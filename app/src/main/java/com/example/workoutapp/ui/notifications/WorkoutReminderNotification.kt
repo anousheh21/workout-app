@@ -26,6 +26,9 @@ fun scheduleWorkoutNotification(
     workoutName: String,
     workoutDay: String
 ) {
+
+
+
     val intent = Intent(context, NotificationReceiver::class.java).apply {
         putExtra("dayInt", dayInt)
         putExtra("timeString", timeString)
@@ -44,16 +47,18 @@ fun scheduleWorkoutNotification(
 
     val (hour, minute) = timeString.split(":").map { it.toInt() }
 
+
     val calendar = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_WEEK, dayInt)
-        set(Calendar.HOUR_OF_DAY, hour)
+        set(Calendar.HOUR_OF_DAY, hour - 1)
         set(Calendar.MINUTE, minute)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
-        if (before(Calendar.getInstance())) {
-            add(Calendar.WEEK_OF_YEAR, 1)
-        }
+        // Sets the notification for one hour before the workout
+        //add(Calendar.HOUR_OF_DAY, -1)
     }
+
+
 
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.setExactAndAllowWhileIdle(

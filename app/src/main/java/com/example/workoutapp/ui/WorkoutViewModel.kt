@@ -177,6 +177,7 @@ class WorkoutViewModel() : ViewModel() {
                     else -> Calendar.MONDAY
                 }
 
+
                 scheduleWorkoutNotification(context, dayInt, workoutTime, workoutName, workoutDay)
 
             } catch (e: Exception) {
