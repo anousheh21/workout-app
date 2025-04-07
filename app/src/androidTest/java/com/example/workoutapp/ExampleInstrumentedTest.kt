@@ -17,6 +17,7 @@ import org.junit.runner.RunWith
 
 import org.junit.Assert.*
 import org.junit.Before
+import java.lang.IllegalArgumentException
 
 /**
  * Instrumented test, which will execute on an Android device.
@@ -123,5 +124,10 @@ class WorkoutContentProviderTest {
         assertNotNull(cursor)
         assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
         cursor.close()
+    }
+
+    @Test(expected = IllegalArgumentException::class)
+    fun testQueryInvalidUri() {
+        resolver.query(Uri.parse("content://com.example.workoutapp.provider/invalid"), null, null, null, null)
     }
 }

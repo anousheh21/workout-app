@@ -17,6 +17,9 @@
       <entry key="testQueryAllScheduledWorkouts()">
         <State />
       </entry>
+      <entry key="testQueryInvalidUri()">
+        <State />
+      </entry>
     </value>
   </component>
 </project>
