@@ -26,6 +26,10 @@
             </intent-filter>
         </activity>
         <receiver android:name=".ui.notifications.NotificationReceiver" />
+        <provider
+            android:name=".provider.WorkoutContentProvider"
+            android:authorities="com.example.workoutapp.provider"
+            android:exported="false" />
     </application>
 
 </manifest>
