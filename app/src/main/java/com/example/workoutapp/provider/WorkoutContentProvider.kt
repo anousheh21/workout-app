@@ -20,6 +20,7 @@ class WorkoutContentProvider: ContentProvider() {
     override fun onCreate(): Boolean {
         // Get an instance of the workoutDAO, to use the Room database
         workoutDao = DatabaseProvider.getDatabase(context!!).workoutDao()
+        scheduledWorkoutDao = DatabaseProvider.getDatabase(context!!).scheduledWorkoutDao()
         // If provider was loaded successfully, return true
         return true
     }

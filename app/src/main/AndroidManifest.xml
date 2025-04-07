@@ -29,7 +29,7 @@
         <provider
             android:name=".provider.WorkoutContentProvider"
             android:authorities="com.example.workoutapp.provider"
-            android:exported="false" />
+            android:exported="true" />
     </application>
 
 </manifest>
