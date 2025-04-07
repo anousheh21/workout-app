@@ -1,5 +1,6 @@
 package com.example.workoutapp.data
 
+import android.database.Cursor
 import androidx.room.*
 import org.jetbrains.annotations.Async.Schedule
 
@@ -25,6 +26,20 @@ interface ScheduledWorkoutDao {
 
     @Delete
     suspend fun delete(scheduledWorkout: ScheduledWorkout)
+
+    // For the content provider
+    @Query("SELECT * FROM scheduledWorkouts")
+    fun getAllScheduledWorkoutsCursor(): Cursor
+
+    @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
+    fun getByIdCursor(id: Int): Cursor
+
+    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    fun insertForContProv(scheduledWorkout: ScheduledWorkout): Long
+
+    @Delete
+    fun deleteForContProv(scheduledWorkout: ScheduledWorkout): Int
+
 }
 
 @Dao
