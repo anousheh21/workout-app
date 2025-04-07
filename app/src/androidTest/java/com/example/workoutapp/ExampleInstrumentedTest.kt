@@ -101,4 +101,27 @@ class WorkoutContentProviderTest {
         Log.d("testInsertScheduledWorkout", scheduledWorkoutId.toString())
         assertTrue(scheduledWorkoutId > 0)
     }
+
+    @Test
+    fun testDeleteScheduledWorkout() {
+        // Insert a scheduled workout first
+        val uri = WorkoutContract.ScheduledWorkouts.CONTENT_URI
+        val values = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Test Workout 2")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Tuesday")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "10:45")
+        }
+
+        val insertUri = resolver.insert(uri, values)
+        assertNotNull("Insert failed", insertUri)
+
+        // Delete the scheduled workout
+        val deleteCount = resolver.delete(insertUri!!, null, null)
+        assertEquals("Delete failed", 1, deleteCount)
+
+        val cursor = resolver.query(insertUri, null, null, null, null)
+        assertNotNull(cursor)
+        assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
+        cursor.close()
+    }
 }
