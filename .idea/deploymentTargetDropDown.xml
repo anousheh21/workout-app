@@ -8,6 +8,9 @@
       <entry key="app">
         <State />
       </entry>
+      <entry key="testInsertScheduledWorkout()">
+        <State />
+      </entry>
       <entry key="testQueryAllScheduledWorkouts()">
         <State />
       </entry>

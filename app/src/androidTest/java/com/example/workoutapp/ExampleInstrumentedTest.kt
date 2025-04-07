@@ -1,6 +1,7 @@
 package com.example.workoutapp
 
 import android.content.ContentResolver
+import android.content.ContentUris
 import android.content.ContentValues
 import android.content.Context
 import android.net.Uri
@@ -81,5 +82,23 @@ class WorkoutContentProviderTest {
         } while (cursor.moveToNext())
 
         cursor.close()
+    }
+
+    @Test
+    fun testInsertScheduledWorkout() {
+        // Test inserting a scheduled workout
+        val values = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Test Workout")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Wednesday")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "06:30")
+        }
+
+        Log.d("testInsertScheduledWorkout", values.toString())
+        val uri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, values)
+        assertNotNull(uri)
+        Log.d("testInsertScheduledWorkout", uri.toString())
+        val scheduledWorkoutId = ContentUris.parseId(uri!!)
+        Log.d("testInsertScheduledWorkout", scheduledWorkoutId.toString())
+        assertTrue(scheduledWorkoutId > 0)
     }
 }
