@@ -43,4 +43,16 @@ object WorkoutContract {
         const val COLUMN_WORKOUT_PLAN_ID = "workoutPlanId"
         const val COLUMN_PLANNED_EXERCISE_ID = "plannedExerciseId"
     }
+
+    object Workouts {
+        const val PATH_WORKOUTS = "workouts"
+        val CONTENT_URI: Uri =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_WORKOUTS)
+
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.$AUTHORITY.$PATH_WORKOUTS"
+        const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.$AUTHORITY.$PATH_WORKOUTS"
+
+        const val COLUMN_ID = "workoutId"
+        const val COLUMN_DATE = "workoutDate"
+        const val COLUMN_PLAN_ID = "workoutPlanId"
+    }
 }

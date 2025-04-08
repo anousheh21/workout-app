@@ -5,19 +5,19 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="testDeletePlannedExercise()">
+      <entry key="testDeleteScheduledWorkoutExercise()">
         <State />
       </entry>
-      <entry key="testDeleteScheduledWorkoutExercise()">
+      <entry key="testDeleteWorkout()">
         <State />
       </entry>
       <entry key="testInsertScheduledWorkoutExercise()">
         <State />
       </entry>
-      <entry key="testQueryAllPlannedExercises()">
+      <entry key="testInsertWorkout()">
         <State />
       </entry>
-      <entry key="testQueryAllScheduledWorkoutExercises()">
+      <entry key="testQueryAllWorkouts()">
         <State />
       </entry>
     </value>

@@ -41,6 +41,8 @@ class WorkoutContentProvider: ContentProvider() {
         private const val PLANNED_EXERCISE_ID = 103
         private const val SCHEDULED_WORKOUT_EXERCISES = 104
         private const val SCHEDULED_WORKOUT_EXERCISE_ID = 105
+        private const val WORKOUTS = 106
+        private const val WORKOUT_ID = 107
 
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
             addURI(WorkoutContract.AUTHORITY, WorkoutContract.ScheduledWorkouts.PATH_SCHEDULED_WORKOUTS, SCHEDULED_WORKOUTS)
@@ -48,7 +50,9 @@ class WorkoutContentProvider: ContentProvider() {
             addURI(WorkoutContract.AUTHORITY, WorkoutContract.PlannedExercises.PATH_PLANNED_EXERCISES, PLANNED_EXERCISES)
             addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.PlannedExercises.PATH_PLANNED_EXERCISES}/#", PLANNED_EXERCISE_ID)
             addURI(WorkoutContract.AUTHORITY, WorkoutContract.ScheduledWorkoutExercises.PATH_SCHEDULED_WORKOUT_EXERCISES, SCHEDULED_WORKOUT_EXERCISES)
-            addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.ScheduledWorkoutExercises.PATH_SCHEDULED_WORKOUT_EXERCISES}/#", SCHEDULED_WORKOUT_ID)
+            addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.ScheduledWorkoutExercises.PATH_SCHEDULED_WORKOUT_EXERCISES}/#", SCHEDULED_WORKOUT_EXERCISE_ID)
+            addURI(WorkoutContract.AUTHORITY, WorkoutContract.Workouts.PATH_WORKOUTS, WORKOUTS)
+            addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.Workouts.PATH_WORKOUTS}/#", WORKOUT_ID)
         }
     }
 
@@ -76,6 +80,11 @@ class WorkoutContentProvider: ContentProvider() {
                 val id = ContentUris.parseId(uri)
                 scheduledWorkoutExerciseDao.getCursorById(id.toInt())
             }
+            WORKOUTS -> workoutDao.getAllCursor()
+            WORKOUT_ID -> {
+                val id = ContentUris.parseId(uri)
+                workoutDao.getWorkoutByIdCursor(id.toInt())
+            }
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
@@ -88,6 +97,8 @@ class WorkoutContentProvider: ContentProvider() {
             PLANNED_EXERCISES -> WorkoutContract.PlannedExercises.CONTENT_TYPE
             SCHEDULED_WORKOUT_EXERCISES -> WorkoutContract.ScheduledWorkoutExercises.CONTENT_ITEM_TYPE
             SCHEDULED_WORKOUT_EXERCISE_ID -> WorkoutContract.ScheduledWorkoutExercises.CONTENT_TYPE
+            WORKOUTS -> WorkoutContract.Workouts.CONTENT_ITEM_TYPE
+            WORKOUT_ID -> WorkoutContract.Workouts.CONTENT_TYPE
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
@@ -117,6 +128,13 @@ class WorkoutContentProvider: ContentProvider() {
                     plannedExerciseId = values?.getAsInteger(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID) ?: 0
                 )
                 scheduledWorkoutExerciseDao.insertForContentProvider(scheduledWorkoutExercise)
+            }
+            WORKOUTS -> {
+                val workout = Workout(
+                    workoutDate = values?.getAsString(WorkoutContract.Workouts.COLUMN_DATE) ?: "",
+                    workoutPlanId = values?.getAsInteger(WorkoutContract.Workouts.COLUMN_PLAN_ID) ?: 0
+                )
+                workoutDao.insertForContProv(workout)
             }
             else -> throw IllegalArgumentException("Invalid URI for insert: $uri")
         }
@@ -175,6 +193,22 @@ class WorkoutContentProvider: ContentProvider() {
                     )
                     cursor.close()
                     scheduledWorkoutExerciseDao.deleteForContentProvider(scheduledWorkoutExercise)
+                } else {
+                    cursor.close()
+                    0
+                }
+            }
+            WORKOUT_ID -> {
+                val workoutId = ContentUris.parseId(uri).toInt()
+                val cursor = workoutDao.getWorkoutByIdCursor(workoutId)
+                if (cursor.moveToFirst()) {
+                    val workout = Workout(
+                        workoutId = cursor.getInt(cursor.getColumnIndexOrThrow("workoutId")),
+                        workoutDate = cursor.getString(cursor.getColumnIndexOrThrow("workoutDate")),
+                        workoutPlanId = cursor.getInt(cursor.getColumnIndexOrThrow("workoutPlanId"))
+                    )
+                    cursor.close()
+                    workoutDao.deleteForContProv(workout)
                 } else {
                     cursor.close()
                     0
