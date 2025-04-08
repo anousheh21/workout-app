@@ -62,6 +62,20 @@ interface ScheduledWorkoutExerciseDao {
 
     @Delete
     suspend fun delete(exercise: ScheduledWorkoutExercise)
+
+    // For the ContentProvider
+    @Query("SELECT * FROM scheduledWorkoutExercises")
+    fun getAllCursor(): Cursor
+
+    @Query("SELECT * FROM scheduledWorkoutExercises WHERE workoutPlanId = :planId")
+    fun getCursorById(planId: Int): Cursor
+    
+    @Insert
+    fun insertForContentProvider(scheduledWorkout: ScheduledWorkout): Long
+
+    @Delete
+    fun deleteForContentProvider(scheduledWorkout: ScheduledWorkout): Int
+
 }
 
 @Dao

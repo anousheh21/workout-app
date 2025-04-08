@@ -25,6 +25,7 @@ class WorkoutContentProvider: ContentProvider() {
         workoutDao = DatabaseProvider.getDatabase(context!!).workoutDao()
         scheduledWorkoutDao = DatabaseProvider.getDatabase(context!!).scheduledWorkoutDao()
         plannedExerciseDao = DatabaseProvider.getDatabase(context!!).plannedExerciseDao()
+
         // If provider was loaded successfully, return true
         return true
     }
@@ -58,6 +59,10 @@ class WorkoutContentProvider: ContentProvider() {
                 scheduledWorkoutDao.getByIdCursor(id.toInt())
             }
             PLANNED_EXERCISES -> plannedExerciseDao.getAllPlannedExercises()
+            PLANNED_EXERCISE_ID -> {
+                val id = ContentUris.parseId(uri)
+                plannedExerciseDao.getByIdCursor(id.toInt())
+            }
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
