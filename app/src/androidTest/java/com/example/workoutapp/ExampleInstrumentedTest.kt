@@ -63,9 +63,15 @@ class WorkoutContentProviderTest {
             put(WorkoutContract.PlannedExercises.COLUMN_SET, 4)
         }
 
+        val scheduledWorkoutExerciseValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_WORKOUT_PLAN_ID, 1)
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID, 1)
+        }
+
         Log.d("setup", values.toString())
         val uri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, values)
-        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, values)
+        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)
+        val scheduledWorkoutExerciseUri = resolver.insert(WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI, scheduledWorkoutExerciseValues)
     }
 
     // QUERY TESTS
@@ -122,6 +128,28 @@ class WorkoutContentProviderTest {
         cursor.close()
     }
 
+    // Test to query ScheduledWorkoutExerciseDao
+    @Test
+    fun testQueryAllScheduledWorkoutExercises() {
+        val cursor = resolver.query(WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI, null, null, null, null)
+        assertNotNull(cursor)
+
+        assertTrue("Cursor is empty", cursor!!.moveToFirst())
+
+        do {
+            val id = cursor.getInt(cursor.getColumnIndex(WorkoutContract.ScheduledWorkoutExercises.COLUMN_ID))
+            val workoutPlanId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.ScheduledWorkoutExercises.COLUMN_WORKOUT_PLAN_ID))
+            val plannedExerciseId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID))
+
+            Log.d("testQueryAllScheduledWorkoutExercises", "ID: $id, Workout Plan Id: $workoutPlanId, Planned Exercise Id: $plannedExerciseId")
+            assertTrue(id > 0)
+            assertTrue(workoutPlanId > 0)
+            assertTrue(plannedExerciseId > 0)
+        } while (cursor.moveToNext())
+
+        cursor.close()
+    }
+
     // INSERT TESTS
 
     @Test
@@ -154,6 +182,37 @@ class WorkoutContentProviderTest {
         assertNotNull(uri)
         val plannedExerciseId = ContentUris.parseId(uri!!)
         assertTrue(plannedExerciseId > 0)
+    }
+
+    @Test
+    fun testInsertScheduledWorkoutExercise() {
+        // Insert ScheduledWorkout so we can use a foreign key
+        val scheduledWorkoutValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Arms Workout")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Thursday")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "12:30")
+        }
+        val scheduledWorkoutUri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, scheduledWorkoutValues)!!
+        val scheduledWorkoutId = ContentUris.parseId(scheduledWorkoutUri).toInt()
+
+        // Insert PlannedExercise so we can use the ID as a foreign key
+        val plannedExerciseValues = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Arnold Press")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.SHOULDERS.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
+        }
+        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)!!
+        val plannedExerciseId = ContentUris.parseId(plannedExerciseUri).toInt()
+
+        // Insert scheduledWorkoutExercise values using the values above, since this requires foreign keys
+        val scheduledWorkoutExerciseValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_WORKOUT_PLAN_ID, scheduledWorkoutId)
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID, plannedExerciseId)
+        }
+        val scheduledWorkoutExerciseUri = resolver.insert(WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI, scheduledWorkoutExerciseValues)
+        assertNotNull(scheduledWorkoutExerciseUri)
+        val scheduledWorkoutExerciseId = ContentUris.parseId(scheduledWorkoutExerciseUri!!)
+        assertTrue(scheduledWorkoutExerciseId > 0)
     }
 
     // DELETE TESTS
@@ -200,6 +259,46 @@ class WorkoutContentProviderTest {
         val cursor = resolver.query(insertUri, null, null, null, null)
         assertNotNull(cursor)
         assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
+        cursor.close()
+    }
+
+    @Test
+    fun testDeleteScheduledWorkoutExercise() {
+        // Insert ScheduledWorkout so we can use a foreign key
+        val scheduledWorkoutValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Chest Workout")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Thursday")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "12:00")
+        }
+        val scheduledWorkoutUri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, scheduledWorkoutValues)!!
+        val scheduledWorkoutId = ContentUris.parseId(scheduledWorkoutUri).toInt()
+
+        // Insert PlannedExercise so we can use the ID as a foreign key
+        val plannedExerciseValues = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Rear Deltoid Fly")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.SHOULDERS.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
+        }
+        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)!!
+        val plannedExerciseId = ContentUris.parseId(plannedExerciseUri).toInt()
+
+        val uri = WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI
+        // Insert scheduledWorkoutExercise values using the values above, since this requires foreign keys
+        val scheduledWorkoutExerciseValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_WORKOUT_PLAN_ID, scheduledWorkoutId)
+            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID, plannedExerciseId)
+        }
+
+        val insertUri = resolver.insert(uri, scheduledWorkoutExerciseValues)
+        assertNotNull("Insert failed", insertUri)
+
+        // Delete the scheduled workout exercise
+        val deleteCount = resolver.delete(insertUri!!, null, null)
+        assertEquals("Delete failed", 1, deleteCount)
+
+        val cursor = resolver.query(insertUri, null, null, null, null)
+        assertNotNull(cursor)
+        assertFalse("Scheduled workout exercise should be deleted", cursor!!.moveToFirst())
         cursor.close()
     }
 
