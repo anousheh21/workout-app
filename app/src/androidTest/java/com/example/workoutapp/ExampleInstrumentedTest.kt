@@ -142,6 +142,20 @@ class WorkoutContentProviderTest {
         assertTrue(scheduledWorkoutId > 0)
     }
 
+    @Test
+    fun testInsertPlannedExercise() {
+        val values = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Bicep Curls")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.BICEPS.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
+        }
+
+        val uri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, values)
+        assertNotNull(uri)
+        val plannedExerciseId = ContentUris.parseId(uri!!)
+        assertTrue(plannedExerciseId > 0)
+    }
+
     // DELETE TESTS
 
     @Test
@@ -158,6 +172,28 @@ class WorkoutContentProviderTest {
         assertNotNull("Insert failed", insertUri)
 
         // Delete the scheduled workout
+        val deleteCount = resolver.delete(insertUri!!, null, null)
+        assertEquals("Delete failed", 1, deleteCount)
+
+        val cursor = resolver.query(insertUri, null, null, null, null)
+        assertNotNull(cursor)
+        assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
+        cursor.close()
+    }
+
+    @Test
+    fun testDeletePlannedExercise() {
+        val uri = WorkoutContract.PlannedExercises.CONTENT_URI
+        val values = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Lateral Raises")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.SHOULDERS.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
+        }
+
+        val insertUri = resolver.insert(uri, values)
+        assertNotNull("Insert failed", insertUri)
+
+        // Delete the planned exercise
         val deleteCount = resolver.delete(insertUri!!, null, null)
         assertEquals("Delete failed", 1, deleteCount)
 
