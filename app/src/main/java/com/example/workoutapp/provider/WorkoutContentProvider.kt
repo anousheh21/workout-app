@@ -6,8 +6,10 @@ import android.content.ContentValues
 import android.content.UriMatcher
 import android.database.Cursor
 import android.net.Uri
-import androidx.room.Database
 import com.example.workoutapp.data.DatabaseProvider
+import com.example.workoutapp.data.MuscleGroup
+import com.example.workoutapp.data.PlannedExercise
+import com.example.workoutapp.data.PlannedExerciseDao
 import com.example.workoutapp.data.ScheduledWorkout
 import com.example.workoutapp.data.ScheduledWorkoutDao
 import com.example.workoutapp.data.WorkoutDao
@@ -16,11 +18,13 @@ import java.lang.IllegalArgumentException
 class WorkoutContentProvider: ContentProvider() {
     private lateinit var scheduledWorkoutDao: ScheduledWorkoutDao
     private lateinit var workoutDao: WorkoutDao
+    private lateinit var plannedExerciseDao: PlannedExerciseDao
 
     override fun onCreate(): Boolean {
         // Get an instance of the workoutDAO, to use the Room database
         workoutDao = DatabaseProvider.getDatabase(context!!).workoutDao()
         scheduledWorkoutDao = DatabaseProvider.getDatabase(context!!).scheduledWorkoutDao()
+        plannedExerciseDao = DatabaseProvider.getDatabase(context!!).plannedExerciseDao()
         // If provider was loaded successfully, return true
         return true
     }
@@ -28,10 +32,14 @@ class WorkoutContentProvider: ContentProvider() {
     companion object {
         private const val SCHEDULED_WORKOUTS = 100
         private const val SCHEDULED_WORKOUT_ID = 101
+        private const val PLANNED_EXERCISES = 102
+        private const val PLANNED_EXERCISE_ID = 103
 
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
             addURI(WorkoutContract.AUTHORITY, WorkoutContract.ScheduledWorkouts.PATH_SCHEDULED_WORKOUTS, SCHEDULED_WORKOUTS)
             addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.ScheduledWorkouts.PATH_SCHEDULED_WORKOUTS}/#", SCHEDULED_WORKOUT_ID)
+            addURI(WorkoutContract.AUTHORITY, WorkoutContract.PlannedExercises.PATH_PLANNED_EXERCISES, PLANNED_EXERCISES)
+            addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.PlannedExercises.PATH_PLANNED_EXERCISES}/#", PLANNED_EXERCISE_ID)
         }
     }
 
@@ -49,6 +57,7 @@ class WorkoutContentProvider: ContentProvider() {
                 val id = ContentUris.parseId(uri)
                 scheduledWorkoutDao.getByIdCursor(id.toInt())
             }
+            PLANNED_EXERCISES -> plannedExerciseDao.getAllPlannedExercises()
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
@@ -57,6 +66,8 @@ class WorkoutContentProvider: ContentProvider() {
         return when (uriMatcher.match(uri)) {
             SCHEDULED_WORKOUT_ID -> WorkoutContract.ScheduledWorkouts.CONTENT_ITEM_TYPE
             SCHEDULED_WORKOUTS -> WorkoutContract.ScheduledWorkouts.CONTENT_TYPE
+            PLANNED_EXERCISE_ID -> WorkoutContract.PlannedExercises.CONTENT_ITEM_TYPE
+            PLANNED_EXERCISES -> WorkoutContract.PlannedExercises.CONTENT_TYPE
             else -> throw IllegalArgumentException("Unknown URI: $uri")
         }
     }
@@ -70,6 +81,15 @@ class WorkoutContentProvider: ContentProvider() {
                     workoutTime = values?.getAsString(WorkoutContract.ScheduledWorkouts.COLUMN_TIME) ?: "00:00"
                 )
                 scheduledWorkoutDao.insertForContProv(scheduledWorkout)
+            }
+            PLANNED_EXERCISES -> {
+                val plannedExercise = PlannedExercise(
+                    exerciseName = values?.getAsString(WorkoutContract.PlannedExercises.COLUMN_NAME) ?: "",
+                    // muscleGroup = values?.getAsString(WorkoutContract.PlannedExercises.COLUMN_GROUP) ?: "",
+                    muscleGroup = MuscleGroup.valueOf(values?.getAsString(WorkoutContract.PlannedExercises.COLUMN_GROUP) ?: "CHEST"),
+                    setNumber = values?.getAsInteger(WorkoutContract.PlannedExercises.COLUMN_SET) ?: 3,
+                )
+                plannedExerciseDao.insertPlannedExercise(plannedExercise)
             }
             else -> throw IllegalArgumentException("Invalid URI for insert: $uri")
         }
@@ -95,6 +115,24 @@ class WorkoutContentProvider: ContentProvider() {
                     cursor.close()
                     scheduledWorkoutDao.deleteForContProv(scheduledWorkout)
                 }  else {
+                    cursor.close()
+                    0
+                }
+            }
+            PLANNED_EXERCISE_ID -> {
+                val plannedExerciseId = ContentUris.parseId(uri).toInt()
+                val cursor = plannedExerciseDao.getByIdCursor(plannedExerciseId)
+                if (cursor.moveToFirst()) {
+                    val plannedExercise = PlannedExercise(
+                        plannedExerciseId = cursor.getInt(cursor.getColumnIndexOrThrow("plannedExerciseId")),
+                        exerciseName = cursor.getString(cursor.getColumnIndexOrThrow("exerciseName")),
+                        // muscleGroup = cursor.getString(cursor.getColumnIndexOrThrow("muscleGroup")),
+                        muscleGroup = MuscleGroup.valueOf(cursor.getString(cursor.getColumnIndexOrThrow("muscleGroup"))),
+                        setNumber = cursor.getInt(cursor.getColumnIndexOrThrow("setNumber"))
+                    )
+                    cursor.close()
+                    plannedExerciseDao.deleteForContentProvider(plannedExercise)
+                } else {
                     cursor.close()
                     0
                 }

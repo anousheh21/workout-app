@@ -2,9 +2,6 @@
 <project version="4">
   <component name="deploymentTargetDropDown">
     <value>
-      <entry key="WorkoutDetailScreenPreview">
-        <State />
-      </entry>
       <entry key="app">
         <State />
       </entry>
@@ -12,6 +9,9 @@
         <State />
       </entry>
       <entry key="testInsertScheduledWorkout()">
+        <State />
+      </entry>
+      <entry key="testQueryAllPlannedExercises()">
         <State />
       </entry>
       <entry key="testQueryAllScheduledWorkouts()">

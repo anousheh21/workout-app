@@ -9,6 +9,7 @@ import android.util.Log
 import androidx.test.core.app.ApplicationProvider
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.ext.junit.runners.AndroidJUnit4
+import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.provider.WorkoutContract
 
@@ -56,10 +57,20 @@ class WorkoutContentProviderTest {
             put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "09:00")
         }
 
+        val plannedExerciseValues = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Bench Press")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.CHEST.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 4)
+        }
+
         Log.d("setup", values.toString())
         val uri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, values)
+        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, values)
     }
 
+    // QUERY TESTS
+
+    // Test to query the ScheduledWorkoutDao
     @Test
     fun testQueryAllScheduledWorkouts() {
         val cursor = resolver.query(WorkoutContract.ScheduledWorkouts.CONTENT_URI, null, null, null, null)
@@ -85,6 +96,34 @@ class WorkoutContentProviderTest {
         cursor.close()
     }
 
+    // Test to query the PlannedExerciseDao
+    @Test
+    fun testQueryAllPlannedExercises() {
+        val cursor = resolver.query(WorkoutContract.PlannedExercises.CONTENT_URI, null, null, null, null,)
+        assertNotNull(cursor)
+
+        assertTrue("Cursor is empty", cursor!!.moveToFirst())
+
+        do {
+            val plannedExerciseId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.PlannedExercises.COLUMN_ID))
+            val exerciseName = cursor.getString(cursor.getColumnIndex(WorkoutContract.PlannedExercises.COLUMN_NAME))
+            // val muscleGroup = cursor.getString(cursor.getColumnIndex(WorkoutContract.PlannedExercises.COLUMN_GROUP))
+            val muscleGroup = MuscleGroup.valueOf(cursor.getString(cursor.getColumnIndex(WorkoutContract.PlannedExercises.COLUMN_GROUP)))
+            val setNumber = cursor.getInt(cursor.getColumnIndex(WorkoutContract.PlannedExercises.COLUMN_SET))
+
+            Log.d("testQueryAllPlannedExercises", "ID: $plannedExerciseId, Name: $exerciseName, Muscle Group: $muscleGroup, Set Number: $setNumber")
+
+            assertTrue(plannedExerciseId > 0)
+            assertNotNull(exerciseName)
+            assertNotNull(muscleGroup)
+            assertTrue(setNumber >= 0)
+        } while (cursor.moveToNext())
+
+        cursor.close()
+    }
+
+    // INSERT TESTS
+
     @Test
     fun testInsertScheduledWorkout() {
         // Test inserting a scheduled workout
@@ -102,6 +141,8 @@ class WorkoutContentProviderTest {
         Log.d("testInsertScheduledWorkout", scheduledWorkoutId.toString())
         assertTrue(scheduledWorkoutId > 0)
     }
+
+    // DELETE TESTS
 
     @Test
     fun testDeleteScheduledWorkout() {
@@ -125,6 +166,8 @@ class WorkoutContentProviderTest {
         assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
         cursor.close()
     }
+
+    // MISCELLANEOUS TESTS
 
     @Test(expected = IllegalArgumentException::class)
     fun testQueryInvalidUri() {

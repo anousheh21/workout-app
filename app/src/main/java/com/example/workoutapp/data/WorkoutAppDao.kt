@@ -77,6 +77,19 @@ interface PlannedExerciseDao {
 
     @Delete
     suspend fun delete(exercise: PlannedExercise)
+
+    // For the ContentProvider
+    @Query("SELECT * FROM plannedExercise")
+    fun getAllPlannedExercises(): Cursor
+
+    @Insert
+    fun insertPlannedExercise(plannedExercise: PlannedExercise): Long
+
+    @Delete
+    fun deleteForContentProvider(plannedExercise: PlannedExercise): Int
+
+    @Query("SELECT * FROM plannedExercise WHERE plannedExerciseId = :id")
+    fun getByIdCursor(id: Int): Cursor
 }
 
 @Dao
