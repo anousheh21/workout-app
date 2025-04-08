@@ -69,12 +69,12 @@ interface ScheduledWorkoutExerciseDao {
 
     @Query("SELECT * FROM scheduledWorkoutExercises WHERE workoutPlanId = :planId")
     fun getCursorById(planId: Int): Cursor
-    
+
     @Insert
-    fun insertForContentProvider(scheduledWorkout: ScheduledWorkout): Long
+    fun insertForContentProvider(scheduledWorkoutExercise: ScheduledWorkoutExercise): Long
 
     @Delete
-    fun deleteForContentProvider(scheduledWorkout: ScheduledWorkout): Int
+    fun deleteForContentProvider(scheduledWorkoutExercise: ScheduledWorkoutExercise): Int
 
 }
 

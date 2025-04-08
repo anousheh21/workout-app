@@ -39,6 +39,7 @@ object WorkoutContract {
         const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.$AUTHORITY.$PATH_SCHEDULED_WORKOUT_EXERCISES"
         const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.$AUTHORITY.$PATH_SCHEDULED_WORKOUT_EXERCISES"
 
+        const val COLUMN_ID = "id"
         const val COLUMN_WORKOUT_PLAN_ID = "workoutPlanId"
         const val COLUMN_PLANNED_EXERCISE_ID = "plannedExerciseId"
     }
