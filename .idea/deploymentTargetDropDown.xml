@@ -5,10 +5,10 @@
       <entry key="app">
         <State />
       </entry>
-      <entry key="testDeleteScheduledWorkoutExercise()">
+      <entry key="testDeleteWorkout()">
         <State />
       </entry>
-      <entry key="testDeleteWorkout()">
+      <entry key="testInsertExercise()">
         <State />
       </entry>
       <entry key="testInsertWorkout()">
