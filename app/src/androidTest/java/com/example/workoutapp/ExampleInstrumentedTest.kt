@@ -461,6 +461,56 @@ class WorkoutContentProviderTest {
 
     }
 
+    @Test
+    fun testDeleteExercise() {
+        val scheduledWorkoutValues = ContentValues().apply {
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Forearms Workout")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Wednesday")
+            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "11:45")
+        }
+        val scheduledWorkoutUri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, scheduledWorkoutValues)!!
+        val scheduledWorkoutId = ContentUris.parseId(scheduledWorkoutUri).toInt()
+
+        // Insert Workout so we can use the ID as a foreign key
+        val workoutValues = ContentValues().apply {
+            put(WorkoutContract.Workouts.COLUMN_DATE, "05/01/25")
+            put(WorkoutContract.Workouts.COLUMN_PLAN_ID, scheduledWorkoutId)
+        }
+        val workoutUri = resolver.insert(WorkoutContract.Workouts.CONTENT_URI, workoutValues)
+        val workoutId = workoutUri?.let { ContentUris.parseId(it).toInt() }
+
+        // Insert PlannedExercise so we can use the ID as a foreign key
+        val plannedExerciseValues = ContentValues().apply {
+            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Arnold Press")
+            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.SHOULDERS.toString())
+            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
+        }
+        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)!!
+        val plannedExerciseId = ContentUris.parseId(plannedExerciseUri).toInt()
+
+        val uri = WorkoutContract.Exercises.CONTENT_URI
+        val exerciseValues = ContentValues().apply {
+            put(WorkoutContract.Exercises.COLUMN_WORKOUT_ID, workoutId)
+            put(WorkoutContract.Exercises.COLUMN_PLANNED_EXERCISE_ID, plannedExerciseId)
+            put(WorkoutContract.Exercises.COLUMN_WEIGHT, 40.0)
+            put(WorkoutContract.Exercises.COLUMN_REPS, 10)
+            put(WorkoutContract.Exercises.COLUMN_PB, false)
+        }
+
+        val insertUri = resolver.insert(uri, exerciseValues)
+        assertNotNull("Insert failed", insertUri)
+
+        // Delete the workout
+        val deleteCount = resolver.delete(insertUri!!, null, null)
+        assertEquals("Delete failed", 1, deleteCount)
+
+        val cursor = resolver.query(insertUri, null, null, null, null)
+        assertNotNull(cursor)
+        assertFalse("Exercise should be deleted", cursor!!.moveToFirst())
+        cursor.close()
+
+    }
+
     // MISCELLANEOUS TESTS
 
     @Test(expected = IllegalArgumentException::class)
