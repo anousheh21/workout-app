@@ -174,4 +174,17 @@ interface ExerciseDao {
 
     @Delete
     suspend fun delete(exercise: Exercise)
+
+    // For the Content Provider
+    @Insert
+    fun insertExerciseContProv(exercise: Exercise): Long
+
+    @Delete
+    fun deleteExerciseContProv(exercise: Exercise): Int
+
+    @Query("SELECT * FROM exercises")
+    fun getAllExercisesCursor(): Cursor
+
+    @Query("SELECT * FROM exercises WHERE exerciseId = :exerciseId")
+    fun getExerciseItemCursor(exerciseId: Int): Cursor
 }
