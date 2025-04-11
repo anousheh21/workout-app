@@ -11,10 +11,10 @@
       <entry key="testDeleteWorkout()">
         <State />
       </entry>
-      <entry key="testInsertScheduledWorkoutExercise()">
+      <entry key="testInsertWorkout()">
         <State />
       </entry>
-      <entry key="testInsertWorkout()">
+      <entry key="testQueryAllExercises()">
         <State />
       </entry>
       <entry key="testQueryAllWorkouts()">

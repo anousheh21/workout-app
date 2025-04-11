@@ -73,11 +73,20 @@ class WorkoutContentProviderTest {
             put(WorkoutContract.Workouts.COLUMN_PLAN_ID, 1)
         }
 
+        val exerciseValues = ContentValues().apply {
+            put(WorkoutContract.Exercises.COLUMN_WORKOUT_ID, 1)
+            put(WorkoutContract.Exercises.COLUMN_PLANNED_EXERCISE_ID, 1)
+            put(WorkoutContract.Exercises.COLUMN_WEIGHT, 40.0)
+            put(WorkoutContract.Exercises.COLUMN_REPS, 10)
+            put(WorkoutContract.Exercises.COLUMN_PB, false)
+        }
+
         Log.d("setup", values.toString())
         val uri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, values)
         val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)
         val scheduledWorkoutExerciseUri = resolver.insert(WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI, scheduledWorkoutExerciseValues)
         val workoutUri = resolver.insert(WorkoutContract.Workouts.CONTENT_URI, workoutValues)
+        val exerciseUri = resolver.insert(WorkoutContract.Exercises.CONTENT_URI, exerciseValues)
     }
 
     // QUERY TESTS
@@ -173,6 +182,34 @@ class WorkoutContentProviderTest {
             assertTrue(workoutId > 0)
             assertNotNull(workoutDate)
             assertTrue(workoutPlanId > 0)
+        } while (cursor.moveToNext())
+
+        cursor.close()
+    }
+
+    // Test to query ExerciseDao
+    @Test
+    fun testQueryAllExercises() {
+        val cursor = resolver.query(WorkoutContract.Exercises.CONTENT_URI, null, null, null, null)
+        assertNotNull(cursor)
+
+        assertTrue("Cursor is empty", cursor!!.moveToFirst())
+
+        do {
+            val exerciseId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.Exercises.COLUMN_ID))
+            val workoutId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.Exercises.COLUMN_WORKOUT_ID))
+            val plannedExerciseId = cursor.getInt(cursor.getColumnIndex(WorkoutContract.Exercises.COLUMN_PLANNED_EXERCISE_ID))
+            val weight = cursor.getFloat(cursor.getColumnIndex(WorkoutContract.Exercises.COLUMN_WEIGHT))
+            val reps = cursor.getInt(cursor.getColumnIndex(WorkoutContract.Exercises.COLUMN_REPS))
+            val pb = cursor.getInt(cursor.getColumnIndexOrThrow(WorkoutContract.Exercises.COLUMN_PB)) != 0
+
+            Log.d("testQueryAllExercises", "ID: $exerciseId, Workout ID: $workoutId, Planned Exercise Id: $plannedExerciseId, Weight: $weight, Reps: $reps, PB: $pb")
+            assertTrue(exerciseId > 0)
+            assertTrue(workoutId > 0)
+            assertTrue(plannedExerciseId > 0)
+            assertTrue(weight > 0)
+            assertTrue(reps > 0)
+            assertNotNull(pb)
         } while (cursor.moveToNext())
 
         cursor.close()
