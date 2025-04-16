@@ -157,17 +157,17 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 thickness = 1.dp,
             )
         }
-        Spacer(modifier = Modifier.height(50.dp))
-        AddNewWorkoutScheduleEdit(0) {
-            showWorkoutModal = true
-        }
+//        Spacer(modifier = Modifier.height(50.dp))
+//        AddNewWorkoutScheduleEdit(0) {
+//            showWorkoutModal = true
+//        }
     }
 
-    if (showWorkoutModal) {
-        Dialog(onDismissRequest = { showWorkoutModal = false }) {
-            SingleWorkoutScheduleEdit(onModalClose = {showWorkoutModal = false})
-        }
-    }
+//    if (showWorkoutModal) {
+//        Dialog(onDismissRequest = { showWorkoutModal = false }) {
+//            SingleWorkoutScheduleEdit(onModalClose = {showWorkoutModal = false})
+//        }
+//    }
 }
 
 @Composable

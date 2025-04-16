@@ -37,6 +37,7 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.TopBarBack
 import com.example.workoutapp.ui.components.bottomNavItems
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
+import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.theme.Purple40
 import kotlinx.coroutines.Dispatchers
@@ -65,6 +66,7 @@ fun NavScaffold(
     // We’ll need context for loading from DB
     val context = LocalContext.current
     var showExerciseModal by remember { mutableStateOf(false) }
+    var showWorkoutModal by remember { mutableStateOf(false) }
 
     Scaffold(
         topBar = {
@@ -96,7 +98,12 @@ fun NavScaffold(
                 // ---- TOP BAR for Settings ----
                 AppScreen.Settings.route -> {
                     TopAppBar(
-                        title = { Text("Settings") }
+                        title = { Text("Schedule") },
+                        actions = {
+                            AddNewWorkoutScheduleEdit(0) {
+                                showWorkoutModal = true
+                            }
+                        }
                     )
                 }
 
@@ -282,6 +289,15 @@ fun NavScaffold(
                 )
             }
         }
+
+        if (showWorkoutModal) {
+            Dialog(onDismissRequest = { showWorkoutModal = false }) {
+                SingleWorkoutScheduleEdit(onModalClose = {
+                    showWorkoutModal = false
+                })
+            }
+        }
+
         NavHost(
             navController = navController,
             startDestination = AppScreen.Workouts.route,
