@@ -102,7 +102,7 @@ fun SingleWorkoutScheduleEdit(
         Spacer(modifier = Modifier.height(10.dp))
 
         Row (
-            horizontalArrangement = Arrangement.spacedBy(15.dp),
+            //horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
                 //.padding(start = 22.dp)
@@ -113,6 +113,21 @@ fun SingleWorkoutScheduleEdit(
             AddExercisesMultiSelect(
                 selectedExercises = selectedExercises
             )
+//            SelectedExercisesList(
+//                selectedExercises = selectedExercises
+//            )
+        }
+
+        Row (
+            //horizontalArrangement = Arrangement.spacedBy(15.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            modifier = Modifier
+            //.padding(start = 22.dp)
+        ) {
+//            AddExercisesButton(navAddExercises)
+//            AddToCalendarButton()
+
+
             SelectedExercisesList(
                 selectedExercises = selectedExercises
             )
@@ -229,7 +244,9 @@ fun SelectedExercisesList(
 ) {
     Text(
         text = "Selected: ${selectedExercises.joinToString {it.exerciseName}}",
-        modifier = Modifier.padding(top = 8.dp)
+        modifier = Modifier
+            .padding(top = 8.dp)
+            .padding(horizontal = 16.dp)
     )
 }
 
