@@ -277,6 +277,7 @@ fun NavScaffold(
                     onModalClose = {
                         showExerciseModal = false
                         viewModel.loadPlannedExercises(context)
+                        viewModel.triggerRefresh()
                     }
                 )
             }

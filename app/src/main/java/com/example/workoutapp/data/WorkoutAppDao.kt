@@ -2,6 +2,7 @@ package com.example.workoutapp.data
 
 import android.database.Cursor
 import androidx.room.*
+import kotlinx.coroutines.flow.Flow
 import org.jetbrains.annotations.Async.Schedule
 
 @Dao
@@ -86,8 +87,11 @@ interface PlannedExerciseDao {
     @Insert
     suspend fun insertMultiple(exercises: List<PlannedExercise>)
 
-    @Query("SELECT * FROM plannedExercise")
-    suspend fun getAll(): List<PlannedExercise>
+//    @Query("SELECT * FROM plannedExercise")
+//    suspend fun getAll(): List<PlannedExercise>
+
+    @Query("SELECT * FROM PlannedExercise")
+    fun getAll(): Flow<List<PlannedExercise>>
 
     @Delete
     suspend fun delete(exercise: PlannedExercise)

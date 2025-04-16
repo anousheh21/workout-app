@@ -30,31 +30,54 @@ class WorkoutViewModel() : ViewModel() {
         viewModelScope.launch(Dispatchers.IO) {
             try {
                 plannedExerciseDao.insert(exercise)
-                val data = plannedExerciseDao.getAll()
-                _plannedExercisesArray.value = data
+                //val data = plannedExerciseDao.getAll()
+               // _plannedExercisesArray.value = data
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Exercises:", e)
             }
         }
     }
 
-    private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
-    val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
+    var refreshTrigger by mutableStateOf(0)
+        private set
 
-    fun loadPlannedExercises(context: Context) {
-        val db = DatabaseProvider.getDatabase(context)
-        val plannedExerciseDao = db.plannedExerciseDao()
-
-        viewModelScope.launch(Dispatchers.IO) {
-            try {
-                val data = plannedExerciseDao.getAll()
-                _plannedExercisesArray.value = data
-            } catch (e: Exception) {
-                Log.e("WorkoutViewModel", "Error Loading Planned Exercises", e)
-            }
-        }
-
+    fun triggerRefresh() {
+        refreshTrigger++
     }
+
+//    private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
+//    val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
+//
+//    fun loadPlannedExercises(context: Context) {
+//        val db = DatabaseProvider.getDatabase(context)
+//        val plannedExerciseDao = db.plannedExerciseDao()
+//
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                val data = plannedExerciseDao.getAll()
+//                _plannedExercisesArray.value = data
+//            } catch (e: Exception) {
+//                Log.e("WorkoutViewModel", "Error Loading Planned Exercises", e)
+//            }
+//        }
+//
+//    }
+
+private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
+val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
+
+fun loadPlannedExercises(context: Context) {
+    val db = DatabaseProvider.getDatabase(context)
+    val plannedExerciseDao = db.plannedExerciseDao()
+
+    viewModelScope.launch(Dispatchers.IO) {
+        // Collect from the Flow returned by plannedExerciseDao.getAll()
+        plannedExerciseDao.getAll().collect { newList ->
+            // Switch to Main thread to update UI state
+            _plannedExercisesArray.value = newList
+        }
+    }
+}
 
     fun deleteWorkout(context: Context, workoutId: Int) {
         viewModelScope.launch {

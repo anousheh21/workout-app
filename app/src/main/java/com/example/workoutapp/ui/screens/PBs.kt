@@ -38,7 +38,9 @@ fun PBs() {
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
 
-    LaunchedEffect(Unit) {
+    val refreshKey = vm.refreshTrigger
+
+    LaunchedEffect(refreshKey) {
         vm.loadPlannedExercises(context)
     }
 
