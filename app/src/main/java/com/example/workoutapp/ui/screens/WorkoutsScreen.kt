@@ -34,7 +34,8 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
-
+import com.example.workoutapp.ui.components.InstructionText
+import com.example.workoutapp.ui.components.NoWorkoutScreen
 
 
 @Composable
@@ -64,47 +65,6 @@ fun WorkoutsScreen(
     } else {
         WorkoutColumnList(workoutsArray, onClickWorkout)
     }
-}
-
-@Composable
-fun NoWorkoutScreen() {
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(16.dp),
-        horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center
-    ) {
-        Text(
-            text = "How to Use This App",
-            style = TextStyle(
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-        Spacer(modifier = Modifier.height(10.dp))
-        InstructionText(text = "1. Navigate to the exercises tab, and add all exercises that you might carry out")
-        InstructionText(text = "2. Navigate to the schedule tab, and schedule in your workouts, adding the relevant exercises")
-        InstructionText(text = "3. Return to the workouts page, and click \"New Workout\" to start a new workout")
-    }
-}
-
-@Composable
-fun InstructionText(
-    text: String
-) {
-    Spacer(modifier = Modifier.height(15.dp))
-    Text(
-        text = text,
-        style = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 22.sp
-        ),
-        modifier = Modifier.fillMaxWidth(),
-        textAlign = TextAlign.Center
-    )
-
 }
 
 @Composable
