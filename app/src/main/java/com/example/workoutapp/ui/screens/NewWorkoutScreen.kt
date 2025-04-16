@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -34,6 +35,8 @@ import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
+import com.example.workoutapp.ui.components.InstructionText
+import com.example.workoutapp.ui.components.InstructionTitle
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
@@ -58,41 +61,55 @@ fun NewWorkoutScreen(
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
-        schedWorkouts.forEach { item ->
-            SelectWorkoutRow(
-                schedWorkout = item,
-                startWorkout = {
-                    scope.launch{
-                        // TODO: Implement this!
+        if (schedWorkouts.isEmpty()) {
+           Column(
+               modifier = Modifier
+                   .fillMaxSize()
+                   .padding(16.dp),
+               horizontalAlignment = Alignment.CenterHorizontally,
+               verticalArrangement = Arrangement.Center
+           ) {
+               Spacer(modifier = Modifier.height(50.dp))
+               InstructionTitle(text = "No Scheduled Workouts Available")
+               InstructionText(text = "Schedule a workout in the schedule tab, then return here to start that workout")
+           }
+        } else {
+            schedWorkouts.forEach { item ->
+                SelectWorkoutRow(
+                    schedWorkout = item,
+                    startWorkout = {
+                        scope.launch{
+                            // TODO: Implement this!
 
-                        // Get the workout plan ID from the start button that was pressed
-                        val workoutPlanId = item.workoutPlanId
+                            // Get the workout plan ID from the start button that was pressed
+                            val workoutPlanId = item.workoutPlanId
 
-                        // Get today's date
-                        val calendar = java.util.Calendar.getInstance()
-                        val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
-                        val month = calendar.get(java.util.Calendar.MONTH) + 1
-                        val year = calendar.get(java.util.Calendar.YEAR) % 100
+                            // Get today's date
+                            val calendar = java.util.Calendar.getInstance()
+                            val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
+                            val month = calendar.get(java.util.Calendar.MONTH) + 1
+                            val year = calendar.get(java.util.Calendar.YEAR) % 100
 
-                        val dateToday = String.format("%02d/%02d/%02d", day, month, year)
+                            val dateToday = String.format("%02d/%02d/%02d", day, month, year)
 
-                        // Create a new workout
-                        val newWorkout = Workout(
-                            workoutDate = dateToday,
-                            workoutPlanId = workoutPlanId
-                        )
+                            // Create a new workout
+                            val newWorkout = Workout(
+                                workoutDate = dateToday,
+                                workoutPlanId = workoutPlanId
+                            )
 
-                        // Add workout to the database, returning the workout ID
-                        val newWorkoutId = vm.insertWorkoutAndReturnId(context, newWorkout)
+                            // Add workout to the database, returning the workout ID
+                            val newWorkoutId = vm.insertWorkoutAndReturnId(context, newWorkout)
 
-                        // Navigate to the current workout page, and pass the workout just create to it
-                        onClickStartWorkout(newWorkoutId)
+                            // Navigate to the current workout page, and pass the workout just create to it
+                            onClickStartWorkout(newWorkoutId)
+                        }
+
                     }
+                )
 
-                }
-            )
-
-            Divider(color = SeparatorGrey, thickness = 1.dp)
+                Divider(color = SeparatorGrey, thickness = 1.dp)
+            }
         }
     }
 }

@@ -24,16 +24,10 @@ fun NoWorkoutScreen() {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = "How to Use This App",
-            style = TextStyle(
-                fontSize = 22.sp,
-                fontWeight = FontWeight.Bold
-            )
-        )
-        Spacer(modifier = Modifier.height(10.dp))
+        InstructionTitle(text = "How to Use This App")
         InstructionText(text = "1. Navigate to the exercises tab, and add all exercises that you might carry out")
         InstructionText(text = "2. Navigate to the schedule tab, and schedule in your workouts, adding the relevant exercises")
         InstructionText(text = "3. Return to the workouts page, and click \"New Workout\" to start a new workout")
     }
 }
+
