@@ -315,9 +315,10 @@ fun NavScaffold(
 
             // ---- COMPOSABLE for Settings ----
             composable(route = AppScreen.Settings.route) {
-                Settings(
-                    navEditSchedule = { navController.navigate(AppScreen.EditSchedule.route) },
-                    navNotificationSettings = { navController.navigate(AppScreen.NotificationSettings.route) }
+                EditScheduleScreen(
+                    navAddExercises = { workoutPlanId: Int ->
+                        navController.navigate("editScheduledExercises/$workoutPlanId")
+                    }
                 )
             }
 
