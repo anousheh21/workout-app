@@ -74,9 +74,9 @@ fun SingleWorkoutScheduleEdit(
 
     Column (
         modifier = Modifier
-            .padding(start = 17.dp, top = 30.dp)
+            //.padding(start = 0.dp, top = 30.dp)
             .fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
+        //horizontalAlignment = Alignment.Start
 
     ) {
 
@@ -105,7 +105,7 @@ fun SingleWorkoutScheduleEdit(
             horizontalArrangement = Arrangement.spacedBy(15.dp),
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier
-                .padding(start = 22.dp)
+                //.padding(start = 22.dp)
         ) {
 //            AddExercisesButton(navAddExercises)
 //            AddToCalendarButton()
@@ -130,24 +130,29 @@ fun SingleWorkoutScheduleEdit(
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
-        SaveScheduledWorkoutWithExercises(
-            newScheduledWorkout = newScheduledWorkout,
-            saveScheduledWorkoutWithExercises = {
-                val plannedExerciseIds = selectedExercises.map { it.plannedExerciseId }
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+            SaveScheduledWorkoutWithExercises(
+                newScheduledWorkout = newScheduledWorkout,
+                saveScheduledWorkoutWithExercises = {
+                    val plannedExerciseIds = selectedExercises.map { it.plannedExerciseId }
 
-                vm.addNewScheduledWorkoutReturnId(
-                    context = context,
-                    workout = newScheduledWorkout,
-                    plannedExerciseIds = plannedExerciseIds
-                )
+                    vm.addNewScheduledWorkoutReturnId(
+                        context = context,
+                        workout = newScheduledWorkout,
+                        plannedExerciseIds = plannedExerciseIds
+                    )
 
 //                vm.loadPlannedExercises(context)
 
-                onModalClose()
-            }
-        )
+                    onModalClose()
+                }
+            )
+        }
 
-        Divider(color = SeparatorGrey, thickness = 1.dp)
+        //Divider(color = SeparatorGrey, thickness = 1.dp)
 
     }
 }
@@ -165,6 +170,7 @@ fun SaveScheduledWorkoutWithExercises(
         contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
         modifier = Modifier
             .width(102.dp)
+            //.padding(16.dp)
     ) {
         Text(
             text = "Save",
@@ -195,13 +201,17 @@ fun AddExercisesMultiSelect(
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
-        Button(onClick = {showDialog = true}) {
-            Text("Open MultiSelect Dialog")
+        Button(
+            onClick = {showDialog = true},
+            shape = RoundedCornerShape(10.dp),
+            colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple),
+            //contentPadding = PaddingValues(start = 30.dp, end = 30.dp, top = 12.dp, bottom = 12.dp),
+            modifier = Modifier
+                .width(150.dp)
+        ) {
+            Text("Add Exercises")
         }
 
-//        SelectedExercisesList(
-//            selectedExercises = selectedExercises
-//        )
 
         if (showDialog) {
             ExerciseSelectDialog(
