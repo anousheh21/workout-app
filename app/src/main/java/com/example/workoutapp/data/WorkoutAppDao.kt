@@ -17,7 +17,7 @@ interface ScheduledWorkoutDao {
     suspend fun getAll(): List<ScheduledWorkout>
 
     @Query("SELECT * FROM scheduledWorkouts")
-    suspend fun getAllScheduledWorkouts(): List<ScheduledWorkout>
+    fun getAllScheduledWorkouts(): Flow<List<ScheduledWorkout>>
 
     @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
     suspend fun getById(id: Int): ScheduledWorkout

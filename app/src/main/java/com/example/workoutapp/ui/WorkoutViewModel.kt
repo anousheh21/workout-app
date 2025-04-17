@@ -208,6 +208,34 @@ fun loadPlannedExercises(context: Context) {
         return workoutDao.insert(workout).toInt()
     }
 
+//    private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
+//    val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
+//
+//    fun loadScheduledWorkoutsWithExercises(context: Context) {
+//        val db = DatabaseProvider.getDatabase(context)
+//        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+//        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+//
+//        viewModelScope.launch(Dispatchers.IO) {
+//            try {
+//                val scheduledWorkouts = scheduledWorkoutDao.getAllScheduledWorkouts()
+//                val data = scheduledWorkouts.map { scheduledWorkout ->
+//                    val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
+//                    ScheduledWorkoutWithExercises(
+//                        workoutPlanId = scheduledWorkout.workoutPlanId,
+//                        workoutName = scheduledWorkout.workoutName,
+//                        workoutDay = scheduledWorkout.workoutDay,
+//                        workoutTime = scheduledWorkout.workoutTime,
+//                        workoutExercises = exercises
+//                    )
+//                }
+//                _scheduledWorkoutsWithExercises.value = data
+//            } catch (e: Exception) {
+//                Log.e("WorkoutViewModel", "Error Loading Scheduled workouts with exercises", e)
+//            }
+//        }
+//    }
+
     private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
     val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
 
@@ -218,20 +246,21 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                val scheduledWorkouts = scheduledWorkoutDao.getAllScheduledWorkouts()
-                val data = scheduledWorkouts.map { scheduledWorkout ->
-                    val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
-                    ScheduledWorkoutWithExercises(
-                        workoutPlanId = scheduledWorkout.workoutPlanId,
-                        workoutName = scheduledWorkout.workoutName,
-                        workoutDay = scheduledWorkout.workoutDay,
-                        workoutTime = scheduledWorkout.workoutTime,
-                        workoutExercises = exercises
-                    )
+                scheduledWorkoutDao.getAllScheduledWorkouts().collect { scheduledWorkouts ->
+                    val data = scheduledWorkouts.map { scheduledWorkout ->
+                        val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
+                        ScheduledWorkoutWithExercises(
+                            workoutPlanId = scheduledWorkout.workoutPlanId,
+                            workoutName = scheduledWorkout.workoutName,
+                            workoutDay = scheduledWorkout.workoutDay,
+                            workoutTime = scheduledWorkout.workoutTime,
+                            workoutExercises = exercises
+                        )
+                    }
+                    _scheduledWorkoutsWithExercises.value = data
                 }
-                _scheduledWorkoutsWithExercises.value = data
             } catch (e: Exception) {
-                Log.e("WorkoutViewModel", "Error Loading Scheduled workouts with exercises", e)
+                Log.e("WorkoutViewModel", "Error collecting scheduled workouts with exercises", e)
             }
         }
     }
