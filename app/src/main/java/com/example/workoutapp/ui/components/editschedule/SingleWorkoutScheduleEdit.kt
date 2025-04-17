@@ -56,6 +56,7 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.SecondaryText
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
 import kotlinx.coroutines.launch
@@ -332,13 +333,28 @@ fun ExerciseSelectDialog(
                                     else selectedExercises.remove(item)
                                 }
                             )
-                            Text(text = item.exerciseName)
+                            Text(
+                                text = item.exerciseName,
+                                style = TextStyle(
+                                    color = PrimaryText
+                                )
+                            )
                             Spacer(Modifier.weight(1f))
                             if (selectionIndex != null) {
-                                Text("#${selectionIndex + 1}", style = MaterialTheme.typography.labelSmall)
+                                Text(
+                                    text = "#${selectionIndex + 1}",
+//                                    //style = MaterialTheme.typography.labelSmall
+                                    style = TextStyle(
+                                        color = SecondaryText
+                                    )
+                                   // style = MaterialTheme.typography.labelSmall.copy(color = SecondaryText)
+                                )
                             }
                             Spacer(Modifier.weight(1f))
-                            Text(text = item.muscleGroup.toTitleCase(), style = MaterialTheme.typography.labelSmall)
+                            Text(
+                                text = item.muscleGroup.toTitleCase(),
+                                style = MaterialTheme.typography.labelSmall.copy(color = PrimaryText)
+                            )
                         }
                     }
 
