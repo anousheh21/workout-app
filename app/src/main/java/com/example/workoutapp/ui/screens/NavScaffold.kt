@@ -68,6 +68,10 @@ fun NavScaffold(
     var showExerciseModal by remember { mutableStateOf(false) }
     var showWorkoutModal by remember { mutableStateOf(false) }
 
+    LaunchedEffect(Unit) {
+        viewModel.loadScheduledWorkoutsWithExercises(context)
+    }
+
     Scaffold(
         topBar = {
             // Which route are we on?
@@ -219,7 +223,12 @@ fun NavScaffold(
 
                     TopAppBar(
                         title = {
-                            Text(text = "$tempPlanId")
+//                            Text(text = "$tempPlanId")
+                            val workoutName = viewModel.scheduledWorkoutsWithExercises
+                                .find { it.workoutPlanId == tempPlanId }
+                                ?.workoutName
+
+                            Text(text = workoutName ?: "Loading...")
                         },
                         navigationIcon = {
                             IconButton(onClick = { navController.popBackStack() }) {
