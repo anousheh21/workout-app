@@ -1,9 +1,16 @@
 package com.example.workoutapp.ui.components.editschedule
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.selection.LocalTextSelectionColors
 import androidx.compose.foundation.text.selection.TextSelectionColors
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.MaterialTheme
@@ -14,12 +21,16 @@ import androidx.compose.material3.TimePickerDefaults
 import androidx.compose.material3.rememberTimePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.dp
 import com.example.workoutapp.ui.theme.BackgroundColor
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
+import com.example.workoutapp.ui.theme.SecondPurple
 import com.example.workoutapp.ui.theme.SecondaryText
+import com.example.workoutapp.ui.theme.ThirdPurple
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -69,14 +80,28 @@ fun WorkoutTime(
         }
 
 
-        Button(onClick = {
-            onConfirm(String.format("%02d:%02d", timePickerState.hour, timePickerState.minute))
-            onDismiss()
-        }) {
-            Text("Confirm")
-        }
-        Button(onClick = { onDismiss() }) {
-            Text("Cancel")
+        Row(
+//            modifier = Modifier.fillMaxWidth(),
+//            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            Button(
+                onClick = {
+                    onConfirm(String.format("%02d:%02d", timePickerState.hour, timePickerState.minute))
+                    onDismiss()
+                },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple)
+            ) {
+                Text("Confirm")
+            }
+            Spacer(modifier = Modifier.width(20.dp))
+            Button(
+                onClick = { onDismiss() },
+                shape = RoundedCornerShape(10.dp),
+                colors = ButtonDefaults.buttonColors(containerColor = SecondPurple)
+            ) {
+                Text("Cancel")
+            }
         }
     }
 }
