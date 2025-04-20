@@ -10,6 +10,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
@@ -26,6 +27,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -39,7 +41,10 @@ import com.example.workoutapp.ui.components.bottomNavItems
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
+import com.example.workoutapp.ui.theme.BackgroundColor
+import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.Purple40
+import com.example.workoutapp.ui.theme.SeparatorGrey
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
@@ -266,9 +271,25 @@ fun NavScaffold(
                             selectedItemIndex = index
                             navController.navigate(item.route)
                         },
-                        icon = { Icon(painter = item.icon, contentDescription = item.name) },
-                        label = { Text(item.name) },
-                        alwaysShowLabel = true
+                        icon = { Icon(
+                            painter = item.icon,
+                            contentDescription = item.name,
+                            tint = PrimaryText
+                        ) },
+                        label = {
+                            Text(
+                                text = item.name,
+                                fontWeight = if (selectedItemIndex == index) FontWeight.Bold else FontWeight.Normal
+                            )
+                        },
+                        alwaysShowLabel = true,
+                        colors = NavigationBarItemDefaults.colors(
+                            selectedIconColor = PrimaryText,
+                            unselectedIconColor = PrimaryText,
+                            selectedTextColor = PrimaryText,
+                            unselectedTextColor = PrimaryText,
+                            indicatorColor = BackgroundColor
+                        )
                     )
                 }
             }
