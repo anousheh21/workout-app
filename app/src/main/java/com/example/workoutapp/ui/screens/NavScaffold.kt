@@ -27,7 +27,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -42,6 +44,7 @@ import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEd
 import com.example.workoutapp.ui.components.editschedule.SingleWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.theme.BackgroundColor
+import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.Purple40
 import com.example.workoutapp.ui.theme.SeparatorGrey
@@ -88,7 +91,14 @@ fun NavScaffold(
                         title = { Text("Workouts") },
                         actions = {
                             TextButton(onClick = { navController.navigate(AppScreen.NewWorkout.route) }) {
-                                Text("New Workout")
+                                Text(
+                                    text = "New Workout",
+                                    style = TextStyle(
+                                        fontSize = 17.sp,
+                                        fontWeight = FontWeight.Bold,
+                                        color = PrimaryColor
+                                    )
+                                )
                             }
                         }
                     )

@@ -13,6 +13,7 @@ import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SecondPurple
 
 @Composable
@@ -30,10 +31,11 @@ fun AddNewWorkoutScheduleEdit(
     ) {
         Text(
             text = "Add New",
-//            style = TextStyle(
-//                fontSize = 18.sp,
-//                fontWeight = FontWeight.Medium
-//            )
+            style = TextStyle(
+                fontSize = 17.sp,
+                fontWeight = FontWeight.Bold,
+                color = PrimaryColor
+            )
         )
     }
 }
