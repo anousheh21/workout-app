@@ -55,6 +55,7 @@ import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
+import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.SecondaryText
 import com.example.workoutapp.ui.theme.SeparatorGrey
@@ -262,7 +263,14 @@ fun ExerciseSelectDialog(
         onDismissRequest = onDismiss,
         confirmButton = {
             TextButton(onClick = onDismiss) {
-                Text("Done")
+                Text(
+                    text = "Save",
+                    style = TextStyle(
+                        fontSize = 18.sp,
+                        color = PrimaryColor,
+                        fontWeight = FontWeight.Bold
+                    )
+                )
             }
         },
 
@@ -274,7 +282,12 @@ fun ExerciseSelectDialog(
 
                 Box{
                     OutlinedButton(onClick = {filterDropDownExpanded = true})  {
-                        Text(muscleFilter?.name ?: "Filter By Type")
+                        Text(
+                            text = muscleFilter?.toTitleCase() ?: "Filter By Type",
+                            style = TextStyle(
+                                color = PrimaryText
+                            )
+                        )
                     }
 
                     DropdownMenu(
@@ -360,7 +373,11 @@ fun ExerciseSelectDialog(
 
                     if (filteredOptions.isEmpty()) {
                         Text(
-                            "No Results Found",
+                            text = "No Results Found",
+                            style = TextStyle(
+                                color = PrimaryText,
+                                fontSize = 16.sp
+                            ),
                             modifier = Modifier.padding(vertical = 16.dp)
                         )
                     }
