@@ -1,6 +1,7 @@
 package com.example.workoutapp.ui.screens
 
 import android.content.Context
+import android.graphics.Color
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,6 +39,8 @@ import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.InstructionTitle
 import com.example.workoutapp.ui.extensions.toTitleCase
+import com.example.workoutapp.ui.theme.PrimaryColor
+import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import kotlinx.coroutines.launch
 
@@ -170,16 +173,37 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
                         }
                     }
                 }) {
-                    Text("Delete")
+                    Text(
+                        text = "Delete",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = androidx.compose.ui.graphics.Color.Red
+                        )
+                    )
                 }
             },
             dismissButton = {
                 TextButton(onClick = { showDeleteModal = false }) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryColor
+                        )
+                    )
                 }
             },
             title = { Text("Delete Exercise") },
-            text = { Text(ableToDeleteCheck ?: "Are you sure you want to delete '${exercise.exerciseName}'?") }
+            text = { Text(
+                text = ableToDeleteCheck ?: "Are you sure you want to delete '${exercise.exerciseName}'?",
+                style = TextStyle(
+                    fontSize = 16.sp,
+                    color = PrimaryText,
+
+                )
+            ) }
         )
     }
 }
