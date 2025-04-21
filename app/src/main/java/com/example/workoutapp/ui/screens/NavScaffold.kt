@@ -2,6 +2,7 @@ package com.example.workoutapp.ui.screens
 
 import android.util.Log
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.Delete
@@ -29,6 +30,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.navigation.NavHostController
@@ -203,11 +205,15 @@ fun NavScaffold(
                                 IconButton( onClick ={
                                     viewModel.deleteWorkout(context, workoutIdParam)
                                     navController.popBackStack()
-                                }) {
+                                },
+                                    modifier = Modifier.padding(end = 35.dp)
+                                ) {
                                     Icon(
                                         imageVector = Icons.Default.Delete,
                                         contentDescription = "Delete Workout",
-                                        tint = Purple40
+                                        tint = PrimaryColor,
+                                        modifier = Modifier
+                                            .size(28.dp)
                                     )
                                 }
                             }
