@@ -141,17 +141,23 @@ fun NavScaffold(
 
                         TopAppBar(
                             title = {
-                                Text(text = viewModel.selectedWorkoutName.ifBlank { "Workout" })
+                                Text(text = viewModel.selectedWorkoutName.ifBlank { "Workout" },
+                                    modifier = Modifier.padding(start = 30.dp))
                             },
-                            navigationIcon = {
-//                                IconButton(onClick = { navController.popBackStack() }) {
-//                                    Icon(
-//                                        imageVector = Icons.Default.ArrowBack,
-//                                        contentDescription = "Back"
-//                                    )
-//                                }
-                                TextButton(onClick = { navController.popBackStack() }) {
-                                    Text("End Workout")
+                            actions = {
+                                TextButton(onClick = {
+                                    navController.popBackStack()
+                                    navController.popBackStack()
+                                }) {
+                                    Text(
+                                        text  = "End Workout",
+                                        style = TextStyle(
+                                            fontSize = 16.sp,
+                                            color = PrimaryColor,
+                                            fontWeight = FontWeight.Bold
+                                        ),
+                                        modifier = Modifier.padding(end = 10.dp)
+                                    )
                                 }
                             }
                         )
