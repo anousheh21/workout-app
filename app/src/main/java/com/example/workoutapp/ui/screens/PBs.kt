@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+import android.content.Context
+import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -10,12 +12,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Divider
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
@@ -74,7 +83,7 @@ fun PBs() {
             for((muscleGroup, exercisesInGroup) in sortedGroupedExercises) {
                 MuscleGroupTitle(muscleGroup = muscleGroup)
                 for (plannedExercise in exercisesInGroup) {
-                    PlannedExerciseRow(exercise = plannedExercise)
+                    PlannedExerciseRow(exercise = plannedExercise, vm = vm, context = context)
                 }
             }
 
@@ -95,11 +104,20 @@ fun PBs() {
 }
 
 @Composable
-fun PlannedExerciseRow(exercise: PlannedExercise) {
+fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context: Context) {
+    var showDeleteModal by remember { mutableStateOf(false) }
+    //val vm: WorkoutViewModel = viewModel()
     Spacer(modifier = Modifier.height(28.dp))
     Row(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        showDeleteModal = true
+                    }
+                )
+            },
 //            .padding(horizontal = 38.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -128,6 +146,28 @@ fun PlannedExerciseRow(exercise: PlannedExercise) {
         color = SeparatorGrey,
         thickness = 1.dp,
     )
+
+    if (showDeleteModal) {
+        //val context = LocalContext.current
+        AlertDialog(
+            onDismissRequest = { showDeleteModal = false },
+            confirmButton = {
+                TextButton(onClick = {
+                    vm.deletePlannedExercise(exercise, context)
+                    showDeleteModal = false
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { showDeleteModal = false }) {
+                    Text("Cancel")
+                }
+            },
+            title = { Text("Delete Exercise") },
+            text = { Text("Are you sure you want to delete '${exercise.exerciseName}'?") }
+        )
+    }
 }
 
 @Composable

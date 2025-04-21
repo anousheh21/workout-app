@@ -236,6 +236,19 @@ fun loadPlannedExercises(context: Context) {
 //        }
 //    }
 
+    fun deletePlannedExercise(exercise: PlannedExercise, context: Context) {
+        val db = DatabaseProvider.getDatabase(context)
+        val plannedExerciseDao = db.plannedExerciseDao()
+        viewModelScope.launch(Dispatchers.IO){
+            try {
+                plannedExerciseDao.delete(exercise)
+                loadPlannedExercises(context)
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error deleting planned exercise")
+            }
+        }
+    }
+
     private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
     val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
 
