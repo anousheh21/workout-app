@@ -3,6 +3,7 @@ package com.example.workoutapp.ui.components
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -28,11 +29,13 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import com.example.workoutapp.data.ExerciseWithName
 import com.example.workoutapp.ui.theme.PrimaryText
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.ui.theme.PrimaryColor
@@ -72,21 +75,27 @@ fun ExerciseLogSingle(workoutId: Int) {
             ExerciseRow(workoutId, exercise)
         }
 
-        Spacer(modifier = Modifier.height(50.dp))
+        Spacer(modifier = Modifier.height(40.dp))
 
-        ShareSheetButton(
-            workoutId = workoutId,
-            exercises = exercises.value,
-            shareWorkout = { workoutId, exercises ->
-                return@ShareSheetButton Intent(Intent.ACTION_SEND).apply {
-                    type = "text/plain"
-                    putExtra(Intent.EXTRA_TEXT,
-                        "$" +
-                            "\nEXERCISES COMPLETED:" +
-                            "\n"
-                    )
-                }
-            })
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.Center
+        ) {
+//            Spacer(modifier = Modifier.width(30.dp))
+            ShareSheetButton(
+                workoutId = workoutId,
+                exercises = exercises.value,
+                shareWorkout = { workoutId, exercises ->
+                    return@ShareSheetButton Intent(Intent.ACTION_SEND).apply {
+                        type = "text/plain"
+                        putExtra(Intent.EXTRA_TEXT,
+                            "$" +
+                                    "\nEXERCISES COMPLETED:" +
+                                    "\n"
+                        )
+                    }
+                })
+        }
     }
 }
 
@@ -97,13 +106,25 @@ fun ShareSheetButton(
     shareWorkout: (Int, List<ExerciseWithName>) -> Intent
 ) {
     val context = LocalContext.current
-    Button(onClick = {
+    Button(
+        onClick = {
         val intent = shareWorkout(workoutId, exercises)
         val intentChooser = Intent.createChooser(intent, "Share Workout")
         context.startActivity(intentChooser)
-    }) {
+        },
+        colors = ButtonDefaults.buttonColors(
+            containerColor = PrimaryColor,
+            contentColor = PrimaryText
+        ),
+        shape = RoundedCornerShape(10.dp)
+    ) {
         Text(
-            text = "Share Workout"
+            text = "Share Workout",
+            style = TextStyle(
+                fontSize = 15.sp,
+                fontWeight = FontWeight.Medium
+
+            )
         )
     }
 }
