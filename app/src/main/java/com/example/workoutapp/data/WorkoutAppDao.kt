@@ -54,6 +54,9 @@ interface ScheduledWorkoutExerciseDao {
     @Query("SELECT * FROM scheduledWorkoutExercises WHERE workoutPlanId = :planId")
     suspend fun getExercisesForPlan(planId: Int): List<ScheduledWorkoutExercise>
 
+    @Query("SELECT COUNT(*) FROM scheduledWorkoutExercises WHERE plannedExerciseId = :exerciseId")
+    suspend fun isPlannedExerciseUsed(exerciseId: Int): Int
+
     @Query("""
         SELECT p.* FROM plannedExercise p
         INNER JOIN scheduledWorkoutExercises swe ON p.plannedExerciseId = swe.plannedExerciseId

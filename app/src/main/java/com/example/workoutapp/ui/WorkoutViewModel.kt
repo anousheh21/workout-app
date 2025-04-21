@@ -278,6 +278,12 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    suspend fun isPlannedExerciseUsed(context: Context, exerciseId: Int): Boolean {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+        return scheduledWorkoutExerciseDao.isPlannedExerciseUsed(exerciseId) > 0
+    }
+
 
 //    fun loadRelevantScheduledExerciseArray(context: Context, workoutPlanId: Int) {
 //        thdnthd

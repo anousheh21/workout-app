@@ -21,6 +21,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,6 +39,7 @@ import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.InstructionTitle
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.SeparatorGrey
+import kotlinx.coroutines.launch
 
 @Composable
 fun PBs() {
@@ -106,6 +108,8 @@ fun PBs() {
 @Composable
 fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context: Context) {
     var showDeleteModal by remember { mutableStateOf(false) }
+    var ableToDeleteCheck by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
     //val vm: WorkoutViewModel = viewModel()
     Spacer(modifier = Modifier.height(28.dp))
     Row(
@@ -153,8 +157,18 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
             onDismissRequest = { showDeleteModal = false },
             confirmButton = {
                 TextButton(onClick = {
-                    vm.deletePlannedExercise(exercise, context)
-                    showDeleteModal = false
+//                    vm.deletePlannedExercise(exercise, context)
+//                    showDeleteModal = false
+
+                    scope.launch {
+                        val useCheck = vm.isPlannedExerciseUsed(context, exercise.plannedExerciseId)
+                        if (useCheck) {
+                            ableToDeleteCheck = "This exercise cannot be deleted as it is being used as part of a scheduled workout"
+                        } else {
+                            vm.deletePlannedExercise(exercise, context)
+                            showDeleteModal = false
+                        }
+                    }
                 }) {
                     Text("Delete")
                 }
@@ -165,7 +179,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
                 }
             },
             title = { Text("Delete Exercise") },
-            text = { Text("Are you sure you want to delete '${exercise.exerciseName}'?") }
+            text = { Text(ableToDeleteCheck ?: "Are you sure you want to delete '${exercise.exerciseName}'?") }
         )
     }
 }
