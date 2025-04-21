@@ -36,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.ui.theme.PrimaryColor
+import com.example.workoutapp.ui.theme.SeparatorGrey
 
 @Composable
 fun ExerciseLogSingle(workoutId: Int) {
@@ -53,10 +54,22 @@ fun ExerciseLogSingle(workoutId: Int) {
 
     Column(modifier = Modifier.padding(16.dp)) {
         ExerciseLogHeaders()
+        Spacer(modifier = Modifier.height(15.dp))
+       // Divider()
+//        for (exercise in exercises.value) {
+//            ExerciseRow(workoutId, exercise)
+//            Divider()
+//        }
 
-        for (exercise in exercises.value) {
+        for ((index, exercise) in exercises.value.withIndex()) {
+            val previous = exercises.value.getOrNull(index - 1)
+            if (index == 0 || exercise.exerciseName != previous?.exerciseName) {
+                Divider(
+                    thickness = 1.dp,
+                    color = SeparatorGrey
+                )
+            }
             ExerciseRow(workoutId, exercise)
-            Divider()
         }
 
         Spacer(modifier = Modifier.height(50.dp))

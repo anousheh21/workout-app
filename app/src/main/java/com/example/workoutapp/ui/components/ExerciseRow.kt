@@ -16,7 +16,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
 import com.example.workoutapp.data.DatabaseProvider
 import com.example.workoutapp.data.ExerciseWithName
 import com.example.workoutapp.ui.extensions.toTitleCase
@@ -45,12 +48,18 @@ fun ExerciseRow(workoutId: Int, exercise: ExerciseWithName) {
         ) {
             Text(
                 text = exercise.exerciseName,
-                style = MaterialTheme.typography.bodyMedium
+                style = TextStyle(
+                    fontWeight = FontWeight.Medium,
+                    fontSize = 16.sp
+                )
             )
             Spacer(modifier = Modifier.height(7.dp))
             Text(
                 text = exercise.muscleGroup.toTitleCase(),
-                style = MaterialTheme.typography.bodySmall
+                style = TextStyle(
+                    fontWeight = FontWeight.Normal,
+                    fontSize = 12.sp
+                )
             )
         }
         // Text(text = "${exercise.weight}kg x ${exercise.reps}")
