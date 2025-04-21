@@ -38,6 +38,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.data.Workout
+import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SeparatorGrey
 
@@ -45,12 +47,15 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 fun ExerciseLogSingle(workoutId: Int) {
     val context = LocalContext.current
     val exercises = remember { mutableStateOf<List<ExerciseWithName>>(emptyList()) }
+    val workout = remember { mutableStateOf<WorkoutDetails?>(null) }
 
     LaunchedEffect(workoutId) {
         val db = DatabaseProvider.getDatabase(context)
         val exerciseDao = db.exerciseDao()
         exercises.value = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
         val results = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
+        val workoutDao = db.workoutDao()
+        workout.value = workoutDao.getWorkoutDetailsById(workoutId)
 
         // GET WORKOUT INFO
     }
@@ -86,13 +91,24 @@ fun ExerciseLogSingle(workoutId: Int) {
                 workoutId = workoutId,
                 exercises = exercises.value,
                 shareWorkout = { workoutId, exercises ->
-                    return@ShareSheetButton Intent(Intent.ACTION_SEND).apply {
+                    val workoutName = workout.value?.workoutName ?: "Workout Name"
+                    val workoutDate = workout.value?.workoutDate ?: "Date"
+
+                    val exerciseDetails = exercises.joinToString("\n") { e ->
+                        "${e.exerciseName}: ${e.weight} kg for ${e.reps} reps"
+                    }
+
+                    val shareText = """
+                    $workoutName
+                    Date: $workoutDate
+                    
+                    EXERCISES COMPLETED:
+                    $exerciseDetails
+                """.trimIndent()
+
+                    Intent(Intent.ACTION_SEND).apply {
                         type = "text/plain"
-                        putExtra(Intent.EXTRA_TEXT,
-                            "$" +
-                                    "\nEXERCISES COMPLETED:" +
-                                    "\n"
-                        )
+                        putExtra(Intent.EXTRA_TEXT, shareText)
                     }
                 })
         }

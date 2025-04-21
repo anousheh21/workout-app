@@ -125,6 +125,14 @@ interface WorkoutDao {
 """)
     suspend fun getWorkoutsWithDetails(): List<WorkoutDetails>
 
+    @Query("""
+    SELECT workouts.workoutId, workouts.workoutPlanId, workouts.workoutDate, scheduledWorkouts.workoutName 
+    FROM workouts
+    INNER JOIN scheduledWorkouts ON workouts.workoutPlanId = scheduledWorkouts.workoutPlanId
+    WHERE workouts.workoutId = :id
+""")
+    suspend fun getWorkoutDetailsById(id: Int): WorkoutDetails
+
     @Query("SELECT * FROM workouts WHERE workoutId = :id")
     suspend fun getById(id: Int): Workout
 
