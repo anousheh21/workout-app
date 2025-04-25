@@ -27,6 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
+import com.example.workoutapp.ui.components.ScheduledExerciseRow
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.singleWorkout.SingleExerciseScheduleEdit
 import com.example.workoutapp.ui.extensions.toTitleCase
@@ -65,30 +66,3 @@ fun EditScheduledExercises(workoutPlanId: Int) {
     }
 }
 
-@Composable
-fun ScheduledExerciseRow(
-    exercise: PlannedExercise,
-    index: Int
-) {
-    Spacer(modifier = Modifier.height(26.dp))
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 38.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = "${index + 1} - ${exercise.exerciseName}",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            )
-        )
-
-        Text(
-            text = "${exercise.muscleGroup.toTitleCase()} - ${exercise.setNumber} Sets"
-        )
-
-    }
-    Spacer(modifier = Modifier.height(26.dp))
-}

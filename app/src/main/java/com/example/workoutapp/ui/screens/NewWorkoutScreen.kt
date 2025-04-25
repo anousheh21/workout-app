@@ -37,6 +37,7 @@ import com.example.workoutapp.data.Workout
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.InstructionTitle
+import com.example.workoutapp.ui.components.SelectWorkoutRow
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
@@ -114,49 +115,5 @@ fun NewWorkoutScreen(
     }
 }
 
-@Composable
-fun SelectWorkoutRow(
-        schedWorkout: ScheduledWorkoutWithExercises,
-        startWorkout: () -> Unit,
-    ) {
-    Spacer(modifier = Modifier.height(11.dp))
-    Row(
-       modifier = Modifier
-           .fillMaxWidth()
-           .padding(horizontal = 32.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        Text(
-            text = schedWorkout.workoutName,
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            )
-        )
-        StartWorkoutButton(startWorkout)
-    }
-    Spacer(modifier = Modifier.height(11.dp))
-}
 
-@Composable
-fun StartWorkoutButton(
-    startWorkout: () -> Unit
-) {
-    Button(
-        onClick = { startWorkout() },
-        shape = RoundedCornerShape(10.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = PrimaryColor),
-        contentPadding = PaddingValues(start = 16.dp, end = 16.dp, top = 5.dp, bottom = 5.dp),
-        modifier = Modifier
-            .width(65.dp)
-    ) {
-        Text(
-            text = "Start",
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal
-            )
-        )
-    }
-}
+

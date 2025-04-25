@@ -36,6 +36,8 @@ import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.NoWorkoutScreen
+import com.example.workoutapp.ui.components.WorkoutColumnList
+import com.example.workoutapp.ui.components.WorkoutRow
 
 
 @Composable
@@ -67,39 +69,5 @@ fun WorkoutsScreen(
     }
 }
 
-@Composable
-fun WorkoutColumnList(
-    workouts: List<WorkoutDetails>,
-    onClickWorkout: (WorkoutDetails) -> Unit,
-    ) {
-    LazyColumn {
-        items(workouts) { workout ->
-            WorkoutRow(workout, onClickWorkout)
-            Divider(color = SeparatorGrey, thickness = 1.dp)
-        }
-    }
-}
 
-@Composable
-fun WorkoutRow(workout: WorkoutDetails, onClickWorkout: (WorkoutDetails) -> Unit) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClickWorkout(workout) }
-            .padding(start = 32.dp)
-            .padding(top = 18.dp)
-            .padding(bottom = 22.dp)
-    ) {
 
-        Text(
-            text = buildAnnotatedString {
-                withStyle(style = SpanStyle(fontWeight = FontWeight.Medium)) {
-                    append(workout.workoutName)
-                }
-
-                append("   -   ")
-                append(workout.workoutDate)
-            }
-        )
-    }
-}

@@ -61,6 +61,7 @@ import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.InstructionTitle
+import com.example.workoutapp.ui.components.WorkoutScheduleRow
 import com.example.workoutapp.ui.components.editschedule.AddExercisesButton
 import com.example.workoutapp.ui.components.editschedule.AddNewWorkoutScheduleEdit
 import com.example.workoutapp.ui.components.editschedule.AddToCalendarButton
@@ -186,71 +187,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 //    }
 }
 
-@Composable
-fun WorkoutScheduleRow(
-        workoutWithExercises: ScheduledWorkoutWithExercises,
-        navAddExercises: (Int) -> Unit,
-        addScheduledWorkoutToCalendar: (ScheduledWorkoutWithExercises) -> Unit
-    ) {
 
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = 32.dp),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-
-        Column() {
-            Text(
-                text = workoutWithExercises.workoutName,
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Medium
-                )
-            )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            Text(
-                text = "${workoutWithExercises.workoutDay}'s at ${workoutWithExercises.workoutTime}",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Normal
-                )
-            )
-
-            Spacer(modifier = Modifier.height(6.dp))
-
-            Text(
-                text = "Add to Calendar",
-                style = TextStyle(
-                    fontSize = 14.sp,
-                    fontWeight = FontWeight.Medium,
-                    color = SecondPurple
-                ),
-                modifier = Modifier
-                    .clickable {
-                        addScheduledWorkoutToCalendar(workoutWithExercises)
-                    }
-            )
-        }
-
-
-        Text(
-            text = "View Exercises",
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Normal,
-                color = SecondPurple
-            ),
-            modifier = Modifier
-                .clickable{
-                    navAddExercises(workoutWithExercises.workoutPlanId)
-                }
-        )
-    }
-}
 
 
 
