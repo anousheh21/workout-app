@@ -115,35 +115,7 @@ fun ExerciseLogSingle(workoutId: Int) {
     }
 }
 
-@Composable
-fun ShareSheetButton(
-    workoutId: Int,
-    exercises: List<ExerciseWithName>,
-    shareWorkout: (Int, List<ExerciseWithName>) -> Intent
-) {
-    val context = LocalContext.current
-    Button(
-        onClick = {
-        val intent = shareWorkout(workoutId, exercises)
-        val intentChooser = Intent.createChooser(intent, "Share Workout")
-        context.startActivity(intentChooser)
-        },
-        colors = ButtonDefaults.buttonColors(
-            containerColor = PrimaryColor,
-            contentColor = PrimaryText
-        ),
-        shape = RoundedCornerShape(10.dp)
-    ) {
-        Text(
-            text = "Share Workout",
-            style = TextStyle(
-                fontSize = 15.sp,
-                fontWeight = FontWeight.Medium
 
-            )
-        )
-    }
-}
 
 
 

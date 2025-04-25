@@ -25,15 +25,3 @@ fun ExerciseLogHeaders() {
     }
 }
 
-@Composable
-fun ExerciseLogHeader(
-    text: String
-) {
-    Text(
-        text = text,
-        style = TextStyle(
-            fontWeight = FontWeight.Medium,
-            fontSize = 12.sp
-        )
-    )
-}
