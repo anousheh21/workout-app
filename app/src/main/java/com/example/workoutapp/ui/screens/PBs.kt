@@ -38,6 +38,8 @@ import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.InstructionText
 import com.example.workoutapp.ui.components.InstructionTitle
+import com.example.workoutapp.ui.components.exercises.MuscleGroupTitle
+import com.example.workoutapp.ui.components.exercises.PlannedExerciseRow
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
@@ -108,119 +110,6 @@ fun PBs() {
 //    }
 }
 
-@Composable
-fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context: Context) {
-    var showDeleteModal by remember { mutableStateOf(false) }
-    var ableToDeleteCheck by remember { mutableStateOf<String?>(null) }
-    val scope = rememberCoroutineScope()
-    //val vm: WorkoutViewModel = viewModel()
-    Spacer(modifier = Modifier.height(28.dp))
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .pointerInput(Unit) {
-                detectTapGestures(
-                    onLongPress = {
-                        showDeleteModal = true
-                    }
-                )
-            },
-//            .padding(horizontal = 38.dp),
-        horizontalArrangement = Arrangement.SpaceBetween
-    ) {
-        Text(
-            text = exercise.exerciseName,
-            style = TextStyle(
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Medium
-            ),
-            modifier = Modifier
-                .padding(horizontal = 38.dp)
-        )
 
-        Text(
-            text = "${exercise.setNumber} Sets",
-            style = TextStyle(
-                fontSize = 14.sp,
-                fontWeight = FontWeight.Normal
-            ),
-            modifier = Modifier
-                .padding(horizontal = 38.dp)
-        )
-    }
-    Spacer(modifier = Modifier.height(28.dp))
-    Divider(
-        color = SeparatorGrey,
-        thickness = 1.dp,
-    )
-
-    if (showDeleteModal) {
-        //val context = LocalContext.current
-        AlertDialog(
-            onDismissRequest = { showDeleteModal = false },
-            confirmButton = {
-                TextButton(onClick = {
-//                    vm.deletePlannedExercise(exercise, context)
-//                    showDeleteModal = false
-
-                    scope.launch {
-                        val useCheck = vm.isPlannedExerciseUsed(context, exercise.plannedExerciseId)
-                        if (useCheck) {
-                            ableToDeleteCheck = "This exercise cannot be deleted as it is being used as part of a scheduled workout"
-                        } else {
-                            vm.deletePlannedExercise(exercise, context)
-                            showDeleteModal = false
-                        }
-                    }
-                }) {
-                    Text(
-                        text = "Delete",
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = androidx.compose.ui.graphics.Color.Red
-                        )
-                    )
-                }
-            },
-            dismissButton = {
-                TextButton(onClick = { showDeleteModal = false }) {
-                    Text(
-                        text = "Cancel",
-                        style = TextStyle(
-                            fontSize = 18.sp,
-                            fontWeight = FontWeight.Bold,
-                            color = PrimaryColor
-                        )
-                    )
-                }
-            },
-            title = { Text("Delete Exercise") },
-            text = { Text(
-                text = ableToDeleteCheck ?: "Are you sure you want to delete '${exercise.exerciseName}'?",
-                style = TextStyle(
-                    fontSize = 16.sp,
-                    color = PrimaryText,
-
-                )
-            ) }
-        )
-    }
-}
-
-@Composable
-fun MuscleGroupTitle(muscleGroup: MuscleGroup) {
-    Spacer(modifier = Modifier.height(36.dp))
-    Text(
-        text = muscleGroup.toTitleCase(),
-        style = TextStyle(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        modifier = Modifier
-            .padding(horizontal = 38.dp)
-    )
-    // Spacer(modifier = Modifier.height(5.dp))
-}
 
 
