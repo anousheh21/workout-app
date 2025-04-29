@@ -1,5 +1,6 @@
 package com.example.workoutapp.ui.components.workout
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -126,8 +127,13 @@ fun SwipeScreenChild(
             weightString = weightInput,
             repsString = repsInput,
             saveSet = { context, weightString: String, repsString: String ->
-                val weight = weightString.toFloat()
-                val reps = repsString.toInt()
+                val weight = weightString.toFloatOrNull()
+                val reps = repsString.toIntOrNull()
+
+                if (weight == null || reps == null) {
+                    Toast.makeText(context, "Invalid input", Toast.LENGTH_SHORT).show()
+                    return@NextSetButton
+                }
 
                 val newExerciseStats = Exercise(
                     workoutId = selectedWorkout.workoutId,
