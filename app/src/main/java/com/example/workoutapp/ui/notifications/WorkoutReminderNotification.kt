@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.notifications
 
+// WorkoutReminderNotifications contains the code to schedule notifications, and to deduce what to display on them
+
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.AlarmManager
@@ -28,7 +30,7 @@ fun scheduleWorkoutNotification(
 ) {
 
 
-
+    // Intent that will be received when the alarm for the notification pings
     val intent = Intent(context, NotificationReceiver::class.java).apply {
         putExtra("dayInt", dayInt)
         putExtra("timeString", timeString)
@@ -36,6 +38,7 @@ fun scheduleWorkoutNotification(
         putExtra("workoutDay", workoutDay)
     }
 
+    // Creates a unique ID
     val requestId = (workoutName + timeString + workoutDay).hashCode()
 
     val pendingIntent = PendingIntent.getBroadcast(
@@ -45,21 +48,20 @@ fun scheduleWorkoutNotification(
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
+    // Split the time into hour and minute
     val (hour, minute) = timeString.split(":").map { it.toInt() }
 
-
+    // Sets the notification to send 1 hour before the workout
     val calendar = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_WEEK, dayInt)
         set(Calendar.HOUR_OF_DAY, hour - 1)
         set(Calendar.MINUTE, minute)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
-        // Sets the notification for one hour before the workout
-        //add(Calendar.HOUR_OF_DAY, -1)
     }
 
 
-
+    // Sets alarm via alarm manager
     val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     alarmManager.setExactAndAllowWhileIdle(
         AlarmManager.RTC_WAKEUP,
@@ -69,6 +71,7 @@ fun scheduleWorkoutNotification(
     Log.d("WorkoutViewModel", "Alarm set for: ${calendar.time}")
 }
 
+// Function to show the nitifaciotn
 @SuppressLint("ScheduleExactAlarm")
 fun showScheduledWorkoutNotification(
     context: Context,
@@ -89,6 +92,7 @@ fun showScheduledWorkoutNotification(
         PendingIntent.FLAG_IMMUTABLE or PendingIntent.FLAG_UPDATE_CURRENT
     )
 
+    // Builds the content of the notification
     val builder = NotificationCompat.Builder(context, CHANNEL_ID)
         .setContentTitle("Workout Scheduled in 1 Hour")
         .setContentText("You have a $workoutName workout at $timeString on $workoutDay")
@@ -97,6 +101,7 @@ fun showScheduledWorkoutNotification(
         .setContentIntent(pendingIntent)
         .setAutoCancel(true)
 
+    // uses permissions for the notification
     with(NotificationManagerCompat.from(context)) {
         if (ActivityCompat.checkSelfPermission(
                 context,
@@ -118,7 +123,7 @@ class NotificationReceiver : BroadcastReceiver() {
             val workoutDay = intent?.getStringExtra("workoutDay") ?: "Monday"
             showScheduledWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
 
-            // Reschedule the notification, so it appears every week
+            // Reschedules notification to appear every week to remind of the workout
             scheduleWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
         }
     }
