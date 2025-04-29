@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// WorkoutNameInputField.kt holds the input text field that allows the user to provide a name for their workout
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

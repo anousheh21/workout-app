@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// AddNewWorkoutScheduleEdit.kt contains a button that allows the user to add a new scheduled workout
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// WorkoutTime.kt allows the user to select the time they want to do their workout
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -39,6 +41,7 @@ fun WorkoutTime(
     onConfirm: (String) -> Unit,
     onDismiss: () -> Unit
 ) {
+    // Workout time takes in a string of the initial time, and here we split it into parts for hour and minute
     val parts = initialTime.split(":")
     val initialHour = parts.getOrNull(0)?.toIntOrNull() ?: 12
     val initialMinute = parts.getOrNull(1)?.toIntOrNull() ?: 0
@@ -49,6 +52,7 @@ fun WorkoutTime(
         is24Hour = true,
     )
 
+    // Define the colours of the time picker
     val timeInputColors: TimePickerColors = TimePickerDefaults.colors(
             timeSelectorUnselectedContainerColor = PrimaryText,
             timeSelectorSelectedContainerColor   = Color.White,
@@ -86,6 +90,7 @@ fun WorkoutTime(
         ) {
             Button(
                 onClick = {
+                    // Confirms the time that the user has specified, and formats it correctly for our use
                     onConfirm(String.format("%02d:%02d", timePickerState.hour, timePickerState.minute))
                     onDismiss()
                 },

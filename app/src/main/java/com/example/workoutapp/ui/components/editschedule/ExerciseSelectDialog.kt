@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// ExerciseSelectDialog.kt holds the dialog that allows the user to select the scheduled exercises that will be part of the scheduled workouts.
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -43,6 +45,7 @@ fun ExerciseSelectDialog(
     selectedExercises: MutableList<PlannedExercise>,
     onDismiss: () -> Unit
 ) {
+    // In the dialog, the user can filter by muscle group. This variable remembers if a filter is applied, and if so, for which muscle group it is applied to
     var muscleFilter by remember { mutableStateOf<MuscleGroup?>(null) }
     AlertDialog(
         onDismissRequest = onDismiss,
@@ -63,8 +66,10 @@ fun ExerciseSelectDialog(
         text = {
             Column(modifier = Modifier.fillMaxWidth()) {
 
+                // In order to filter by muscle group, a drop down is used - this variable remembers if that dropdown is showing or not
                 var filterDropDownExpanded by remember { mutableStateOf(false) }
 
+                // Button to expand the filter dropdown
                 Box{
                     OutlinedButton(onClick = {filterDropDownExpanded = true})  {
                         Text(
@@ -75,6 +80,7 @@ fun ExerciseSelectDialog(
                         )
                     }
 
+                    // The dropdown menu that holds the filter
                     DropdownMenu(
                         expanded = filterDropDownExpanded,
                         onDismissRequest = { filterDropDownExpanded = false }
@@ -87,10 +93,12 @@ fun ExerciseSelectDialog(
                             }
                         )
 
+                        // Cycles through all the different muscle groups and shows them in the drop down
                         MuscleGroup.entries.forEach { muscleGroupType ->
                             DropdownMenuItem(
                                 text = { Text(muscleGroupType.toTitleCase()) },
                                 onClick = {
+                                    // If the user clicks a row in the dropdown, that muscle group is set to the muscleFilter variable
                                     muscleFilter = muscleGroupType
                                     filterDropDownExpanded = false
                                 }
@@ -100,6 +108,7 @@ fun ExerciseSelectDialog(
                 }
                 Spacer(Modifier.height(8.dp))
 
+                // Filters the exercises by the selected muscle group
                 val filteredOptions = plannedExercisesArray.filter {
                     (muscleFilter == null || it.muscleGroup == muscleFilter)
                 }
@@ -109,6 +118,7 @@ fun ExerciseSelectDialog(
                         .heightIn(max = 300.dp)
                         .verticalScroll(rememberScrollState())
                 ) {
+                    // Shows a list of all exercises (filtered)
                     filteredOptions.forEach { item ->
                         val selectionIndex = selectedExercises.indexOf(item).takeIf { it >= 0}
                         Row(
@@ -124,6 +134,7 @@ fun ExerciseSelectDialog(
                                 }
                                 .padding(vertical = 4.dp)
                         ) {
+                            // Checkbox that the user can select to add an exercise to the workout
                             Checkbox(
                                 checked = selectedExercises.contains(item),
                                 onCheckedChange = {
@@ -156,6 +167,7 @@ fun ExerciseSelectDialog(
                         }
                     }
 
+                    // If they have no exercises for the filtered muscle group, let the user know that there are no results for this
                     if (filteredOptions.isEmpty()) {
                         Text(
                             text = "No Results Found",

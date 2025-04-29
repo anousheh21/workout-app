@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// AddToCalendarButton.kt contains a button that allows the user to add the scheduled workout to their calendar
+
 import android.util.Log
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.size

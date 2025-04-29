@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// AddExercisesMultiSelect.kt shows a dialog that allows users to add scheduled exercises to a scheduled workout
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -34,12 +36,13 @@ fun AddExercisesMultiSelect(
 
     val plannedExercisesArray = vm.plannedExercisesArray
 
-
+    // State to remember if the dialog is showing or not
     var showDialog by remember { mutableStateOf(false) }
 
     Column(
         modifier = Modifier.padding(16.dp)
     ) {
+        // Button that shows the dialog to add the exercises
         Button(
             onClick = {showDialog = true},
             shape = RoundedCornerShape(10.dp),
@@ -51,7 +54,7 @@ fun AddExercisesMultiSelect(
             Text("Add Exercises")
         }
 
-
+        // If showDialog is true, show the dialog that allows the user to add the exercises
         if (showDialog) {
             ExerciseSelectDialog(
                 plannedExercisesArray = plannedExercisesArray,

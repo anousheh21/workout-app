@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// SingleWorkoutScheduleEdit.kt holds the input boxes required for the user to be able to schedule a workout, and add the relevant information
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -69,6 +71,7 @@ fun SingleWorkoutScheduleEdit(
     vm: WorkoutViewModel = viewModel(),
     onModalClose: () -> Unit
 ) {
+    // State to remember user input
     var workoutNameInput by remember { mutableStateOf("") }
     val selectedExercises = remember { mutableStateListOf<PlannedExercise>() }
     var selectedDay by remember { mutableStateOf("") }
@@ -137,6 +140,7 @@ fun SingleWorkoutScheduleEdit(
 
         Spacer(modifier = Modifier.height(30.dp))
 
+        // Take the users input and create a new ScheduledWorkout variable from it
         val newScheduledWorkout = ScheduledWorkout(
             workoutName = workoutNameInput,
             workoutDay = selectedDay,
@@ -151,6 +155,7 @@ fun SingleWorkoutScheduleEdit(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Center
         ) {
+            // Save the above ScheduledWorkout variable via functions in the ViewModel
             SaveScheduledWorkoutWithExercises(
                 newScheduledWorkout = newScheduledWorkout,
                 saveScheduledWorkoutWithExercises = {

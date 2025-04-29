@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// WorkoutDay.kt is a dropdown that allows the user to select the day they want to schedule their workout for
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
@@ -29,7 +31,9 @@ fun WorkoutDay(
     selectedDay: String,
     onDaySelected: (String) -> Unit
 ) {
+    // List of the days of the week, which is what will be shown in the dropdown
     val daysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    // Remembers whether the dropdown is expanded or not
     var expanded by remember { mutableStateOf(false) }
     var submittedDay by remember { mutableStateOf("") }
 

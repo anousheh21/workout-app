@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// SelectedExercisesList.kt shows a list of selected planned exercises (to be shown in the scheduled workout addition panel, so users can see what exercises are in the workout before they save it)
+
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable

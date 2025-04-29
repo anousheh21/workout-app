@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// TimeBox.kt displays the selected workout time in the scheduled workout addition dialog
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
@@ -28,6 +30,7 @@ fun TimeBox(
     onTimeChange: (String) -> Unit
 
     ) {
+    // Variable to remember whether the time picker is showing
     var showTimePicker by remember { mutableStateOf(false) }
     val displayedTime = workoutTime
 
@@ -42,12 +45,14 @@ fun TimeBox(
             .padding(horizontal = 10.dp),
         contentAlignment = Alignment.Center
     ) {
+        // Box displays the input workout time
         Text(
             text =  workoutTime,
             style = TextStyle(fontSize = 16.sp, color = DarkText)
         )
     }
 
+    // If time picker is showing, display WorkoutTime with the required parameters
     if (showTimePicker) {
         Dialog(onDismissRequest = { showTimePicker = false }) {
             WorkoutTime(

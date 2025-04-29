@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// SaveScheduledWorkoutWithExercises.kt contains a button that receives a parameter for a function that will save the scheduled workout alongside the scheduled execrises for that workout
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

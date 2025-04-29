@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule
 
+// AddExerciseButton.kt allows the user to add exercises - it is not used.
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
