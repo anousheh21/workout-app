@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
+// SingleExerciseScheduleEdit.kt contains a composable that holds the input boxes that allow a user to add a new scheduled exercise
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
@@ -36,6 +38,7 @@ fun SingleExerciseScheduleEdit(
         vm: WorkoutViewModel = viewModel(),
         onModalClose: () -> Unit
     ) {
+    // Variables to remember user input - these are passed down to the respective composable functions that allow the user to input their values
     var exerciseNameInput by remember { mutableStateOf("") }
     var setNumberInput by remember { mutableStateOf("") }
     var selectedMuscleGroup by remember { mutableStateOf(MuscleGroup.CHEST) }
@@ -62,6 +65,7 @@ fun SingleExerciseScheduleEdit(
         )
         Spacer(modifier = Modifier.height(35.dp))
 
+        // Create a new planned exercise
         val newExercise = PlannedExercise(
             exerciseName = exerciseNameInput,
             muscleGroup =  selectedMuscleGroup,
@@ -71,6 +75,7 @@ fun SingleExerciseScheduleEdit(
         val context = LocalContext.current
         val coroutineScope = rememberCoroutineScope()
 
+        // Saves the exercise using the ViewModel
         SaveExercise(
             newExercise = newExercise,
             saveExercise = {
@@ -85,7 +90,7 @@ fun SingleExerciseScheduleEdit(
 }
 
 
-
+// Composable that holds a button that saves the scheduled exercise. The function that allows the exercise to be saved is passed as a parameter from SingleExerciseScheduleEdit.
 @Composable
 fun SaveExercise(newExercise: PlannedExercise, saveExercise: (PlannedExercise) -> Unit,) {
     Button(

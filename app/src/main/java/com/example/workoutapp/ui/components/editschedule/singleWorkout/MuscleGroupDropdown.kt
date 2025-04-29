@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
+// MuscleGroupDropDown.kt contains a composable which is used to create a drop down showing all the values that the MuscleGroup enum can hold
+
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -31,6 +33,7 @@ fun MuscleGroupDropDown(
     selectedGroup: MuscleGroup,
     onGroupSelected: (MuscleGroup) -> Unit
 ) {
+    // Remembers whether the dropdown is showing or not
     var expanded by remember { mutableStateOf(false) }
     // var selectedGroup by remember { mutableStateOf("") }
 
@@ -38,6 +41,7 @@ fun MuscleGroupDropDown(
         expanded = expanded,
         onExpandedChange = { expanded = !expanded }
     ) {
+        // Text field set to read only to contain the selected value from the drop down
         TextField(
             value = selectedGroup.toTitleCase(),
             onValueChange = {},
@@ -62,6 +66,7 @@ fun MuscleGroupDropDown(
                // .padding(end = 26.dp)
         )
 
+        // Drop down part that lists all the values that the muscle group enum can hold
         ExposedDropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
             for (group in MuscleGroup.entries) {
                 DropdownMenuItem(

@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
+// ExerciseInput.kt contains the composable function that contains a text field which will be used to enter the name of an exercise to be added to the database
+
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
@@ -23,7 +25,7 @@ fun ExerciseInput(
     onValueChange: (String) -> Unit
 ) {
 
-
+    // Text field that takes in the input for the exercise name the user wishes to add
     TextField(
         value = exerciseNameInput,
         onValueChange = onValueChange,

@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.editschedule.singleWorkout
 
+// ExerciseSetNumber.kt contains a composable that contains a TextField that the user will use to enter the number of sets they want to do for a particular exercise
+
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Text
 import androidx.compose.material3.TextField
@@ -22,6 +24,7 @@ fun ExerciseSetNumber(
     onValueChange: (String) -> Unit
 ) {
 
+    // The TextField to enter the number of sets to perform
     TextField(
         value = setNumberInput,
         onValueChange = onValueChange,
