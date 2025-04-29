@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.workout
 
+// SwipeScreenChild.kt shows the content for the current workout, this is what is being swiped through on the exercise swipe screen
+
 import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -115,14 +117,15 @@ fun SwipeScreenChild(
         Spacer(modifier = Modifier.height(56.dp))
 
 
-        // Display all exercises, just as text for now
+        // Filters for the current exercise
         var currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
 
+        // Sets variables
         val setsCompleted = currentExercise.size
         val setsPlanned = exercise.setNumber
         val canAddMoreSets = setsCompleted < setsPlanned
 
-
+        // button to move to the next set
         NextSetButton(
             weightString = weightInput,
             repsString = repsInput,
@@ -131,10 +134,13 @@ fun SwipeScreenChild(
                 val reps = repsString.toIntOrNull()
 
                 if (weight == null || reps == null) {
+                    // Checks if the weight and reps are null (set to null if input is invalid, for example its a string) and a toast shows to tell the user this
                     Toast.makeText(context, "Invalid input", Toast.LENGTH_SHORT).show()
+                    // If this is the case, returns before saving
                     return@NextSetButton
                 }
 
+                // Saves the exercise information to a variable
                 val newExerciseStats = Exercise(
                     workoutId = selectedWorkout.workoutId,
                     plannedExerciseId = exercise.plannedExerciseId,
@@ -143,13 +149,11 @@ fun SwipeScreenChild(
                     pb = false
                 )
 
-                // Add the exercise to the database
+                // Adds the exercise to the database via the view model, then reloads so they display
                 vm.insertExercise(context, newExerciseStats)
-
-                // Load all exercises again to refresh the page
                 vm.loadExercisesForWorkout(context, selectedWorkout.workoutId)
 
-                // Clear input boxes
+                // Clears input boxes to be used again
                 onWeightValueChange("")
                 onRepsValueChange("")
             },
@@ -158,7 +162,6 @@ fun SwipeScreenChild(
 
         Spacer(modifier = Modifier.height(37.dp))
 
-        // Display all exercises, just as text for now
         currentExercise = completedExercises.filter { it.plannedExerciseId == exercise.plannedExerciseId }
 
         CompletedExerciseTable(exercises = currentExercise, plannedExercise = exercise)
@@ -178,6 +181,7 @@ fun SwipeScreenChild(
 
             Text(
                 text = buildAnnotatedString {
+                    // Shows what exercise is up next
                     withStyle(style = SpanStyle(fontWeight = FontWeight.SemiBold)) {
                         append("Up Next: ")
                     }
@@ -193,6 +197,7 @@ fun SwipeScreenChild(
 
 
         Text(
+            // Instructions for swiping
             text = "Swipe right for next exercise, swipe left for previous exercise",
             style = TextStyle(
                 fontSize = 12.sp,

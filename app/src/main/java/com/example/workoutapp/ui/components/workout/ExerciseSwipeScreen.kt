@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.workout
 
+// ExerciseSwipeScreen.kt uses custom touch gestures to move between the exercises of the current workout
+
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -21,16 +23,19 @@ fun ExerciseSwipeScreen(
     selectedWorkout: Workout,
     completedExercises: List<Exercise>
 ) {
+    // Variables for the custom touch gestures
     var currentIndex by remember { mutableStateOf(0) }
     var accumulatedDrag by remember { mutableStateOf(0f) }
     val arrayLength = scheduledExerciseArray.size
 
+    // Variables fer the weight and reps input for a current exerise
     var weightInput by remember { mutableStateOf("") }
     var repsInput by remember { mutableStateOf("") }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
+            // code for the custom touch gestures (left and right swipe)
             .pointerInput(Unit) {
                 detectHorizontalDragGestures(
                     onDragEnd = {
@@ -50,12 +55,14 @@ fun ExerciseSwipeScreen(
     ) {
         val safeIndex = currentIndex.coerceIn(0, scheduledExerciseArray.lastIndex)
 
+        // moves to the next exercise
         val nextExercise: String = if (safeIndex < arrayLength - 1) {
             scheduledExerciseArray[safeIndex + 1].exerciseName
         } else {
             "End"
         }
 
+        // Holds the child content of the swipe screen
         SwipeScreenChild(
             scheduledExerciseArray[safeIndex],
             safeIndex,

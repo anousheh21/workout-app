@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.workout
 
+// CurrentExerciseStatsInput.kt provides a text field that allows the user to input stats for their current exercise (this is used for both weight and reps)
+
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

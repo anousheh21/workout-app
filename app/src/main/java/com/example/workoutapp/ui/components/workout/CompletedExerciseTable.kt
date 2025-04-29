@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.workout
 
+// CompletedExerciseTable.kt displays in the current workout screen, and shows the sets and reps and weights for the exercise being displayed
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer

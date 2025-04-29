@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.workout
 
+// NextSetButton.kt allows the user to move to the next set of an exercise in the current wokrout
+
 import android.content.Context
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
@@ -26,6 +28,7 @@ fun NextSetButton(
 ) {
     val context = LocalContext.current
     Button(
+        // Saves the current set information (so the weight and reps)
         onClick = { saveSet(context, weightString, repsString) },
         enabled = enabled,
         shape = RoundedCornerShape(10.dp),
