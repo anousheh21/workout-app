@@ -3,6 +3,7 @@ package com.example.workoutapp.ui
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
@@ -19,6 +20,7 @@ import com.example.workoutapp.data.Workout
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.notifications.scheduleWorkoutNotification
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.util.Calendar
 
@@ -260,7 +262,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
-                scheduledWorkoutDao.getAllScheduledWorkouts().collect { scheduledWorkouts ->
+                scheduledWorkoutDao.getAllScheduledWorkouts().collectLatest { scheduledWorkouts ->
                     val data = scheduledWorkouts.map { scheduledWorkout ->
                         val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
                         ScheduledWorkoutWithExercises(
@@ -290,6 +292,7 @@ fun loadPlannedExercises(context: Context) {
         val workoutDao = db.workoutDao()
         return workoutDao.countWorkoutsByPlanId(workoutPlanId) > 0
     }
+
 
 
 //    fun loadRelevantScheduledExerciseArray(context: Context, workoutPlanId: Int) {

@@ -1,7 +1,10 @@
 package com.example.workoutapp.data
 
+// WorkoutAppEntities.kt contains all the Entities to be used for the database
+
 import androidx.room.*
 
+// Entity for scheduled workouts
 @Entity(tableName = "scheduledWorkouts")
 data class ScheduledWorkout(
     @PrimaryKey(autoGenerate = true) val workoutPlanId: Int = 0,
@@ -10,6 +13,7 @@ data class ScheduledWorkout(
     val workoutTime: String
 )
 
+// Entity for scheduled workout exercises
 @Entity(
     tableName = "scheduledWorkoutExercises",
     foreignKeys = [
@@ -33,6 +37,8 @@ data class ScheduledWorkoutExercise(
     val plannedExerciseId: Int
 )
 
+
+// Entity for planned exercises
 @Entity(tableName = "plannedExercise")
 data class PlannedExercise(
     @PrimaryKey(autoGenerate = true) val plannedExerciseId: Int = 0,
@@ -41,6 +47,7 @@ data class PlannedExercise(
     val setNumber: Int
 )
 
+// Entity for workouts
 @Entity(
     tableName = "workouts",
     foreignKeys = [
@@ -58,6 +65,7 @@ data class Workout(
     val workoutPlanId: Int
 )
 
+// Entity for exercises
 @Entity(
     tableName = "exercises",
     foreignKeys = [

@@ -3,6 +3,8 @@ package com.example.workoutapp.data
 import android.content.Context
 import androidx.room.Room
 
+//  DatabaseProvider.kt builds instantiates the Workout database
+
 object DatabaseProvider {
     @Volatile
     private var INSTANCE: WorkoutAppDatabase? = null

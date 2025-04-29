@@ -4,6 +4,8 @@ import androidx.room.Database
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 
+// WorkoutAppDatabase.kt sets up the database using the Entities and DAOs
+
 @Database(
     entities = [
         ScheduledWorkout::class,

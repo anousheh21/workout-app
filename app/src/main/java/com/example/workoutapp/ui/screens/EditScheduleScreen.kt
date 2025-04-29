@@ -206,8 +206,8 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
         AlertDialog(
             onDismissRequest = {
                 showDeleteModal = false
-//                schedWorkoutToDelete = null
-//                ableToDeleteCheck = null
+                schedWorkoutToDelete = null
+                ableToDeleteCheck = null
            },
             title = { Text(text = "Delete Scheduled Workout")},
             text = {
