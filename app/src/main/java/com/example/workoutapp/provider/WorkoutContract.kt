@@ -2,10 +2,13 @@ package com.example.workoutapp.provider
 
 import android.net.Uri
 
+// Contract to define the structure of the database so that the content provider can understand it
+
 object WorkoutContract {
     const val AUTHORITY = "com.example.workoutapp.provider"
     val BASE_CONTENT_URI: Uri = Uri.parse("content://$AUTHORITY")
 
+    // Contract for Scheduled Workouts
     object ScheduledWorkouts {
         const val PATH_SCHEDULED_WORKOUTS = "scheduledWorkouts"
         val CONTENT_URI: Uri = Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SCHEDULED_WORKOUTS)
@@ -19,6 +22,7 @@ object WorkoutContract {
         const val COLUMN_TIME = "workoutTime"
     }
 
+    // Contract for Planned Exercises
     object PlannedExercises {
         const val PATH_PLANNED_EXERCISES = "plannedExercises"
         val CONTENT_URI: Uri =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_PLANNED_EXERCISES)
@@ -32,6 +36,7 @@ object WorkoutContract {
         const val COLUMN_SET = "setNumber"
     }
 
+    // Contract for Scheduled Workout Exercises
     object ScheduledWorkoutExercises {
         const val PATH_SCHEDULED_WORKOUT_EXERCISES = "scheduledWorkoutExercises"
         val CONTENT_URI: Uri =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_SCHEDULED_WORKOUT_EXERCISES)
@@ -44,6 +49,7 @@ object WorkoutContract {
         const val COLUMN_PLANNED_EXERCISE_ID = "plannedExerciseId"
     }
 
+    // Contract for Workouts
     object Workouts {
         const val PATH_WORKOUTS = "workouts"
         val CONTENT_URI: Uri =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_WORKOUTS)
@@ -56,7 +62,7 @@ object WorkoutContract {
         const val COLUMN_PLAN_ID = "workoutPlanId"
     }
 
-
+    // Contract for Exercises
     object Exercises {
         const val PATH_EXERCISES = "exercises"
         val CONTENT_URI: Uri =  Uri.withAppendedPath(BASE_CONTENT_URI, PATH_EXERCISES)

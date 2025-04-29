@@ -1,5 +1,7 @@
 package com.example.workoutapp.provider
 
+// WorkoutContentProvider.kt is the Content Provider, so that other apps can access the data from this app
+
 import android.content.ContentProvider
 import android.content.ContentUris
 import android.content.ContentValues
@@ -21,6 +23,7 @@ import com.example.workoutapp.data.WorkoutDao
 import java.lang.IllegalArgumentException
 
 class WorkoutContentProvider: ContentProvider() {
+    // DAO variables
     private lateinit var scheduledWorkoutDao: ScheduledWorkoutDao
     private lateinit var workoutDao: WorkoutDao
     private lateinit var plannedExerciseDao: PlannedExerciseDao
@@ -39,6 +42,7 @@ class WorkoutContentProvider: ContentProvider() {
     }
 
     companion object {
+        // URI codes for the UriMatcher
         private const val SCHEDULED_WORKOUTS = 100
         private const val SCHEDULED_WORKOUT_ID = 101
         private const val PLANNED_EXERCISES = 102
@@ -50,6 +54,7 @@ class WorkoutContentProvider: ContentProvider() {
         private const val EXERCISES = 108
         private const val EXERCISE_ID = 109
 
+        // URI matcher
         private val uriMatcher = UriMatcher(UriMatcher.NO_MATCH).apply {
             addURI(WorkoutContract.AUTHORITY, WorkoutContract.ScheduledWorkouts.PATH_SCHEDULED_WORKOUTS, SCHEDULED_WORKOUTS)
             addURI(WorkoutContract.AUTHORITY, "${WorkoutContract.ScheduledWorkouts.PATH_SCHEDULED_WORKOUTS}/#", SCHEDULED_WORKOUT_ID)
@@ -64,6 +69,7 @@ class WorkoutContentProvider: ContentProvider() {
         }
     }
 
+    // Content provider query
     override fun query(
         uri: Uri,
         projection: Array<out String>?,
@@ -102,6 +108,7 @@ class WorkoutContentProvider: ContentProvider() {
         }
     }
 
+    // ContentProvider function to get content type
     override fun getType(uri: Uri): String? {
         return when (uriMatcher.match(uri)) {
             SCHEDULED_WORKOUT_ID -> WorkoutContract.ScheduledWorkouts.CONTENT_ITEM_TYPE
@@ -118,6 +125,8 @@ class WorkoutContentProvider: ContentProvider() {
         }
     }
 
+
+    // Content provider function to insert values
     override fun insert(uri: Uri, values: ContentValues?): Uri? {
         val newId = when (uriMatcher.match(uri)) {
             SCHEDULED_WORKOUTS -> {
@@ -167,6 +176,7 @@ class WorkoutContentProvider: ContentProvider() {
         return ContentUris.withAppendedId(uri, newId)
     }
 
+    // ContentProvider function to delete values
     override fun delete(uri: Uri, selection: String?, selectionArgs: Array<out String>?): Int {
         val context = context ?: return 0
         val match = uriMatcher.match(uri)
@@ -262,6 +272,7 @@ class WorkoutContentProvider: ContentProvider() {
         }
     }
 
+    // Update is not supported by the ContentProvider
     override fun update(
         uri: Uri,
         values: ContentValues?,
