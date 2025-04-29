@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ExerciseLogHeader.kt contains the heading for the exercise log
+
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.text.TextStyle

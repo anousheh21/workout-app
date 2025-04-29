@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// InstructionTitle.kt is the title for the instructions that show up on a screen before the user has added any data to it
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.Text

@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// TopBarBack.kt is used in nav scaffold, and allows the user to go back to a previous screen
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,8 +17,10 @@ import androidx.navigation.NavHostController
 fun TopBarBack(topBarText: String, navController: NavHostController) {
     TopAppBar(
         title = {
+            // Shows the top bar text
             Text(text = topBarText)
         },
+        // Navigate to the previous screen in the backstack
         navigationIcon = {
             IconButton(onClick = { navController.popBackStack() }) {
                 Icon(

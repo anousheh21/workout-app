@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ExerciseLogSingle.kt shows the list of exercises in a completed workout
+
 import android.content.Intent
 import android.util.Log
 import androidx.compose.foundation.background
@@ -57,7 +59,6 @@ fun ExerciseLogSingle(workoutId: Int) {
         val workoutDao = db.workoutDao()
         workout.value = workoutDao.getWorkoutDetailsById(workoutId)
 
-        // GET WORKOUT INFO
     }
 
     Column(modifier = Modifier.padding(16.dp)) {
@@ -69,6 +70,7 @@ fun ExerciseLogSingle(workoutId: Int) {
 //            Divider()
 //        }
 
+        // Gets exercises with their index to be used for the exercise row
         for ((index, exercise) in exercises.value.withIndex()) {
             val previous = exercises.value.getOrNull(index - 1)
             if (index == 0 || exercise.exerciseName != previous?.exerciseName) {
@@ -87,6 +89,7 @@ fun ExerciseLogSingle(workoutId: Int) {
             horizontalArrangement = Arrangement.Center
         ) {
 //            Spacer(modifier = Modifier.width(30.dp))
+            // Information to allow the workout details to be shared via sharesheet
             ShareSheetButton(
                 workoutId = workoutId,
                 exercises = exercises.value,

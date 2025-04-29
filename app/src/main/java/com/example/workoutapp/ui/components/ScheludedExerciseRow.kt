@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ScheduledExerciseRow.kt displays a row for a scheduled exercise
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -28,6 +30,7 @@ fun ScheduledExerciseRow(
             .padding(horizontal = 38.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // Displays the exercise itself, alongside the number order that exercise appears in the scheduled workout
         Text(
             text = "${index + 1} - ${exercise.exerciseName}",
             style = TextStyle(
@@ -36,6 +39,7 @@ fun ScheduledExerciseRow(
             )
         )
 
+        // Displays the muscle group and set number for the exercise
         Text(
             text = "${exercise.muscleGroup.toTitleCase()} - ${exercise.setNumber} Sets"
         )

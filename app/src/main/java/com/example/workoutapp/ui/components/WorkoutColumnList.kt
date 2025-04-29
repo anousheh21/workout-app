@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// WorkoutColumnList.kt shows a list of workouts, and calls WorkoutRow to display them all
+
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.Divider

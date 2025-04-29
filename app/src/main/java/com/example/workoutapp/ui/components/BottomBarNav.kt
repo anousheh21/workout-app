@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// BottomBarNav.kt contains a list of what will be shown in the bottom nav bar of the app
+
 import androidx.compose.material.icons.Icons
 import androidx.compose.runtime.Composable
 import com.example.workoutapp.ui.screens.AppScreen

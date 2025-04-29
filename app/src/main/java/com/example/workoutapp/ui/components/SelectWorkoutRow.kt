@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// SelectWorkoutRow.kt shows a list of scheduled workouts, for when the user would like to begin a new workout
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -37,6 +39,7 @@ fun SelectWorkoutRow(
                 fontWeight = FontWeight.Medium
             )
         )
+        // Button to start the workout
         StartWorkoutButton(startWorkout)
     }
     Spacer(modifier = Modifier.height(11.dp))

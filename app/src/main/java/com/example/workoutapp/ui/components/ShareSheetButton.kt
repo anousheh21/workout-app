@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ShareSheetButton.kt has a parameter passed to it that is a function that runs when the ShareSheetButton is pressed - this function allows the user to add a workout via the sharesheet
+
 import android.content.Intent
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button

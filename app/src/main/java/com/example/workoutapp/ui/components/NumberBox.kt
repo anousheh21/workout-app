@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// NumberBox.kt is the box on the page to display a completed workout - it displays the weight/reps for a particular exercise
+
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.height

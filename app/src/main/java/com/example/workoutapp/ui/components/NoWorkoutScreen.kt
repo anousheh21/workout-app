@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui.components
 
+// NoWorkoutScreen.kt shows as the first thing the user sees when they log into the app for the first time
+// It explains how to use the app, before they have added any data to it
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer

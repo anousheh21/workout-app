@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ExerciseLogHeaders.kt formats the header section of the exercise log, with the exercise log headers together
+
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.width

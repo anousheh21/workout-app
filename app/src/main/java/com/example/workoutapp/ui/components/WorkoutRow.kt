@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui.components
 
+// WorkoutRow.kt displays a rot of a single workout
+// It displays the title and the date, and then the user can click the row which shows them more details
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -19,6 +22,7 @@ fun WorkoutRow(workout: WorkoutDetails, onClickWorkout: (WorkoutDetails) -> Unit
     Row(
         modifier = Modifier
             .fillMaxWidth()
+            // Navigate to show the workout details
             .clickable { onClickWorkout(workout) }
             .padding(start = 32.dp)
             .padding(top = 18.dp)

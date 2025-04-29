@@ -1,6 +1,6 @@
 package com.example.workoutapp.ui.components.workout
 
-// TableCell.kt contains a single sell for the table, so just a text composable to display the value input by the user 
+// TableCell.kt contains a single sell for the table, so just a text composable to display the value input by the user
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Text

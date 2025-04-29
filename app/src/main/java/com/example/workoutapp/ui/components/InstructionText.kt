@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// InstructionText.kt is a composable that will show the text that explains how to use a screen of the app - it is displayed before the user has added anything to the database from a screen
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height

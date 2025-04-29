@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// StartWorkoutButton.kt allows the user to start a workout - uses tha startWorkout parameter function to do so
+
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape

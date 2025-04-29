@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// WorkoutScheduleRow.kt shows a row for a scheduled workout
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

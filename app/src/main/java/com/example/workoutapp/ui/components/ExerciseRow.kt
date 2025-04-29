@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components
 
+// ExerciseRow.kt is used to display a single row of a compleetd exercise
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
