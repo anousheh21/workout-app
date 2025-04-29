@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.exercises
 
+// PlannedExerciseRow.kt shows a row of a planned exercise in the scheduled exercises screen
+
 import android.content.Context
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.foundation.layout.Arrangement
@@ -34,8 +36,10 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context: Context) {
+    // Variables used for deleting a row
     var showDeleteModal by remember { mutableStateOf(false) }
     var ableToDeleteCheck by remember { mutableStateOf<String?>(null) }
+
     val scope = rememberCoroutineScope()
     //val vm: WorkoutViewModel = viewModel()
     Spacer(modifier = Modifier.height(28.dp))
@@ -43,6 +47,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
         modifier = Modifier
             .fillMaxWidth()
             .pointerInput(Unit) {
+                // Tap gesture to detect a long press - a long press pops up a dialog that allows the user to delete the exercise
                 detectTapGestures(
                     onLongPress = {
                         showDeleteModal = true
@@ -52,6 +57,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
 //            .padding(horizontal = 38.dp),
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
+        // Displays the name of the exercise
         Text(
             text = exercise.exerciseName,
             style = TextStyle(
@@ -62,6 +68,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
                 .padding(horizontal = 38.dp)
         )
 
+        // Displays the number of sets to do for that exercise
         Text(
             text = "${exercise.setNumber} Sets",
             style = TextStyle(
@@ -78,6 +85,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
         thickness = 1.dp,
     )
 
+    // If showDeleteModal is true, show a dialog that allows the user to delete that exercise
     if (showDeleteModal) {
         //val context = LocalContext.current
         AlertDialog(
@@ -88,10 +96,12 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
 //                    showDeleteModal = false
 
                     scope.launch {
+                        // Checks if the scheduled exercise has been added to a scheduled workout. If it has, the user cannot delete it.
                         val useCheck = vm.isPlannedExerciseUsed(context, exercise.plannedExerciseId)
                         if (useCheck) {
                             ableToDeleteCheck = "This exercise cannot be deleted as it is being used as part of a scheduled workout"
                         } else {
+                            // If the scheduled exercise isn't being used, then delete it, and stop showing the modal
                             vm.deletePlannedExercise(exercise, context)
                             showDeleteModal = false
                         }

@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.components.exercises
 
+// MuscleGroupTitle.kt displays the muscle group as a title to be used in the exercises screen
+
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
