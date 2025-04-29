@@ -18,18 +18,28 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.ui.theme.SecondPurple
+import androidx.compose.foundation.gestures.detectTapGestures
+import androidx.compose.ui.input.pointer.pointerInput
 
 @Composable
 fun WorkoutScheduleRow(
     workoutWithExercises: ScheduledWorkoutWithExercises,
     navAddExercises: (Int) -> Unit,
-    addScheduledWorkoutToCalendar: (ScheduledWorkoutWithExercises) -> Unit
-) {
+    addScheduledWorkoutToCalendar: (ScheduledWorkoutWithExercises) -> Unit,
+    onLongPressDelete: (ScheduledWorkoutWithExercises) -> Unit)
+{
 
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 32.dp),
+            .padding(horizontal = 32.dp)
+            .pointerInput(Unit) {
+                detectTapGestures(
+                    onLongPress = {
+                        onLongPressDelete(workoutWithExercises)
+                    }
+                )
+            },
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Divider
@@ -86,6 +87,9 @@ import java.util.Calendar
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
     val scrollState = rememberScrollState()
     var showWorkoutModal by remember { mutableStateOf(false) }
+
+    var showDeleteModal by remember { mutableStateOf(false) }
+    var schedWorkoutToDelete by remember { mutableStateOf<ScheduledWorkoutWithExercises?>(null) }
 
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
@@ -164,6 +168,10 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
                         context.startActivity(intent)
 
+                    },
+                    onLongPressDelete = { workoutToDelete ->
+                        schedWorkoutToDelete = workoutToDelete
+                        showDeleteModal = true
                     }
                 )
                 Spacer(modifier = Modifier.height(19.dp))
@@ -185,6 +193,37 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 //            SingleWorkoutScheduleEdit(onModalClose = {showWorkoutModal = false})
 //        }
 //    }
+
+
+    if (showDeleteModal && schedWorkoutToDelete != null) {
+        AlertDialog(
+            onDismissRequest = { showDeleteModal = false },
+            title = { Text(text = "Delete Scheduled Workout")},
+            text = {
+                Text(text = "Are you sure you want to delete '${schedWorkoutToDelete!!.workoutName}'?")
+            },
+            confirmButton = {
+                Button(onClick = {
+                    schedWorkoutToDelete?.let { delWorkout ->
+                        vm.deleteScheduledWorkout(context, delWorkout.workoutPlanId)
+                        vm.loadScheduledWorkoutsWithExercises(context)
+                    }
+                    showDeleteModal = false
+                    schedWorkoutToDelete = null
+                }) {
+                    Text("Delete")
+                }
+            },
+            dismissButton = {
+                Button(onClick = {
+                    showDeleteModal = false
+                    schedWorkoutToDelete = null
+                }) {
+                    Text("Cancel")
+                }
+            }
+        )
+    }
 }
 
 

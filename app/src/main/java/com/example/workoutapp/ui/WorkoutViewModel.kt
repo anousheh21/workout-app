@@ -7,6 +7,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import androidx.room.Database
 import com.example.workoutapp.data.DatabaseProvider
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.MuscleGroup
@@ -303,6 +304,21 @@ fun loadPlannedExercises(context: Context) {
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Retrieving Exercises:", e)
             }
+        }
+    }
+
+    fun deleteScheduledWorkout(context: Context, schedWorkoutId: Int) {
+        val db = DatabaseProvider.getDatabase(context)
+        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+           try {
+               scheduledWorkoutDao.delete(schedWorkoutId)
+               loadScheduledWorkoutsWithExercises(context)
+           } catch (e: Exception) {
+               Log.e("WorkoutViewModel", "Error Deleting Scheduled Workout", e)
+           }
         }
     }
 
