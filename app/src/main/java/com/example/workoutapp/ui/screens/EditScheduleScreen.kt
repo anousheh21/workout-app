@@ -32,6 +32,7 @@ import androidx.compose.material3.ExposedDropdownMenuDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.TimeInput
@@ -42,6 +43,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +57,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import androidx.lifecycle.viewmodel.compose.viewModel
 import com.example.workoutapp.R
+import com.example.workoutapp.data.DatabaseProvider
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
@@ -78,6 +81,7 @@ import com.example.workoutapp.ui.theme.PrimaryText
 import com.example.workoutapp.ui.theme.SecondPurple
 import com.example.workoutapp.ui.theme.SeparatorGrey
 import com.example.workoutapp.ui.theme.ThirdPurple
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 
@@ -90,6 +94,9 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     var showDeleteModal by remember { mutableStateOf(false) }
     var schedWorkoutToDelete by remember { mutableStateOf<ScheduledWorkoutWithExercises?>(null) }
+
+    var ableToDeleteCheck by remember { mutableStateOf<String?>(null) }
+    val scope = rememberCoroutineScope()
 
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
@@ -197,30 +204,85 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
     if (showDeleteModal && schedWorkoutToDelete != null) {
         AlertDialog(
-            onDismissRequest = { showDeleteModal = false },
+            onDismissRequest = {
+                showDeleteModal = false
+//                schedWorkoutToDelete = null
+//                ableToDeleteCheck = null
+           },
             title = { Text(text = "Delete Scheduled Workout")},
             text = {
-                Text(text = "Are you sure you want to delete '${schedWorkoutToDelete!!.workoutName}'?")
+                Text(text = ableToDeleteCheck ?: "Are you sure you want to delete '${schedWorkoutToDelete!!.workoutName}'?",
+                    style = TextStyle(
+                        fontSize = 16.sp,
+                        color = PrimaryText,
+
+                        ))
             },
             confirmButton = {
-                Button(onClick = {
-                    schedWorkoutToDelete?.let { delWorkout ->
-                        vm.deleteScheduledWorkout(context, delWorkout.workoutPlanId)
-                        vm.loadScheduledWorkoutsWithExercises(context)
+                TextButton(onClick = {
+                    scope.launch{
+                        val db = DatabaseProvider.getDatabase(context)
+                        val scheduledWorkoutDao = db.scheduledWorkoutDao()
+                        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
+                        val useCheck = vm.isScheduledWorkoutUse(context, schedWorkoutToDelete!!.workoutPlanId)
+                        if (useCheck) {
+                            ableToDeleteCheck = "This workout cannot be deleted as it has been carried out"
+                        } else {
+                            schedWorkoutToDelete?.let { delWorkout ->
+                                //vm.deleteScheduledWorkout(context, delWorkout.workoutPlanId)
+                                scheduledWorkoutExerciseDao.deleteExercisesForScheduledWorkout(delWorkout.workoutPlanId)
+                                scheduledWorkoutDao.delete(delWorkout.workoutPlanId)
+
+                                vm.loadScheduledWorkoutsWithExercises(context)
+                            }
+                            showDeleteModal = false
+                            schedWorkoutToDelete = null
+                            ableToDeleteCheck = null
+                        }
                     }
-                    showDeleteModal = false
-                    schedWorkoutToDelete = null
                 }) {
-                    Text("Delete")
+                    Text(
+                        text = "Delete",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = Color.Red
+                        )
+                    )
                 }
+
+//                Button(onClick = {
+//                    schedWorkoutToDelete?.let { delWorkout ->
+//                        vm.deleteScheduledWorkout(context, delWorkout.workoutPlanId)
+//                        vm.loadScheduledWorkoutsWithExercises(context)
+//                    }
+//                    showDeleteModal = false
+//                    schedWorkoutToDelete = null
+//                }) {
+//                    Text("Delete")
+//                }
             },
             dismissButton = {
-                Button(onClick = {
+                TextButton(onClick = {
                     showDeleteModal = false
                     schedWorkoutToDelete = null
+                    ableToDeleteCheck = null
                 }) {
-                    Text("Cancel")
+                    Text(
+                        text = "Cancel",
+                        style = TextStyle(
+                            fontSize = 18.sp,
+                            fontWeight = FontWeight.Bold,
+                            color = PrimaryColor
+                        )
+                    )
                 }
+//                Button(onClick = {
+//                    showDeleteModal = false
+//                    schedWorkoutToDelete = null
+//                }) {
+//                    Text("Cancel")
+//                }
             }
         )
     }

@@ -19,6 +19,9 @@ interface ScheduledWorkoutDao {
     @Query("SELECT * FROM scheduledWorkouts")
     fun getAllScheduledWorkouts(): Flow<List<ScheduledWorkout>>
 
+    @Query("SELECT COUNT(*) FROM scheduledWorkouts WHERE workoutPlanId = :workoutPlanId")
+    suspend fun isScheduledWorkoutUsed(workoutPlanId: Int): Int
+
     @Query("SELECT * FROM scheduledWorkouts WHERE workoutPlanId = :id")
     suspend fun getById(id: Int): ScheduledWorkout
 
@@ -56,6 +59,9 @@ interface ScheduledWorkoutExerciseDao {
 
     @Query("SELECT * FROM scheduledWorkoutExercises WHERE workoutPlanId = :planId")
     suspend fun getExercisesForPlan(planId: Int): List<ScheduledWorkoutExercise>
+
+    @Query("DELETE FROM scheduledWorkoutExercises WHERE workoutPlanId = :workoutPlanId")
+    suspend fun deleteExercisesForScheduledWorkout(workoutPlanId: Int)
 
     @Query("SELECT COUNT(*) FROM scheduledWorkoutExercises WHERE plannedExerciseId = :exerciseId")
     suspend fun isPlannedExerciseUsed(exerciseId: Int): Int
@@ -123,6 +129,9 @@ interface WorkoutDao {
 
     @Query("SELECT * FROM workouts")
     suspend fun getAll(): List<Workout>
+
+    @Query("SELECT COUNT(*) FROM workouts WHERE workoutPlanId = :workoutPlanId")
+    suspend fun countWorkoutsByPlanId(workoutPlanId: Int): Int
 
     @Query("""
     SELECT workouts.workoutId, workouts.workoutPlanId, workouts.workoutDate, scheduledWorkouts.workoutName 
