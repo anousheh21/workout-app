@@ -116,7 +116,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
         ) {
             Spacer(modifier = Modifier.height(45.dp))
             InstructionTitle(text = "Plan Your Workouts")
-            InstructionText(text = "Click \"Add New\" to add a new scheduled workout")
+            InstructionText(text = "Click \"Add New\" to add a new scheduled workout. To delete a scheduled workout, press and hold.")
         }
     } else {
         Column(

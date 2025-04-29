@@ -5,6 +5,7 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.content.Intent
+import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
 import androidx.activity.ComponentActivity
@@ -15,6 +16,8 @@ import com.example.workoutapp.R
 import com.example.workoutapp.ui.screens.NavScaffold
 import com.example.workoutapp.ui.theme.WorkoutAppTheme
 import android.provider.Settings
+import androidx.core.app.ActivityCompat
+import androidx.core.content.ContextCompat
 
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -27,10 +30,25 @@ class MainActivity : ComponentActivity() {
                 startActivity(intent)
             }
         }
+
+        requestNotificationPermissionIfNeeded()
+
         setContent {
             WorkoutAppTheme {
                 NavScaffold()
 
+            }
+        }
+    }
+
+    private fun requestNotificationPermissionIfNeeded() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+                ActivityCompat.requestPermissions(
+                    this,
+                    arrayOf(android.Manifest.permission.POST_NOTIFICATIONS),
+                    1001
+                )
             }
         }
     }
@@ -52,6 +70,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 }
+
 
 
 

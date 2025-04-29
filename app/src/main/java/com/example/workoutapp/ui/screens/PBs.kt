@@ -76,7 +76,7 @@ fun PBs() {
         ) {
             //Spacer(modifier = Modifier.height(50.dp))
             InstructionTitle(text = "Add Exercises")
-            InstructionText(text = "Click the \"Add New\" button to start adding exercises that can then be added to your workouts in the schedule tab")
+            InstructionText(text = "Click the \"Add New\" button to start adding exercises that can then be added to your workouts in the schedule tab. To delete an exercise, press and hold.")
         }
     } else {
         Column(
