@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// CurrentWorkoutScreen.kt is the screen that shows the current workout being carried out and logged by the user
+
 import android.content.Context
 import androidx.compose.foundation.gestures.detectHorizontalDragGestures
 import androidx.compose.foundation.layout.*
@@ -42,27 +44,31 @@ import com.example.workoutapp.ui.theme.ThirdPurple
 
 @Composable
 fun CurrentWorkoutScreen(workoutId: Int) {
-    // Load the workout, from the workout ID
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
 
+    // Scroll state, so that the screen will scrolle
     val scrollState = rememberScrollState()
 
     LaunchedEffect(Unit) {
+        // Load the workout by it's ID
         vm.loadWorkoutById(context, workoutId)
         vm.loadScheduledWorkoutsWithExercises(context)
 
-        // Load all relevant
+        // Load all exercises for the workout that have the matching workout ID
         vm.loadExercisesForWorkout(context, workoutId)
     }
 
+    // Assign variables via the ViewModel
     val selectedWorkout = vm.selectedWorkout
     val selectedWorkoutName = vm.selectedWorkoutName
 
     val completedExercises = vm.exercisesForWorkoutArray
 
-    // Get array of exercises associated with the workout plan that the workout is associated with
+
     val schedWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
+
+    // Filter scheduled exercises for the ones that match the current workout plan
     val scheduledExerciseArray = schedWorkoutWithExercises
         .filter {
             it.workoutPlanId == (selectedWorkout?.workoutPlanId ?: -1)
@@ -71,6 +77,8 @@ fun CurrentWorkoutScreen(workoutId: Int) {
 
     val listToUse = scheduledExerciseArray.flatten()
 
+    // If there are exercises, then pass them to the ExerciseSwipeScreen to be used
+    // If there are no exercises, provide a message to the user saying this
     if (listToUse.isNotEmpty()) {
         if (selectedWorkout != null) {
             Column(

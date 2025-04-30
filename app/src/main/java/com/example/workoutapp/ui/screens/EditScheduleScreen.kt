@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// EditScheduleScreen.kt is a screen that allows the user to view their scheduled workouts
+
 import android.content.Intent
 import android.provider.CalendarContract
 import android.util.Log
@@ -89,24 +91,30 @@ import java.util.Calendar
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
+    // Variable to remember scroll state, to allow the screen to scroll
     val scrollState = rememberScrollState()
     var showWorkoutModal by remember { mutableStateOf(false) }
 
+    // State variables to allow for the deletion of scheduled workouts
     var showDeleteModal by remember { mutableStateOf(false) }
     var schedWorkoutToDelete by remember { mutableStateOf<ScheduledWorkoutWithExercises?>(null) }
 
     var ableToDeleteCheck by remember { mutableStateOf<String?>(null) }
     val scope = rememberCoroutineScope()
 
+    // ViewModel variables
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        // Load scheduled workouts with their exercises from the database via the ViewModel
         vm.loadScheduledWorkoutsWithExercises(context)
     }
 
+    // Save data from the database from this ViewModel variable
     val scheduledWorkoutWithExercises = vm.scheduledWorkoutsWithExercises
 
+    // Show instructions if there are no scheduled workouts to display
     if (scheduledWorkoutWithExercises.isEmpty()) {
         Column(
             modifier = Modifier
@@ -119,6 +127,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             InstructionText(text = "Click \"Add New\" to add a new scheduled workout. To delete a scheduled workout, press and hold.")
         }
     } else {
+        // If there are scheduled workouts to display, display them in a WorkoutScheduleRow
         Column(
             modifier = Modifier
                 .verticalScroll(scrollState),
@@ -137,6 +146,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                         val workoutMinute = splitTime.getOrNull(1)?.toIntOrNull() ?: 0
                         var byDay = "SA"
 
+                        // Set the calendar day of the week
                         if (workout.workoutDay == "Monday") {
                             calendar.set(Calendar.DAY_OF_WEEK, 2)
                             byDay = "MO"
@@ -160,22 +170,23 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                             byDay = "SU"
                         }
 
+                        // Set the workout hour and minute to the calendar
                         calendar.set(Calendar.HOUR_OF_DAY, workoutHour)
                         calendar.set(Calendar.MINUTE, workoutMinute)
 
+                        // Set intent for the calendar
                         val intent = Intent(Intent.ACTION_INSERT).apply {
                             data = android.provider.CalendarContract.Events.CONTENT_URI
                             putExtra(android.provider.CalendarContract.Events.TITLE, workout.workoutName)
-//                        putExtra(android.provider.CalendarContract.Events.EVENT_LOCATION, "Gym")
                             putExtra(android.provider.CalendarContract.EXTRA_EVENT_BEGIN_TIME, calendar.timeInMillis)
-                            // putExtra(android.provider.CalendarContract.EXTRA_EVENT_END_TIME, calendar.timeInMillis + 60 * 60 * 1000)
-                            // putExtra(android.provider.CalendarContract.Events.DESCRIPTION, "Workout with ${workout.workoutExercises.size} exercises.")
                             putExtra(CalendarContract.Events.RRULE, "FREQ=WEEKLY;BYDAY=${byDay}")
                         }
 
+                        // Send intent to the outside app (to the calendar app)
                         context.startActivity(intent)
 
                     },
+                    // On a long press, show a modal to delete the workout
                     onLongPressDelete = { workoutToDelete ->
                         schedWorkoutToDelete = workoutToDelete
                         showDeleteModal = true
@@ -202,6 +213,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 //    }
 
 
+    // Used to display a dialog to delete a scheduled workout
     if (showDeleteModal && schedWorkoutToDelete != null) {
         AlertDialog(
             onDismissRequest = {
@@ -225,9 +237,12 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                         val scheduledWorkoutDao = db.scheduledWorkoutDao()
                         val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
                         val useCheck = vm.isScheduledWorkoutUse(context, schedWorkoutToDelete!!.workoutPlanId)
+                        // Checks if the scheduled workout has been used (so carried out as a workout)
                         if (useCheck) {
+                            // If it's been used, the user cannot delete it
                             ableToDeleteCheck = "This workout cannot be deleted as it has been carried out"
                         } else {
+                            // If the scheduled workout has not been used, delete it from the database
                             schedWorkoutToDelete?.let { delWorkout ->
                                 //vm.deleteScheduledWorkout(context, delWorkout.workoutPlanId)
                                 scheduledWorkoutExerciseDao.deleteExercisesForScheduledWorkout(delWorkout.workoutPlanId)
@@ -235,6 +250,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
 
                                 vm.loadScheduledWorkoutsWithExercises(context)
                             }
+                            // Hide the modal and reset the variables
                             showDeleteModal = false
                             schedWorkoutToDelete = null
                             ableToDeleteCheck = null
@@ -264,6 +280,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             },
             dismissButton = {
                 TextButton(onClick = {
+                    // Dismiss the modal and dreset the variables
                     showDeleteModal = false
                     schedWorkoutToDelete = null
                     ableToDeleteCheck = null

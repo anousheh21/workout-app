@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// NavScaffold.kt contains the scaffolding for the app as well as the main navigation
+
 import android.util.Log
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size

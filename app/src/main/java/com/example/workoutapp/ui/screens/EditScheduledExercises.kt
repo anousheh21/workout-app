@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// EditScheduledExercises.kt is a screen that displays the scheduled exercises for the scheduled workouts
+
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -37,21 +39,24 @@ import com.example.workoutapp.ui.theme.SeparatorGrey
 fun EditScheduledExercises(workoutPlanId: Int) {
     val scrollState = rememberScrollState()
 
-    // Load in relevant exercises
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
 
     LaunchedEffect(Unit) {
+        // Load in workouts with exercises from the database via the ViewModel
         vm.loadScheduledWorkoutsWithExercises(context)
     }
 
     val workoutsWithExercises = vm.scheduledWorkoutsWithExercises
+
+    // Filter for exercises that match the workout plan ID
     val relevantExercises = workoutsWithExercises
         .filter { it.workoutPlanId == workoutPlanId }
         .map { it.workoutExercises }
         .flatten()
 
     Column() {
+        // Display the exercises in a scheduled exercise row
         relevantExercises.forEachIndexed() { index, item ->
             ScheduledExerciseRow(
                 exercise = item,
