@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui.screens
 
+// NewWorkoutScreen.kt is the screen that allows the user to start a new workout
+// It shows a list of scheduled workouts, and allows the user to select one to start
+
 import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -47,21 +50,25 @@ import kotlinx.coroutines.launch
 fun NewWorkoutScreen(
     onClickStartWorkout: (Int) -> Unit
 ) {
+    // Scroll state to allow the page to screel
     val scrollState = rememberScrollState()
     val vm: WorkoutViewModel = viewModel()
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
 
     LaunchedEffect(Unit) {
+        // Load scheduled workouts with their exercises from the database via the ViewModel
         vm.loadScheduledWorkoutsWithExercises(context)
     }
 
+    // Set the loaded scheduled workouts to a variable via the ViewModel
     val schedWorkouts = vm.scheduledWorkoutsWithExercises
 
     Column(
         modifier = Modifier
             .verticalScroll(scrollState)
     ) {
+        // If there are no scheduled workouts to display, display instructions that the user can follow to create a new scheduled workout
         if (schedWorkouts.isEmpty()) {
            Column(
                modifier = Modifier
@@ -75,34 +82,38 @@ fun NewWorkoutScreen(
                InstructionText(text = "Schedule a workout in the schedule tab, then return here to start that workout")
            }
         } else {
+            // Loop through each scheduled workout in the array to display it
             schedWorkouts.forEach { item ->
                 SelectWorkoutRow(
                     schedWorkout = item,
+                    // This function runs when the user selects a workout to start
                     startWorkout = {
                         scope.launch{
-                            // TODO: Implement this!
 
-                            // Get the workout plan ID from the start button that was pressed
+                            // Assign the workout plan ID of the selected workout
                             val workoutPlanId = item.workoutPlanId
 
-                            // Get today's date
+                            // Calculate today's date
                             val calendar = java.util.Calendar.getInstance()
                             val day = calendar.get(java.util.Calendar.DAY_OF_MONTH)
                             val month = calendar.get(java.util.Calendar.MONTH) + 1
                             val year = calendar.get(java.util.Calendar.YEAR) % 100
 
+                            // Assign the computed date to this variable and format it correctly for our use
                             val dateToday = String.format("%02d/%02d/%02d", day, month, year)
 
-                            // Create a new workout
+                            // Create a new Workout and assign it to a variable
                             val newWorkout = Workout(
                                 workoutDate = dateToday,
                                 workoutPlanId = workoutPlanId
                             )
 
-                            // Add workout to the database, returning the workout ID
+                            // Add the workout just created to the database via the ViewModel
+                            // Assign the ID of this workout to the variable
                             val newWorkoutId = vm.insertWorkoutAndReturnId(context, newWorkout)
 
-                            // Navigate to the current workout page, and pass the workout just create to it
+                            // Navigate to the current workout screen so that the user can actually start the workout
+                            // This is done by passing in the workout ID of the workout just created
                             onClickStartWorkout(newWorkoutId)
                         }
 
