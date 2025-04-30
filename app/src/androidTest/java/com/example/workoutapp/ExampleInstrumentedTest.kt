@@ -389,7 +389,7 @@ class WorkoutContentProviderTest {
         assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
         cursor.close()
     }
-    
+
 
     @Test
     fun testDeleteWorkout() {
