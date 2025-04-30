@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui
 
+// WorkoutViewModel is the ViewModel used for this app, to act as a bridge between the database and the UI
+// It contains functions to allow the screens to make use of the database
+
 import android.content.Context
 import android.util.Log
 import androidx.compose.runtime.getValue
@@ -26,73 +29,60 @@ import java.util.Calendar
 
 class WorkoutViewModel() : ViewModel() {
 
+    // Function to add a new scheduled exercise to the database
     fun addNewPlannedExercise(context: Context, exercise: PlannedExercise) {
         val db = DatabaseProvider.getDatabase(context)
         val plannedExerciseDao = db.plannedExerciseDao()
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Insert the planned exerise
                 plannedExerciseDao.insert(exercise)
-                //val data = plannedExerciseDao.getAll()
-               // _plannedExercisesArray.value = data
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Exercises:", e)
             }
         }
     }
 
+    // Variable which triggers a screen refresh
     var refreshTrigger by mutableStateOf(0)
         private set
 
+    // Function to refresh the UI when the refresh trigger is incremented
     fun triggerRefresh() {
         refreshTrigger++
     }
 
-//    private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
-//    val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
-//
-//    fun loadPlannedExercises(context: Context) {
-//        val db = DatabaseProvider.getDatabase(context)
-//        val plannedExerciseDao = db.plannedExerciseDao()
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val data = plannedExerciseDao.getAll()
-//                _plannedExercisesArray.value = data
-//            } catch (e: Exception) {
-//                Log.e("WorkoutViewModel", "Error Loading Planned Exercises", e)
-//            }
-//        }
-//
-//    }
-
+// Variables to hold an array of planned exercises
 private val _plannedExercisesArray = mutableStateOf<List<PlannedExercise>>(emptyList())
 val plannedExercisesArray: List<PlannedExercise> get() = _plannedExercisesArray.value
 
+// Function to load the planned exercises
 fun loadPlannedExercises(context: Context) {
     val db = DatabaseProvider.getDatabase(context)
     val plannedExerciseDao = db.plannedExerciseDao()
 
     viewModelScope.launch(Dispatchers.IO) {
-        // Collect from the Flow returned by plannedExerciseDao.getAll()
+        // Collect all planned exercises (use collect as a Flow is being used here)
         plannedExerciseDao.getAll().collect { newList ->
-            // Switch to Main thread to update UI state
             _plannedExercisesArray.value = newList
         }
     }
 }
 
+    // Function to delete a workout with a specific workout ID
     fun deleteWorkout(context: Context, workoutId: Int) {
         viewModelScope.launch {
             val db = DatabaseProvider.getDatabase(context)
             db.exerciseDao().deleteExercisesForWorkout(workoutId)
             db.workoutDao().deleteWorkoutById(workoutId)
 
-            // Reload updated workouts list
+            // Once the workout has been deleted, reload the workouts to refresh the UI
             loadWorkouts(context)
         }
     }
 
+    // Function to insert a new exercise
     fun insertExercise(
         context: Context,
         exercise: Exercise
@@ -102,6 +92,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Insert the exercise into the database
                 exerciseDao.insert(exercise)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting New Exercise:", e)
@@ -109,8 +100,11 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Variables to hold an array of exercises
     private val _exercisesForWorkoutArray = mutableStateOf<List<Exercise>>(emptyList())
     val exercisesForWorkoutArray: List<Exercise> get() = _exercisesForWorkoutArray.value
+
+    // Function to load exercises for a specific workout
     fun loadExercisesForWorkout(
         context: Context,
         workoutId: Int
@@ -120,7 +114,9 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Get exercises for the workout that had its ID passed as a parameter
                 val data = exerciseDao.getExercisesForWorkout(workoutId)
+                // Assign the exercises just retrieved to the variable
                 _exercisesForWorkoutArray.value = data
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Retrieving Relevant Exercises:", e)
@@ -128,6 +124,7 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function ta add exercises to a scheduled workout
     fun addExercisesToScheduledWorkout(
         context: Context,
         scheduledWorkoutExercises: List<ScheduledWorkoutExercise>
@@ -137,6 +134,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Insert all relevant exercises into the database
                 scheduledWorkoutExerciseDao.insertMultiple(scheduledWorkoutExercises)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Scheduled Workout:", e)
@@ -144,12 +142,14 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function to add a new scheduled workout
     fun addNewScheduledWorkout(context: Context, workout: ScheduledWorkout) {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutDao = db.scheduledWorkoutDao()
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Insert the scheduled workout into the database
                 scheduledWorkoutDao.insert(workout)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting Scheduled Workout:", e)
@@ -157,6 +157,7 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function to add a new scheduled workout and return its ID
     fun addNewScheduledWorkoutReturnId(
         context: Context,
         workout: ScheduledWorkout,
@@ -168,6 +169,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Insert workout and assign the returned ID to this variable
                 val insertedId = scheduledWorkoutDao.insertAndReturnId(workout).toInt()
 
                 val scheduledWorkoutExercises = plannedExerciseIds.map { plannedId ->
@@ -179,12 +181,13 @@ fun loadPlannedExercises(context: Context) {
 
                 scheduledWorkoutExerciseDao.insertMultiple(scheduledWorkoutExercises)
 
-                // SCHEDULE A NEW NOTIFICATION
+                // Schedule a new notification
                 val workoutDay = workout.workoutDay
                 val workoutTime = workout.workoutTime
                 val workoutName = workout.workoutName
 
 
+                // May the day to a calendar day variable
                 val dayInt = when (workoutDay.lowercase()) {
                     "monday" -> Calendar.MONDAY
                     "tuesday" -> Calendar.TUESDAY
@@ -205,46 +208,22 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function to insert a workout and return its ID
     suspend fun insertWorkoutAndReturnId(context: Context, workout: Workout): Int {
         val db = DatabaseProvider.getDatabase(context)
         val workoutDao = db.workoutDao()
         return workoutDao.insert(workout).toInt()
     }
 
-//    private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
-//    val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
-//
-//    fun loadScheduledWorkoutsWithExercises(context: Context) {
-//        val db = DatabaseProvider.getDatabase(context)
-//        val scheduledWorkoutDao = db.scheduledWorkoutDao()
-//        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                val scheduledWorkouts = scheduledWorkoutDao.getAllScheduledWorkouts()
-//                val data = scheduledWorkouts.map { scheduledWorkout ->
-//                    val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
-//                    ScheduledWorkoutWithExercises(
-//                        workoutPlanId = scheduledWorkout.workoutPlanId,
-//                        workoutName = scheduledWorkout.workoutName,
-//                        workoutDay = scheduledWorkout.workoutDay,
-//                        workoutTime = scheduledWorkout.workoutTime,
-//                        workoutExercises = exercises
-//                    )
-//                }
-//                _scheduledWorkoutsWithExercises.value = data
-//            } catch (e: Exception) {
-//                Log.e("WorkoutViewModel", "Error Loading Scheduled workouts with exercises", e)
-//            }
-//        }
-//    }
-
+    // Function to delete a planned exercise
     fun deletePlannedExercise(exercise: PlannedExercise, context: Context) {
         val db = DatabaseProvider.getDatabase(context)
         val plannedExerciseDao = db.plannedExerciseDao()
         viewModelScope.launch(Dispatchers.IO){
             try {
+                // Delete the exercise from the database
                 plannedExerciseDao.delete(exercise)
+                // Reload the planned exercises so that the UI updates
                 loadPlannedExercises(context)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error deleting planned exercise")
@@ -252,9 +231,11 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Variables to hold an array of scheduled workouts with exercises
     private val _scheduledWorkoutsWithExercises = mutableStateOf<List<ScheduledWorkoutWithExercises>>(emptyList())
     val scheduledWorkoutsWithExercises: List<ScheduledWorkoutWithExercises> get() = _scheduledWorkoutsWithExercises.value
 
+    // Function to load scheduled workouts alongside their exercises
     fun loadScheduledWorkoutsWithExercises(context: Context) {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutDao = db.scheduledWorkoutDao()
@@ -262,6 +243,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Collect all scheduled workouts (collect as we are using a Flow)
                 scheduledWorkoutDao.getAllScheduledWorkouts().collectLatest { scheduledWorkouts ->
                     val data = scheduledWorkouts.map { scheduledWorkout ->
                         val exercises = scheduledWorkoutExerciseDao.getExercisesForWorkout(scheduledWorkout.workoutPlanId)
@@ -273,6 +255,7 @@ fun loadPlannedExercises(context: Context) {
                             workoutExercises = exercises
                         )
                     }
+                    // Assign to the private variable
                     _scheduledWorkoutsWithExercises.value = data
                 }
             } catch (e: Exception) {
@@ -281,12 +264,14 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function to check if a planned exercise is used in a scheduled workout
     suspend fun isPlannedExerciseUsed(context: Context, exerciseId: Int): Boolean {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
         return scheduledWorkoutExerciseDao.isPlannedExerciseUsed(exerciseId) > 0
     }
 
+    // Function to check if a scheduled workout has been carried out
     suspend fun isScheduledWorkoutUse(context: Context, workoutPlanId: Int): Boolean {
         val db = DatabaseProvider.getDatabase(context)
         val workoutDao = db.workoutDao()
@@ -294,20 +279,18 @@ fun loadPlannedExercises(context: Context) {
     }
 
 
-
-//    fun loadRelevantScheduledExerciseArray(context: Context, workoutPlanId: Int) {
-//        thdnthd
-//    }
-
+    // Variables to hold an array of scheduled workouts
     private val _scheduledWorkoutsArray = mutableStateOf<List<ScheduledWorkout>>(emptyList())
     val scheduledWorkoutsArray: List<ScheduledWorkout> get() = _scheduledWorkoutsArray.value
 
+    // Function to load scheduled workouts
     fun loadScheduledWorkouts(context: Context) {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutDao = db.scheduledWorkoutDao()
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Get all scheduled workouts from the database
                 val data = scheduledWorkoutDao.getAll()
                 _scheduledWorkoutsArray.value = data
             } catch (e: Exception) {
@@ -316,6 +299,7 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Function to delete a scheduled workout
     fun deleteScheduledWorkout(context: Context, schedWorkoutId: Int) {
         val db = DatabaseProvider.getDatabase(context)
         val scheduledWorkoutDao = db.scheduledWorkoutDao()
@@ -323,7 +307,9 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
            try {
+               // Delete the scheduled workout  from the database
                scheduledWorkoutDao.delete(schedWorkoutId)
+               // Reload the scheduled workouts with their exercises to refresh the UI
                loadScheduledWorkoutsWithExercises(context)
            } catch (e: Exception) {
                Log.e("WorkoutViewModel", "Error Deleting Scheduled Workout", e)
@@ -331,6 +317,7 @@ fun loadPlannedExercises(context: Context) {
         }
     }
 
+    // Variables to hold an array of workouts with their details
     private val _workoutsArray = mutableStateOf<List<WorkoutDetails>>(emptyList())
     val workoutsArray: List<WorkoutDetails> get() = _workoutsArray.value
 
@@ -340,6 +327,7 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Load all workouts with their details
                 val data = workoutDao.getWorkoutsWithDetails()
                 _workoutsArray.value = data
 
@@ -352,11 +340,14 @@ fun loadPlannedExercises(context: Context) {
             }
         }
     }
+
+    // Variables to hold a selected workout
     private val _selectedWorkout = mutableStateOf<Workout?>(null)
     val selectedWorkout: Workout? get() = _selectedWorkout.value
 
     var selectedWorkoutName by mutableStateOf("")
 
+    // Function to load a workout by its ID
     fun loadWorkoutById(context: Context, workoutId: Int) {
         val db = DatabaseProvider.getDatabase(context)
         val workoutDao = db.workoutDao()
@@ -364,7 +355,9 @@ fun loadPlannedExercises(context: Context) {
 
         viewModelScope.launch(Dispatchers.IO) {
             try {
+                // Load the workout
                 val workout = workoutDao.getById(workoutId)
+                // Assign the loaded workout to the private variable
                 _selectedWorkout.value = workout
 
                 // Get the workout name from scheduled workout
@@ -378,7 +371,7 @@ fun loadPlannedExercises(context: Context) {
 
     // private val _exercisesForScheduledWorkout = mutableStateOf<
 
-    // DUMMY DATA FOR DEVELOPMENT - CAN DELETE BEFORE SUBMISSION
+    // Function to delete all workouts and all scheduled workouts
     fun clearAllWorkouts(context: Context) {
         val db = DatabaseProvider.getDatabase(context)
         val workoutDao = db.workoutDao()
@@ -390,103 +383,4 @@ fun loadPlannedExercises(context: Context) {
             Log.d("WorkoutViewModel", "Cleared all workouts")
         }
     }
-//    fun seedDummyData(context: Context) {
-//        val db = DatabaseProvider.getDatabase(context)
-//        val scheduledWorkoutDao = db.scheduledWorkoutDao()
-//        val workoutDao = db.workoutDao()
-//        val plannedExerciseDao = db.plannedExerciseDao()
-//        val scheduledWorkoutExerciseDao = db.scheduledWorkoutExerciseDao()
-//        val exerciseDao = db.exerciseDao()
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            try {
-//                if (workoutDao.getAll().isEmpty()) {
-//                    val plannedExercisesByType = mapOf(
-//                        "Push" to listOf(
-//                            PlannedExercise(exerciseName = "Bench Press", muscleGroup = MuscleGroup.CHEST, setNumber = 3),
-//                            PlannedExercise(exerciseName = "Shoulder Press", muscleGroup = MuscleGroup.SHOULDERS, setNumber = 3)
-//                        ),
-//                        "Pull" to listOf(
-//                            PlannedExercise(exerciseName = "Deadlift", muscleGroup = MuscleGroup.BACK, setNumber = 3),
-//                            PlannedExercise(exerciseName = "Barbell Row", muscleGroup = MuscleGroup.BACK, setNumber = 3)
-//                        ),
-//                        "Legs" to listOf(
-//                            PlannedExercise(exerciseName = "Squats", muscleGroup = MuscleGroup.LEGS, setNumber = 4),
-//                            PlannedExercise(exerciseName = "Lunges", muscleGroup = MuscleGroup.LEGS, setNumber = 3)
-//                        )
-//                    )
-//
-//                    val scheduledWorkouts = listOf(
-//                        ScheduledWorkout(workoutName = "Push", workoutDay = "Monday", workoutTime = "09:00"),
-//                        ScheduledWorkout(workoutName = "Pull", workoutDay = "Wednesday", workoutTime = "10:00"),
-//                        ScheduledWorkout(workoutName = "Legs", workoutDay = "Friday", workoutTime = "08:30")
-//                    )
-//
-//                    val workoutDates = listOf("09/05/25", "10/05/25", "11/05/25")
-//
-//                    scheduledWorkouts.forEachIndexed { index, plan ->
-//                        val planId = scheduledWorkoutDao.insertAndReturnId(plan).toInt()
-//
-//                        val plannedExercises = plannedExercisesByType[plan.workoutName] ?: emptyList()
-//                        val plannedExerciseIds = plannedExercises.map {
-//                            plannedExerciseDao.insert(it).toInt()
-//                        }
-//
-//                        plannedExerciseIds.forEach { plannedId ->
-//                            scheduledWorkoutExerciseDao.insert(
-//                                ScheduledWorkoutExercise(
-//                                    workoutPlanId = planId,
-//                                    plannedExerciseId = plannedId
-//                                )
-//                            )
-//                        }
-//
-//                        val workout = Workout(
-//                            workoutDate = workoutDates[index],
-//                            workoutPlanId = planId
-//                        )
-//                        val workoutId = workoutDao.insert(workout).toInt()
-
-//                        plannedExerciseIds.forEach { plannedId ->
-//                            exerciseDao.insert(
-//                                Exercise(
-//                                    workoutId = workoutId,
-//                                    plannedExerciseId = plannedId,
-//                                    weight = (50..100).random().toFloat(),
-//                                    reps = (5..12).random(),
-//                                    pb = listOf(true, false).random()
-//                                )
-//                            )
-//                        }
-                    }
-//                    Log.d("WorkoutViewModel", "Dummy data seeded successfully")
-//                }
-//            } catch (e: Exception) {
-//                Log.e("WorkoutViewModel", "Error seeding dummy data", e)
-//            }
-//        }
-//    }
-//    fun debugExercisesFor(context: Context, workoutId: Int) {
-//        val db = DatabaseProvider.getDatabase(context)
-//        val exerciseDao = db.exerciseDao()
-//
-//        viewModelScope.launch(Dispatchers.IO) {
-//            // 1) Log all exercises in the database
-//            val all = exerciseDao.getAll()
-//            Log.d("ExerciseDebug", "---- All Exercises in DB: count=${all.size} ----")
-//            all.forEachIndexed { index, ex ->
-//                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
-//                        "plannedExerciseId=${ex.plannedExerciseId}, reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
-//            }
-//
-//            // 2) Log only the exercises for a given workoutId
-//            val exercisesForId = exerciseDao.getExercisesWithNamesForWorkout(workoutId)
-//            Log.d("ExerciseDebug", "---- Exercises for workoutId=$workoutId: count=${exercisesForId.size} ----")
-//            exercisesForId.forEachIndexed { index, ex ->
-//                Log.d("ExerciseDebug", "[$index] exerciseId=${ex.exerciseId}, workoutId=${ex.workoutId}, " +
-//                        "plannedExerciseId=${ex.plannedExerciseId}, name=${ex.exerciseName}, " +
-//                        "reps=${ex.reps}, weight=${ex.weight}, pb=${ex.pb}")
-//            }
-//        }
-//    }
-//}
+}
