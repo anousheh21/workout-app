@@ -51,6 +51,8 @@ fun scheduleWorkoutNotification(
     // Split the time into hour and minute
     val (hour, minute) = timeString.split(":").map { it.toInt() }
 
+    val now = Calendar.getInstance()
+
     // Sets the notification to send 1 hour before the workout
     val calendar = Calendar.getInstance().apply {
         set(Calendar.DAY_OF_WEEK, dayInt)
@@ -58,7 +60,15 @@ fun scheduleWorkoutNotification(
         set(Calendar.MINUTE, minute)
         set(Calendar.SECOND, 0)
         set(Calendar.MILLISECOND, 0)
+
     }
+
+    // If the notification is before the current time, move it to next week to prevent it firing straight away
+    if (calendar.timeInMillis <= now.timeInMillis) {
+        calendar.add(Calendar.WEEK_OF_YEAR, 1)
+    }
+
+
 
 
     // Sets alarm via alarm manager
@@ -71,7 +81,7 @@ fun scheduleWorkoutNotification(
     Log.d("WorkoutViewModel", "Alarm set for: ${calendar.time}")
 }
 
-// Function to show the nitifaciotn
+// Function to show the notification
 @SuppressLint("ScheduleExactAlarm")
 fun showScheduledWorkoutNotification(
     context: Context,
@@ -123,8 +133,7 @@ class NotificationReceiver : BroadcastReceiver() {
             val workoutDay = intent?.getStringExtra("workoutDay") ?: "Monday"
             showScheduledWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
 
-            // Reschedules notification to appear every week to remind of the workout
-            scheduleWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
+            
         }
     }
 }
