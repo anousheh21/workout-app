@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui
 
+// MainActivity.kt is the main activity for the app that instantiates it
+
 import android.app.AlarmManager
 import android.app.NotificationChannel
 import android.app.NotificationManager
@@ -23,6 +25,8 @@ class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         createNotificationChannel()
+
+        // Sets alarms, which are needed for the notifications
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = getSystemService(Context.ALARM_SERVICE) as AlarmManager
             if (!alarmManager.canScheduleExactAlarms()) {
@@ -31,8 +35,10 @@ class MainActivity : ComponentActivity() {
             }
         }
 
+        // Request notification permissions
         requestNotificationPermissionIfNeeded()
 
+        // Set the initial app screen
         setContent {
             WorkoutAppTheme {
                 NavScaffold()
@@ -41,6 +47,7 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // Function to request notification permissions if they are not enabled
     private fun requestNotificationPermissionIfNeeded() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
             if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -53,9 +60,8 @@ class MainActivity : ComponentActivity() {
         }
     }
 
+    // Function to create the channel for the notifications
     private fun createNotificationChannel() {
-        // Create the NotificationChannel, but only on API 26+ because
-        // the NotificationChannel class is not in the Support Library.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             val name = "Scheduled Workout Notifications"
             val descriptionText = "To remind you of your scheduled workouts, one hour before"
@@ -63,7 +69,7 @@ class MainActivity : ComponentActivity() {
             val channel = NotificationChannel("scheduled-workout-notification", name, importance).apply {
                 description = descriptionText
             }
-            // Register the channel with the system.
+            // Register the notification channel
             val notificationManager: NotificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
