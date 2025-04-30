@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.PrimaryColor
@@ -31,7 +32,7 @@ fun AddExercisesButton(navAddExercises: (Int) -> Unit ) {
 
     ) {
         Row {
-            Text("Add Exercises")
+            Text(stringResource(R.string.add_exercises))
             Spacer(modifier = Modifier.width(70.dp))
             Icon(
                 painter = painterResource(id = R.drawable.smallplus),

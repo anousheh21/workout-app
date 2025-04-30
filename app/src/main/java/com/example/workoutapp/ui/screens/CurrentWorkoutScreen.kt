@@ -23,12 +23,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.Workout
@@ -88,7 +90,7 @@ fun CurrentWorkoutScreen(workoutId: Int) {
             }
         }
     } else {
-        Text("No exercises found for this workout.")
+        Text(stringResource(R.string.no_exercises_found_for_this_workout))
     }
 
 //    if (selectedWorkout != null) {

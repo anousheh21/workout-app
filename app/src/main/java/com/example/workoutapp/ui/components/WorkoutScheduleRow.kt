@@ -22,6 +22,8 @@ import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.ui.theme.SecondPurple
 import androidx.compose.foundation.gestures.detectTapGestures
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
+import com.example.workoutapp.R
 
 @Composable
 fun WorkoutScheduleRow(
@@ -68,7 +70,7 @@ fun WorkoutScheduleRow(
             Spacer(modifier = Modifier.height(6.dp))
 
             Text(
-                text = "Add to Calendar",
+                text = stringResource(R.string.add_to_calendar),
                 style = TextStyle(
                     fontSize = 14.sp,
                     fontWeight = FontWeight.Medium,
@@ -83,7 +85,7 @@ fun WorkoutScheduleRow(
 
 
         Text(
-            text = "View Exercises",
+            text = stringResource(R.string.view_exercises),
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Normal,

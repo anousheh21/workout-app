@@ -27,6 +27,7 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.semantics.Role.Companion.Button
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.Font
@@ -34,6 +35,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.ScheduledWorkoutExercise
 import com.example.workoutapp.data.ScheduledWorkoutWithExercises
 import com.example.workoutapp.data.Workout
@@ -78,8 +80,8 @@ fun NewWorkoutScreen(
                verticalArrangement = Arrangement.Center
            ) {
                Spacer(modifier = Modifier.height(50.dp))
-               InstructionTitle(text = "No Scheduled Workouts Available")
-               InstructionText(text = "Schedule a workout in the schedule tab, then return here to start that workout")
+               InstructionTitle(text = stringResource(R.string.no_scheduled_workouts_available))
+               InstructionText(text = stringResource(R.string.schedule_a_workout_in_the_schedule_tab_then_return_here_to_start_that_workout))
            }
         } else {
             // Loop through each scheduled workout in the array to display it

@@ -30,6 +30,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -40,6 +41,7 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.example.workoutapp.R
 import com.example.workoutapp.data.WorkoutDetails
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.components.TopBarBack
@@ -94,7 +96,7 @@ fun NavScaffold(
                 // Top bar for the WorkoutsScreen
                 AppScreen.Workouts.route -> {
                     TopAppBar(
-                        title = { Text("Workouts") },
+                        title = { Text(text = stringResource(R.string.workouts)) },
                         actions = {
                             // Button to navigate to the NewWorkoutScreen, so that a user can start a workout from this page
                             TextButton(onClick = { navController.navigate(AppScreen.NewWorkout.route) }) {
@@ -114,7 +116,7 @@ fun NavScaffold(
                 // Top bar for the scheduled exercises screen
                 AppScreen.PBs.route -> {
                     TopAppBar(
-                        title = { Text("Exercises") },
+                        title = { Text(text = stringResource(R.string.exercises)) },
                         actions = {
                             AddNewWorkoutScheduleEdit(0) {
                                 // Shows the modal that allows the user to add a new scheduled exercise
@@ -127,7 +129,7 @@ fun NavScaffold(
                 // Top bar for the scheduled workouts screen
                 AppScreen.Settings.route -> {
                     TopAppBar(
-                        title = { Text("Schedule") },
+                        title = { Text(stringResource(R.string.schedule)) },
                         actions = {
                             AddNewWorkoutScheduleEdit(0) {
                                 // Shows the modal that allows the user to add a new scheduled workout
@@ -166,7 +168,7 @@ fun NavScaffold(
                                     navController.popBackStack()
                                 }) {
                                     Text(
-                                        text  = "End Workout",
+                                        text  = stringResource(R.string.end_workout),
                                         style = TextStyle(
                                             fontSize = 16.sp,
                                             color = PrimaryColor,
@@ -180,7 +182,7 @@ fun NavScaffold(
                     } else {
                         TopAppBar(
                             title = {
-                                Text(text = "Invalid Workout")
+                                Text(text = stringResource(R.string.invalid_workout))
                             },
                             navigationIcon = {
                                 IconButton(onClick = { navController.popBackStack() }) {
@@ -245,7 +247,7 @@ fun NavScaffold(
                     } else {
                         TopAppBar(
                             title = {
-                                Text(text = "Invalid Workout")
+                                Text(text = stringResource(R.string.invalid_workout))
                             },
                             navigationIcon = {
                                 IconButton(onClick = { navController.popBackStack() }) {

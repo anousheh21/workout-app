@@ -31,11 +31,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
@@ -82,7 +84,7 @@ fun PBs() {
             verticalArrangement = Arrangement.Center
         ) {
             //Spacer(modifier = Modifier.height(50.dp))
-            InstructionTitle(text = "Add Exercises")
+            InstructionTitle(text = stringResource(R.string.add_exercises))
             InstructionText(text = "Click the \"Add New\" button to start adding exercises that can then be added to your workouts in the schedule tab. To delete an exercise, press and hold.")
         }
     } else {

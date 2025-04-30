@@ -25,8 +25,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
+import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.BackgroundColor
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
@@ -97,7 +99,7 @@ fun WorkoutTime(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = ThirdPurple)
             ) {
-                Text("Confirm")
+                Text(stringResource(R.string.confirm))
             }
             Spacer(modifier = Modifier.width(20.dp))
             Button(
@@ -105,7 +107,7 @@ fun WorkoutTime(
                 shape = RoundedCornerShape(10.dp),
                 colors = ButtonDefaults.buttonColors(containerColor = SecondPurple)
             ) {
-                Text("Cancel")
+                Text(stringResource(R.string.cancel))
             }
         }
     }

@@ -19,9 +19,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.ui.extensions.toTitleCase
 import com.example.workoutapp.ui.theme.DarkText
@@ -46,7 +48,7 @@ fun MuscleGroupDropDown(
             value = selectedGroup.toTitleCase(),
             onValueChange = {},
             readOnly = true,
-            placeholder = { Text("Muscle Group") },
+            placeholder = { Text(stringResource(R.string.muscle_group)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },

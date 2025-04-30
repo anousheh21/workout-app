@@ -17,8 +17,10 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.theme.ThirdPurple
@@ -51,7 +53,7 @@ fun AddExercisesMultiSelect(
             modifier = Modifier
                 .width(150.dp)
         ) {
-            Text("Add Exercises")
+            Text(stringResource(R.string.add_exercises_2))
         }
 
         // If showDialog is true, show the dialog that allows the user to add the exercises

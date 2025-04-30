@@ -52,6 +52,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -123,8 +124,8 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(45.dp))
-            InstructionTitle(text = "Plan Your Workouts")
-            InstructionText(text = "Click \"Add New\" to add a new scheduled workout. To delete a scheduled workout, press and hold.")
+            InstructionTitle(text = stringResource(R.string.plan_your_workouts))
+            InstructionText(text = stringResource(R.string.click_add_new_to_add_a_new_scheduled_workout_to_delete_a_scheduled_workout_press_and_hold))
         }
     } else {
         // If there are scheduled workouts to display, display them in a WorkoutScheduleRow
@@ -221,7 +222,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                 schedWorkoutToDelete = null
                 ableToDeleteCheck = null
            },
-            title = { Text(text = "Delete Scheduled Workout")},
+            title = { Text(text = stringResource(R.string.delete_scheduled_workout))},
             text = {
                 Text(text = ableToDeleteCheck ?: "Are you sure you want to delete '${schedWorkoutToDelete!!.workoutName}'?",
                     style = TextStyle(
@@ -258,7 +259,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                     }
                 }) {
                     Text(
-                        text = "Delete",
+                        text = stringResource(R.string.delete),
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -286,7 +287,7 @@ fun EditScheduleScreen(navAddExercises: (Int) -> Unit ) {
                     ableToDeleteCheck = null
                 }) {
                     Text(
-                        text = "Cancel",
+                        text = stringResource(R.string.cancel),
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,

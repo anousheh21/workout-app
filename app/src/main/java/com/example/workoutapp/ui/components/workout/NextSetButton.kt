@@ -12,10 +12,12 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.SecondPurple
 
 @Composable
@@ -38,7 +40,7 @@ fun NextSetButton(
             .width(119.dp)
     ) {
         Text(
-            text = "Next Set",
+            text = stringResource(R.string.next_set),
             style = TextStyle(
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Medium

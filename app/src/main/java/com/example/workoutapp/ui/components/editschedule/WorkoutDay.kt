@@ -18,9 +18,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 
@@ -32,7 +34,12 @@ fun WorkoutDay(
     onDaySelected: (String) -> Unit
 ) {
     // List of the days of the week, which is what will be shown in the dropdown
-    val daysOfWeek = listOf("Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday", "Sunday")
+    val daysOfWeek = listOf(stringResource(R.string.monday),
+        stringResource(R.string.tuesday),
+        stringResource(R.string.wednesday),
+        stringResource(R.string.thursday), stringResource(R.string.friday),
+        stringResource(R.string.saturday), stringResource(R.string.sunday)
+    )
     // Remembers whether the dropdown is expanded or not
     var expanded by remember { mutableStateOf(false) }
     var submittedDay by remember { mutableStateOf("") }
@@ -45,7 +52,7 @@ fun WorkoutDay(
             value = selectedDay,
             onValueChange = {},
             readOnly = true,
-            placeholder = { Text("Workout Day") },
+            placeholder = { Text(stringResource(R.string.workout_day)) },
             trailingIcon = {
                 ExposedDropdownMenuDefaults.TrailingIcon(expanded = expanded)
             },

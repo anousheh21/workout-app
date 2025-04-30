@@ -14,6 +14,7 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -24,6 +25,7 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.data.Workout
@@ -84,7 +86,7 @@ fun SwipeScreenChild(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Weight/kg",
+                    text = stringResource(R.string.weight_kg),
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium
@@ -105,7 +107,7 @@ fun SwipeScreenChild(
                 Spacer(modifier = Modifier.height(16.dp))
 
                 Text(
-                    text = "Reps",
+                    text = stringResource(R.string.reps),
                     style = TextStyle(
                         fontSize = 12.sp,
                         fontWeight = FontWeight.Medium
@@ -198,7 +200,7 @@ fun SwipeScreenChild(
 
         Text(
             // Instructions for swiping
-            text = "Swipe right for next exercise, swipe left for previous exercise",
+            text = stringResource(R.string.swipe_right_for_next_exercise_swipe_left_for_previous_exercise),
             style = TextStyle(
                 fontSize = 12.sp,
                 fontWeight = FontWeight.Normal,

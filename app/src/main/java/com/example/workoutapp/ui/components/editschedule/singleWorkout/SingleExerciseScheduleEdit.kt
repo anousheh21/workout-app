@@ -22,11 +22,13 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.lifecycle.viewmodel.compose.viewModel
+import com.example.workoutapp.R
 import com.example.workoutapp.data.MuscleGroup
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
@@ -102,7 +104,7 @@ fun SaveExercise(newExercise: PlannedExercise, saveExercise: (PlannedExercise) -
             .width(102.dp)
     ) {
         Text(
-            text = "Save",
+            text = stringResource(R.string.save),
             style = TextStyle(
                 fontSize = 18.sp,
                 fontWeight = FontWeight.Bold

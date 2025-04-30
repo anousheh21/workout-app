@@ -9,10 +9,12 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.data.ExerciseWithName
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.PrimaryText
@@ -37,7 +39,7 @@ fun ShareSheetButton(
         shape = RoundedCornerShape(10.dp)
     ) {
         Text(
-            text = "Share Workout",
+            text = stringResource(R.string.share_workout),
             style = TextStyle(
                 fontSize = 15.sp,
                 fontWeight = FontWeight.Medium

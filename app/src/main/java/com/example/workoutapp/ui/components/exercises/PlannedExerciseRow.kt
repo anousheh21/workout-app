@@ -23,10 +23,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.input.pointer.pointerInput
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.data.PlannedExercise
 import com.example.workoutapp.ui.WorkoutViewModel
 import com.example.workoutapp.ui.theme.PrimaryColor
@@ -108,7 +110,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
                     }
                 }) {
                     Text(
-                        text = "Delete",
+                        text = stringResource(R.string.delete),
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -120,7 +122,8 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
             dismissButton = {
                 TextButton(onClick = { showDeleteModal = false }) {
                     Text(
-                        text = "Cancel",
+//                        text = "Cancel",
+                        text = stringResource(R.string.cancel),
                         style = TextStyle(
                             fontSize = 18.sp,
                             fontWeight = FontWeight.Bold,
@@ -129,7 +132,7 @@ fun PlannedExerciseRow(exercise: PlannedExercise, vm: WorkoutViewModel, context:
                     )
                 }
             },
-            title = { Text("Delete Exercise") },
+            title = { Text(stringResource(R.string.delete_exercise)) },
             text = { Text(
                 text = ableToDeleteCheck ?: "Are you sure you want to delete '${exercise.exerciseName}'?",
                 style = TextStyle(

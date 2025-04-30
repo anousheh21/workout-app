@@ -13,9 +13,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.DarkText
 import com.example.workoutapp.ui.theme.PrimaryText
 
@@ -29,7 +31,7 @@ fun ExerciseInput(
     TextField(
         value = exerciseNameInput,
         onValueChange = onValueChange,
-        label = { Text("Exercise") },
+        label = { Text(stringResource(R.string.exercise)) },
         textStyle = TextStyle(color = DarkText, fontSize = 16.sp),
         shape = RoundedCornerShape(3.dp),
         colors = TextFieldDefaults.colors(

@@ -11,10 +11,12 @@ import androidx.compose.material3.Text
 import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import com.example.workoutapp.R
 import com.example.workoutapp.ui.theme.PrimaryColor
 import com.example.workoutapp.ui.theme.SecondPurple
 
@@ -32,7 +34,7 @@ fun AddNewWorkoutScheduleEdit(
 //            .width(150.dp)
     ) {
         Text(
-            text = "Add New",
+            text = stringResource(R.string.add_new),
             style = TextStyle(
                 fontSize = 17.sp,
                 fontWeight = FontWeight.Bold,
