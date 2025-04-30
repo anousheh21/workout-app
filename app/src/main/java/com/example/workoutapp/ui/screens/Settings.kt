@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// Settings.kt is not used in the final app
+
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

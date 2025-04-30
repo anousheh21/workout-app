@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui.screens
 
+// PBs.kt is a screen that shows the scheduled exercises
+// The user can navigate to it from the bottom nav bar
+
 import android.content.Context
 import android.graphics.Color
 import androidx.compose.foundation.gestures.detectTapGestures
@@ -48,6 +51,8 @@ import kotlinx.coroutines.launch
 
 @Composable
 fun PBs() {
+
+    // Scroll state that allows the user to scroll through the screen
     val scrollState = rememberScrollState()
     //var showExerciseModal by remember { mutableStateOf(false) }
 
@@ -57,6 +62,7 @@ fun PBs() {
     val refreshKey = vm.refreshTrigger
 
     LaunchedEffect(refreshKey) {
+        // Load all scheduled exercises from the database via the ViewModel
         vm.loadPlannedExercises(context)
     }
 
@@ -66,6 +72,7 @@ fun PBs() {
 //    var nextExerciseId by remember { mutableStateOf(1) }
 //    val exerciseIds = remember { mutableStateListOf<Int>() }
 
+    // If there are no scheduled exercises in the database, display instructions telling the user how to add them
     if (plannedExercisesArray.isEmpty()) {
         Column(
             modifier = Modifier
@@ -84,11 +91,15 @@ fun PBs() {
                 .verticalScroll(scrollState)
             // .padding(horizontal = 38.dp)
         ) {
+            // Group planned exercises by muscle group
             val groupedPlannedExercises = plannedExercisesArray.groupBy { it.muscleGroup }
+            // Sort the planned exercises that have been grouped by muscle group (alphabetically by muscle group)
             val sortedGroupedExercises = groupedPlannedExercises.toSortedMap()
 
             for((muscleGroup, exercisesInGroup) in sortedGroupedExercises) {
+                // For each muscle group, display that muscle group as a title
                 MuscleGroupTitle(muscleGroup = muscleGroup)
+                // Loop through all the exercises in that muscle group and display them
                 for (plannedExercise in exercisesInGroup) {
                     PlannedExerciseRow(exercise = plannedExercise, vm = vm, context = context)
                 }

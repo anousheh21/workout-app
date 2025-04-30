@@ -1,5 +1,8 @@
 package com.example.workoutapp.ui.screens
 
+// WorkoutsScreen.kt is a screen that displays a list of all workouts that the user has completed
+// This screen can be navigated to from the bottom bar, and is the first screen the user lands on when they open the app
+
 import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -47,21 +50,22 @@ fun WorkoutsScreen(
 ) {
     val context = LocalContext.current
     LaunchedEffect(Unit) {
-        //viewModel.clearAllWorkouts(context = context)
-        //viewModel.debugExercisesFor(context, 22)
-        // viewModel.seedDummyData(context = context)
+       // Load workouts from the database via the ViewModel
         viewModel.loadWorkouts(context = context)
     }
 
     val initialWorkoutsArray = viewModel.workoutsArray
+    // Sort the workouts chronologically, showing the most recent workout at the top
     val workoutsArray = initialWorkoutsArray.sortedByDescending { it.workoutId }
 
     LaunchedEffect(workoutsArray) {
+        // Code used for debugging
         workoutsArray.forEach {
             Log.d("DEBUG", "WorkoutDetails => workoutId=${it.workoutId}, planId=${it.workoutPlanId}, date=${it.workoutDate}, name=${it.workoutName}")
         }
     }
 
+    // Checks if the user has added workouts to the database, and either shows those workouts or instructions on how to use the app, depending on this
     if (workoutsArray.isEmpty()) {
         NoWorkoutScreen()
     } else {

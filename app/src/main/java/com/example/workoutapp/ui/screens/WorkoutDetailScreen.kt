@@ -1,5 +1,7 @@
 package com.example.workoutapp.ui.screens
 
+// WorkoutDetailScreen.kt is a screen that displays the information about a particular workout that has been selected by the user
+
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -20,11 +22,13 @@ import com.example.workoutapp.ui.components.ExerciseLogSingle
 
 @Composable
 fun WorkoutDetailScreen(workoutId: Int) {
+    // Variable to remember the scroll state
     val scrollState = rememberScrollState()
 
     Column(
         modifier = Modifier.verticalScroll(scrollState)
     ) {
+        // Show the workout details
         ExerciseLogSingle(workoutId)
     }
 }
