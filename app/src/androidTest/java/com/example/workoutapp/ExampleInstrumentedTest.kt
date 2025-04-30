@@ -389,46 +389,7 @@ class WorkoutContentProviderTest {
         assertFalse("Scheduled workout should be deleted", cursor!!.moveToFirst())
         cursor.close()
     }
-
-//    @Test
-//    fun testDeleteScheduledWorkoutExercise() {
-//        // Insert ScheduledWorkout so we can use a foreign key
-//        val scheduledWorkoutValues = ContentValues().apply {
-//            put(WorkoutContract.ScheduledWorkouts.COLUMN_NAME, "Chest Workout")
-//            put(WorkoutContract.ScheduledWorkouts.COLUMN_DAY, "Thursday")
-//            put(WorkoutContract.ScheduledWorkouts.COLUMN_TIME, "12:00")
-//        }
-//        val scheduledWorkoutUri = resolver.insert(WorkoutContract.ScheduledWorkouts.CONTENT_URI, scheduledWorkoutValues)!!
-//        val scheduledWorkoutId = ContentUris.parseId(scheduledWorkoutUri).toInt()
-//
-//        // Insert PlannedExercise so we can use the ID as a foreign key
-//        val plannedExerciseValues = ContentValues().apply {
-//            put(WorkoutContract.PlannedExercises.COLUMN_NAME, "Rear Deltoid Fly")
-//            put(WorkoutContract.PlannedExercises.COLUMN_GROUP, MuscleGroup.SHOULDERS.toString())
-//            put(WorkoutContract.PlannedExercises.COLUMN_SET, 3)
-//        }
-//        val plannedExerciseUri = resolver.insert(WorkoutContract.PlannedExercises.CONTENT_URI, plannedExerciseValues)!!
-//        val plannedExerciseId = ContentUris.parseId(plannedExerciseUri).toInt()
-//
-//        val uri = WorkoutContract.ScheduledWorkoutExercises.CONTENT_URI
-//        // Insert scheduledWorkoutExercise values using the values above, since this requires foreign keys
-//        val scheduledWorkoutExerciseValues = ContentValues().apply {
-//            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_WORKOUT_PLAN_ID, scheduledWorkoutId)
-//            put(WorkoutContract.ScheduledWorkoutExercises.COLUMN_PLANNED_EXERCISE_ID, plannedExerciseId)
-//        }
-//
-//        val insertUri = resolver.insert(uri, scheduledWorkoutExerciseValues)
-//        assertNotNull("Insert failed", insertUri)
-//
-//        // Delete the scheduled workout exercise
-//        val deleteCount = resolver.delete(insertUri!!, null, null)
-//        assertEquals("Delete failed", 1, deleteCount)
-//
-//        val cursor = resolver.query(insertUri, null, null, null, null)
-//        assertNotNull(cursor)
-//        assertFalse("Scheduled workout exercise should be deleted", cursor!!.moveToFirst())
-//        cursor.close()
-//    }
+    
 
     @Test
     fun testDeleteWorkout() {

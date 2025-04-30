@@ -133,7 +133,7 @@ class NotificationReceiver : BroadcastReceiver() {
             val workoutDay = intent?.getStringExtra("workoutDay") ?: "Monday"
             showScheduledWorkoutNotification(it, dayInt, time, workoutName, workoutDay)
 
-            
+
         }
     }
 }
