@@ -25,6 +25,7 @@ import com.example.workoutapp.ui.notifications.scheduleWorkoutNotification
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 
 class WorkoutViewModel() : ViewModel() {
@@ -96,6 +97,29 @@ fun loadPlannedExercises(context: Context) {
                 exerciseDao.insert(exercise)
             } catch (e: Exception) {
                 Log.e("WorkoutViewModel", "Error Inserting New Exercise:", e)
+            }
+        }
+    }
+
+    // Function to insert an exercise, and then reloads the info in
+    fun insertExerciseAndReload(context: Context, exercise: Exercise, workoutID: Int) {
+        val db = DatabaseProvider.getDatabase(context)
+        val exerciseDao = db.exerciseDao()
+
+        viewModelScope.launch(Dispatchers.IO) {
+            try {
+                // Insert the exercise into the database
+                exerciseDao.insert(exercise)
+
+                // Update for the reload
+                val data = exerciseDao.getExercisesForWorkout(workoutID)
+                withContext(Dispatchers.Main) {
+                    _exercisesForWorkoutArray.value = data
+
+                }
+
+            } catch (e: Exception) {
+                Log.e("WorkoutViewModel", "Error Inserting New Exercise and Reloading", e)
             }
         }
     }

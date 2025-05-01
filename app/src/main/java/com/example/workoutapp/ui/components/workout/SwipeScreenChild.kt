@@ -152,8 +152,9 @@ fun SwipeScreenChild(
                 )
 
                 // Adds the exercise to the database via the view model, then reloads so they display
-                vm.insertExercise(context, newExerciseStats)
-                vm.loadExercisesForWorkout(context, selectedWorkout.workoutId)
+//                vm.insertExercise(context, newExerciseStats)
+//                vm.loadExercisesForWorkout(context, selectedWorkout.workoutId)
+                vm.insertExerciseAndReload(context, newExerciseStats, selectedWorkout.workoutId)
 
                 // Clears input boxes to be used again
                 onWeightValueChange("")
