@@ -8,7 +8,9 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import com.example.workoutapp.R
 import com.example.workoutapp.data.Exercise
 import com.example.workoutapp.data.PlannedExercise
 
@@ -22,9 +24,9 @@ fun CompletedExerciseTable(
         // Header row
         Row {
             Row {
-                TableCell("Set", bold = true, modifier = Modifier.weight(1f))
-                TableCell("Weight", bold = true, modifier = Modifier.weight(1f))
-                TableCell("Reps", bold = true, modifier = Modifier.weight(1f))
+                TableCell(stringResource(R.string.set), bold = true, modifier = Modifier.weight(1f))
+                TableCell(stringResource(R.string.weight), bold = true, modifier = Modifier.weight(1f))
+                TableCell(stringResource(R.string.reps), bold = true, modifier = Modifier.weight(1f))
             }
         }
 

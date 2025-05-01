@@ -50,4 +50,6 @@
     <string name="no_scheduled_workouts_available">No Scheduled Workouts Available</string>
     <string name="schedule_a_workout_in_the_schedule_tab_then_return_here_to_start_that_workout">Schedule a workout in the schedule tab, then return here to start that workout</string>
     <string name="notification_settings_screen">Notification Settings Screen</string>
+    <string name="set">Set</string>
+    <string name="weight">Weight</string>
 </resources>

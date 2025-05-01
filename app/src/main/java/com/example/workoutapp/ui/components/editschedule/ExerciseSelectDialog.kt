@@ -54,7 +54,7 @@ fun ExerciseSelectDialog(
         confirmButton = {
             TextButton(onClick = onDismiss) {
                 Text(
-                    text = "Save",
+                    text = stringResource(R.string.save),
                     style = TextStyle(
                         fontSize = 18.sp,
                         color = PrimaryColor,
